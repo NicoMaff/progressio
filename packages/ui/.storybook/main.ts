@@ -8,10 +8,10 @@ const config: StorybookConfig = {
     name: "@storybook/react-vite",
     options: {},
   },
-  viteFinal: async (config) => {
-    config.plugins = [...(config.plugins ?? []), UnoCSS({ configFile: "../../uno.config.ts" })]
+  viteFinal: async (viteConfig) => {
+    viteConfig.plugins = [...(viteConfig.plugins ?? []), UnoCSS({ configFile: "../../uno.config.ts" })]
 
-    return config
+    return viteConfig
   },
 }
 

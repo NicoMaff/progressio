@@ -1,3 +1,4 @@
+import "virtual:uno.css"
 import "../src/styles.css"
 import type { Preview } from "@storybook/react-vite"
 

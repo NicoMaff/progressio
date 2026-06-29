@@ -6,7 +6,8 @@
   "license": "UNLICENSED",
   "exports": {
     ".": "./src/index.ts",
-    "./atoms": "./src/atoms/index.ts"
+    "./atoms": "./src/atoms/index.ts",
+    "./molecules": "./src/molecules/index.ts"
   },
   "scripts": {
     "storybook": "storybook dev -p 6006",
@@ -22,6 +23,8 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "catalog:",
+    "@radix-ui/react-select": "catalog:",
     "class-variance-authority": "catalog:"
   },
   "devDependencies": {
