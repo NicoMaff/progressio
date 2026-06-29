@@ -32,8 +32,8 @@
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "lint": "yarn run -T eslint . --config ../../eslint.config.mjs",
-    "format": "yarn run -T prettier --write .",
-    "format:check": "yarn run -T prettier --check .",
+    "format": "yarn run -T prettier --write . --ignore-path ../../.prettierignore",
+    "format:check": "yarn run -T prettier --check . --ignore-path ../../.prettierignore",
     "typecheck": "tsc --noEmit",
     "test": "echo \"No tests configured for @progressio/ui yet\""
   },

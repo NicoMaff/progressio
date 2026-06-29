@@ -6,8 +6,9 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noEmit": true,
+    "skipLibCheck": true,
     "strict": true,
-    "target": "ES2024",
+    "target": "ES2024"
   },
-  "include": ["eslint.config.mjs", "types/**/*.d.ts"],
+  "include": ["eslint.config.mjs", "types/**/*.d.ts"]
 }
