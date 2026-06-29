@@ -11,11 +11,13 @@
   "scripts": {
     "dev": "yarn workspace @progressio/web dev",
     "build": "yarn workspace @progressio/web build",
-    "lint": "yarn workspace @progressio/web lint",
-    "typecheck": "yarn workspace @progressio/web typecheck",
-    "test": "yarn workspace @progressio/web test",
-    "format": "yarn workspace @progressio/web format",
-    "format:check": "yarn workspace @progressio/web format:check"
+    "storybook": "yarn workspace @progressio/ui storybook",
+    "storybook:build": "yarn workspace @progressio/ui storybook:build",
+    "lint": "yarn workspace @progressio/web lint && yarn workspace @progressio/ui lint",
+    "typecheck": "yarn workspace @progressio/web typecheck && yarn workspace @progressio/ui typecheck",
+    "test": "yarn workspace @progressio/web test && yarn workspace @progressio/ui test",
+    "format": "yarn workspace @progressio/web format && yarn workspace @progressio/ui format",
+    "format:check": "yarn workspace @progressio/web format:check && yarn workspace @progressio/ui format:check"
   },
   "devDependencies": {
     "@adonisjs/eslint-config": "^3.1.0",

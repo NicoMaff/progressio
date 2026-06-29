@@ -1,8 +1,20 @@
 import { defineConfig, presetWebFonts, presetWind4, transformerDirectives, transformerVariantGroup } from "unocss"
 
+const contentFilesystem = [
+  "apps/web/inertia/**/*.{ts,tsx,js,jsx}",
+  "apps/web/resources/views/**/*.edge",
+  "packages/ui/.storybook/**/*.{ts,tsx,js,jsx,mdx}",
+  "packages/ui/src/**/*.{ts,tsx,js,jsx,mdx}",
+
+  // The Adonis Vite plugin can resolve the root UnoCSS config from apps/web.
+  // Keep these app-relative patterns so extraction also works from that cwd.
+  "inertia/**/*.{ts,tsx,js,jsx}",
+  "resources/views/**/*.edge",
+]
+
 export default defineConfig({
   content: {
-    filesystem: ["resources/views/**/*.tsx", "inertia/**/*.tsx"],
+    filesystem: contentFilesystem,
   },
   presets: [
     presetWind4(),

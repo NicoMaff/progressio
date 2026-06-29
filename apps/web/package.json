@@ -67,6 +67,7 @@
     "@adonisjs/static": "^2.0.1",
     "@adonisjs/vite": "^5.1.1",
     "@inertiajs/react": "^2.3.27",
+    "@progressio/ui": "workspace:*",
     "@tuyau/core": "^1.2.2",
     "@vinejs/vine": "^4.4.0",
     "better-sqlite3": "^12.11.1",
