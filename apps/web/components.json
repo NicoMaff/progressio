@@ -16,7 +16,7 @@
     "hooks": "~/hooks",
     "lib": "~/lib",
     "utils": "@progressio/ui/lib/utils",
-    "ui": "@progressio/ui/atoms"
+    "ui": "@progressio/ui/components"
   },
   "registries": {}
 }

@@ -6,20 +6,27 @@
   "license": "UNLICENSED",
   "exports": {
     ".": "./src/index.ts",
-    "./atoms": "./src/atoms/index.ts",
-    "./molecules": "./src/molecules/index.ts",
-    "./atoms/*": "./src/atoms/*.tsx",
+    "./atoms": "./src/components/atoms/index.ts",
+    "./components": "./src/components/index.ts",
+    "./molecules": "./src/components/molecules/index.ts",
+    "./components/atoms": "./src/components/atoms/index.ts",
+    "./components/*": "./src/components/*.tsx",
+    "./atoms/*": "./src/components/atoms/*.tsx",
+    "./components/atoms/*": "./src/components/atoms/*.tsx",
+    "./components/molecules": "./src/components/molecules/index.ts",
+    "./components/molecules/*": "./src/components/molecules/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
     "./lib/*": "./src/lib/*.ts",
-    "./molecules/*": "./src/molecules/*.tsx",
+    "./molecules/*": "./src/components/molecules/*.tsx",
     "./styles.css": "./src/styles.css"
   },
   "imports": {
-    "#atoms/*": "./src/atoms/*.tsx",
+    "#atoms/*": "./src/components/atoms/*.tsx",
+    "#components/*": "./src/components/*.tsx",
     "#hooks/*": "./src/hooks/*.ts",
     "#lib/*": "./src/lib/*.ts",
-    "#molecules/*": "./src/molecules/*.tsx",
-    "#ui/*": "./src/atoms/*.tsx"
+    "#molecules/*": "./src/components/molecules/*.tsx",
+    "#ui/*": "./src/components/atoms/*.tsx"
   },
   "scripts": {
     "storybook": "storybook dev -p 6006",

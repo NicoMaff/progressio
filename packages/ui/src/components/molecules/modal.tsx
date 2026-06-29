@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./dialog.js"
-import { Button } from "../atoms/button.js"
+import { Button } from "#atoms/button"
 import { cn } from "#lib/utils"
 
 export type ModalProps = {
