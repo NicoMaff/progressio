@@ -22,6 +22,10 @@
 - Build Progressio as a local web application for now. Do not introduce a desktop wrapper such as Tauri or Electron unless a later ADR changes the product target.
 - Use modern Yarn workspaces for monorepo dependency management and scripts.
 - Use Corepack-managed Yarn 4 with `nodeLinker: node-modules`; do not use Plug'n'Play unless an ADR changes this decision.
+- Use the root `package.json` as the owner for monorepo-level development tooling such as ESLint, Prettier, TypeScript, and related plugins. Do not redeclare those tools in child workspace manifests unless the package must be independently consumable or Yarn resolution requires it.
+- Use the root `.yarnrc.yml` Yarn `catalog` for dependency versions shared across workspaces, especially ESLint, Prettier, TypeScript, React, React DOM, React type packages, Vite, date/UI helper libraries, and other frontend build/runtime packages reused by both `apps/web` and `packages/ui`.
+- In child workspace manifests, reference catalog-managed versions with `catalog:` instead of repeating concrete version ranges.
+- Use Volta's root Node pin when present; do not add competing per-workspace runtime pins unless a workspace genuinely requires a different runtime.
 - Keep the monorepo lightweight:
   - `apps/web` contains the `@progressio/web` AdonisJS application and Inertia frontend.
   - `packages/ui` contains the `@progressio/ui` reusable React UI components and Storybook.
@@ -118,7 +122,9 @@ const cardProps = {
 ## Tooling
 
 - Keep shared quality configuration at the monorepo root, including Prettier, ESLint, and the base TypeScript configuration.
+- Use the root `.prettierrc` as the formatting source of truth. It uses double quotes, no semicolons, `printWidth: 120`, `trailingComma: "es5"`, and `prettier-plugin-tailwindcss`.
 - Use root ESLint flat config with TypeScript and React support. Use Prettier separately for formatting; do not replace this setup with Biome unless an ADR changes the decision.
+- Keep package-level lint, format, and typecheck scripts delegating to root-installed tools with `yarn run -T` when the tool is owned by the root package.
 - Workspace packages may define package-local scripts and `tsconfig.json` files, but they should extend the root conventions.
 - Root scripts should delegate to workspaces for common tasks: `dev` to `@progressio/web`, `storybook` to `@progressio/ui`, and workspace-wide `lint`, `typecheck`, `test`, `format`, and `format:check` commands.
 - If a workspace has no meaningful tests yet, make that explicit with a no-op script or configure the workspace command so missing scripts are handled intentionally.

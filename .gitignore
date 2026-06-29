@@ -1,10 +1,27 @@
 # Dependencies
 node_modules
+.yarn/install-state.gz
+
+# Generated files
+**/build
+**/tmp/*
+!**/tmp/.gitkeep
+**/public/assets
 
 # Local work files
-apps/web/storage/work_files/*.sqlite
-apps/web/storage/work_files/*.sqlite-*
-apps/web/storage/work_files/*backup*
+**/storage/work_files/*.sqlite
+**/storage/work_files/*.sqlite-*
+**/storage/work_files/*backup*
+
+# Secrets
+.env
+.env.local
+.env.production.local
+.env.development.local
+**/.env
+**/.env.local
+**/.env.production.local
+**/.env.development.local
 
 # Logs
 npm-debug.log

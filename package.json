@@ -2,6 +2,7 @@
   "name": "progressio",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "packageManager": "yarn@4.17.0",
   "workspaces": [
     "apps/*",
@@ -15,5 +16,18 @@
     "test": "yarn workspace @progressio/web test",
     "format": "yarn workspace @progressio/web format",
     "format:check": "yarn workspace @progressio/web format:check"
+  },
+  "devDependencies": {
+    "@adonisjs/eslint-config": "^3.1.0",
+    "@adonisjs/prettier-config": "^1.5.0",
+    "eslint": "10.6.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "prettier": "^3.9.1",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "typescript": "~5.9.3"
+  },
+  "volta": {
+    "node": "26.4.0"
   }
 }
