@@ -12,7 +12,7 @@
     "build": "node ace build",
     "dev": "node ace serve --hmr",
     "test": "node ace test",
-    "lint": "yarn run -T eslint . --config ../../eslint.config.js",
+    "lint": "yarn run -T eslint . --config ../../eslint.config.mjs",
     "format": "yarn run -T prettier --write .",
     "format:check": "yarn run -T prettier --check .",
     "typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json"

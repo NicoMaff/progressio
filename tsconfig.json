@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
+    "rootDir": ".",
     "allowJs": true,
     "checkJs": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noEmit": true,
     "strict": true,
-    "target": "ES2024"
+    "target": "ES2024",
   },
-  "include": ["eslint.config.js", "types/**/*.d.ts"]
+  "include": ["eslint.config.mjs", "types/**/*.d.ts"],
 }

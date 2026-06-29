@@ -124,6 +124,7 @@ const cardProps = {
 - Keep shared quality configuration at the monorepo root, including Prettier, ESLint, and the base TypeScript configuration.
 - Use the root `.prettierrc` as the formatting source of truth. It uses double quotes, no semicolons, `printWidth: 120`, `trailingComma: "es5"`, and `prettier-plugin-tailwindcss`.
 - Use root ESLint flat config with TypeScript and React support. Use Prettier separately for formatting; do not replace this setup with Biome unless an ADR changes the decision.
+- Name the root ESLint config `eslint.config.mjs` so it remains ESM without matching AdonisJS' default `eslint.config.js` ignore pattern.
 - Keep package-level lint, format, and typecheck scripts delegating to root-installed tools with `yarn run -T` when the tool is owned by the root package.
 - Workspace packages may define package-local scripts and `tsconfig.json` files, but they should extend the root conventions.
 - Root scripts should delegate to workspaces for common tasks: `dev` to `@progressio/web`, `storybook` to `@progressio/ui`, and workspace-wide `lint`, `typecheck`, `test`, `format`, and `format:check` commands.

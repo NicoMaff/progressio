@@ -3,6 +3,7 @@
   "compilerOptions": {
     "module": "ESNext",
     "jsx": "react-jsx",
+    "rootDir": "..",
     "paths": {
       "~/*": ["./*"],
       "@generated/*": ["../.adonisjs/client/*"]
