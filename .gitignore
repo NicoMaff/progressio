@@ -1,0 +1,20 @@
+# Dependencies
+node_modules
+
+# Local work files
+apps/web/storage/work_files/*.sqlite
+apps/web/storage/work_files/*.sqlite-*
+apps/web/storage/work_files/*backup*
+
+# Logs
+npm-debug.log
+yarn-error.log
+
+# Editors
+.fleet
+.idea
+.vscode
+*.swp
+
+# Platform
+.DS_Store

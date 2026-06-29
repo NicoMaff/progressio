@@ -1,0 +1,3 @@
+# Monorepo For UI Package And Storybook
+
+Progressio uses a lightweight monorepo so the product app and reusable UI package can evolve together. The initial shape is `apps/web` for the AdonisJS and Inertia application and `packages/ui` for reusable UI components with Storybook; this supports component documentation and visual iteration without introducing a separate backend API or extracting domain logic prematurely. The UI package is organized around component layers such as atoms and molecules, stays independent from Inertia and backend models, and is fed by explicit view-model props adapted inside the web app.

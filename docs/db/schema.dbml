@@ -1,0 +1,508 @@
+Project progressio {
+  database_type: "SQLite"
+  Note: '''
+    One local Progressio SQLite work file represents one school year and one subject.
+    Reports, exports, dashboard indicators, and chapter completion are derived at read time.
+    Markdown notes are stored directly on their owning records for the initial model.
+  '''
+}
+
+Enum planned_session_outcome {
+  realized
+  shifted
+  partial
+  cancelled
+  to_catch_up
+}
+
+Enum actual_session_state {
+  draft
+  completed
+}
+
+Enum interruption_scope {
+  global
+  class
+}
+
+Table school_years {
+  id integer [pk, increment]
+  label text [not null]
+  subject text [not null]
+  start_date date [not null]
+  end_date date [not null]
+  first_teaching_day date [not null]
+  teaching_hour_duration_minutes integer [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  Note: '''
+    A Progressio file is expected to contain one school_year row.
+  '''
+}
+
+Table levels {
+  id integer [pk, increment]
+  school_year_id integer [not null, ref: > school_years.id]
+  name text [not null]
+  short_code text [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (school_year_id, short_code) [unique]
+  }
+}
+
+Table classes {
+  id integer [pk, increment]
+  school_year_id integer [not null, ref: > school_years.id]
+  level_id integer [not null, ref: > levels.id]
+  name text [not null]
+  short_code text [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (school_year_id, short_code) [unique]
+  }
+}
+
+Table periods {
+  id integer [pk, increment]
+  school_year_id integer [not null, ref: > school_years.id]
+  name text [not null]
+  start_date date [not null]
+  end_date date [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (school_year_id, name) [unique]
+    (school_year_id, start_date)
+  }
+
+  Note: '''
+    Periods are global dated UI indicators declared and edited by the user for the school year.
+    Their names and dates follow establishment decisions, for example trimester, semester, or custom period labels.
+    They are not linked to classes, themes, chapters, activities, or sessions.
+  '''
+}
+
+Table activity_types {
+  id integer [pk, increment]
+  school_year_id integer [not null, ref: > school_years.id]
+  name text [not null]
+  color text
+  display_order integer [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (school_year_id, name) [unique]
+  }
+
+  Note: '''
+    Deletion should be blocked while the activity type is used by activities.
+    The UI can offer replacement with another activity type before deletion.
+  '''
+}
+
+Table slot_types {
+  id integer [pk, increment]
+  school_year_id integer [not null, ref: > school_years.id]
+  name text [not null]
+  color text
+  display_order integer [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (school_year_id, name) [unique]
+  }
+
+  Note: '''
+    Deletion should be blocked while the slot type is used by recurring slots.
+    The UI can offer replacement with another slot type before deletion.
+  '''
+}
+
+Table interruption_types {
+  id integer [pk, increment]
+  school_year_id integer [not null, ref: > school_years.id]
+  name text [not null]
+  color text
+  display_order integer [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (school_year_id, name) [unique]
+  }
+
+  Note: '''
+    Deletion should be blocked while the interruption type is used by interruptions.
+    The UI can offer replacement with another interruption type before deletion.
+  '''
+}
+
+Table themes {
+  id integer [pk, increment]
+  level_id integer [not null, ref: > levels.id]
+  name text [not null]
+  short_code text [not null]
+  color text [not null]
+  note_markdown text
+  archived_at datetime
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (level_id, short_code) [unique]
+  }
+
+  Note: '''
+    Archived themes remain available to existing references.
+    Permanent deletion should be blocked while the theme is still referenced directly or through referenced chapters.
+  '''
+}
+
+Table chapters {
+  id integer [pk, increment]
+  level_id integer [not null, ref: > levels.id]
+  theme_id integer [ref: > themes.id]
+  name text [not null]
+  short_code text [not null]
+  note_markdown text
+  archived_at datetime
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (level_id, short_code) [unique]
+  }
+
+  Note: '''
+    theme_id is nullable so a chapter can be drafted without a theme.
+    Archived chapters remain available to existing references.
+    Permanent deletion should be blocked while the chapter is still referenced by sessions or activities.
+  '''
+}
+
+Table activities {
+  id integer [pk, increment]
+  level_id integer [not null, ref: > levels.id]
+  chapter_id integer [ref: > chapters.id]
+  activity_type_id integer [not null, ref: > activity_types.id]
+  title text [not null]
+  estimated_duration_minutes integer
+  note_markdown text
+  archived_at datetime
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (level_id, chapter_id)
+  }
+
+  Note: '''
+    chapter_id is nullable so an activity can remain orphaned while drafting.
+    Archived activities remain available to existing references.
+    Permanent deletion should be blocked while the activity is still referenced by template, planned, or actual session activity rows.
+  '''
+}
+
+Table template_progressions {
+  id integer [pk, increment]
+  level_id integer [not null, ref: > levels.id]
+  name text [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    level_id [unique]
+  }
+}
+
+Table template_sessions {
+  id integer [pk, increment]
+  template_progression_id integer [not null, ref: > template_progressions.id]
+  main_chapter_id integer [ref: > chapters.id]
+  title text
+  session_order integer [not null]
+  planned_duration_minutes integer
+  note_markdown text
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (template_progression_id, session_order) [unique]
+  }
+
+  Note: '''
+    main_chapter_id is optional so a template session can represent work not centered on a chapter or still to be defined.
+    When generating planned sessions, useful template fields are copied into planned_sessions and planned_session_activities.
+  '''
+}
+
+Table template_session_activities {
+  id integer [pk, increment]
+  template_session_id integer [not null, ref: > template_sessions.id]
+  activity_id integer [ref: > activities.id]
+  activity_type_id integer [ref: > activity_types.id]
+  local_title text
+  local_description_markdown text
+  activity_order integer [not null]
+  planned_duration_minutes integer
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (template_session_id, activity_order) [unique]
+  }
+
+  Note: '''
+    activity_id is nullable so a template session can contain local template work that should not become reusable teaching content.
+    activity_type_id is for local template work only; reusable activities get their type from activities.activity_type_id.
+    Local template work does not carry its own chapter; the template session main_chapter_id remains the pedagogical anchor.
+    When activity_id is null, local_title should be provided.
+    A row should reference either activity_id or local fields, not both; activity_type_id is part of the local side.
+    planned_duration_minutes is the contextual planned duration for this template session and can differ from activities.estimated_duration_minutes.
+    SQL migrations should enforce this with a CHECK constraint portable to SQLite and PostgreSQL.
+    Promoting local template work to reusable teaching content replaces local fields with activity_id; no promotion history is stored.
+  '''
+}
+
+Table recurring_slots {
+  id integer [pk, increment]
+  class_id integer [not null, ref: > classes.id]
+  slot_type_id integer [not null, ref: > slot_types.id]
+  weekday integer [not null]
+  start_time time [not null]
+  duration_minutes integer [not null]
+  valid_from date
+  valid_until date
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  Note: '''
+    weekday uses ISO numbering: 1 Monday through 7 Sunday.
+    end_time is not stored; it is a computed model property derived from start_time and duration_minutes.
+    If a recurring slot has already generated planned sessions, later schedule changes should close it with valid_until and create a new recurring slot instead of overwriting it.
+  '''
+}
+
+Table planned_sessions {
+  id integer [pk, increment]
+  class_id integer [not null, ref: > classes.id]
+  recurring_slot_id integer [ref: > recurring_slots.id]
+  template_session_id integer [ref: > template_sessions.id]
+  main_chapter_id integer [ref: > chapters.id]
+  title text
+  session_date date [not null]
+  start_time time [not null]
+  duration_minutes integer [not null]
+  session_order integer [not null]
+  outcome planned_session_outcome
+  outcome_review_required boolean [not null]
+  outcome_reviewed_at datetime
+  note_markdown text
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (class_id, session_order) [unique]
+    (class_id, session_date, start_time)
+  }
+
+  Note: '''
+    template_session_id is an optional origin link only.
+    Generated planned sessions copy useful fields from their template origin, including title, main_chapter_id, duration, note, and ordered activities.
+    recurring_slot_id is an optional generation origin link only; the planned session date and time remain independently editable.
+    main_chapter_id is optional so a planned session can represent work not centered on a chapter or still to be defined.
+    The planned session remains independently editable after generation.
+    outcome stores the user's final tracking decision. A suggested outcome can be derived from linked actual sessions.
+    suggested_outcome is intentionally not stored because it is derived from planned and actual facts.
+    A cancelled planned session is represented by outcome = cancelled and should not create an actual session when no teaching work happened.
+    Physical deletion should be allowed only when no actual session and no planning conflict history references the planned session.
+    outcome_review_required drives the UI indicator when linked actual sessions suggest the user should confirm or update the outcome.
+    It should be set when a linked actual session is created, updated, deleted, or marked completed, including changes to its actual activity rows.
+    Past planned sessions without linked actual sessions should drive a UI prompt, but actual session rows are not created automatically.
+    school_week and calendar_week are not stored; they are computed indicators derived from session_date and school_year.first_teaching_day.
+    session_order represents progression order and can include manual ordering choices.
+    When planned sessions are added, moved, rescheduled, or deleted, the UI should offer to recalculate following session orders instead of doing it silently.
+    Recalculation only affects following planned sessions for the same class.
+    Recalculation proposals are transient UI decisions; only the resulting session_order values are persisted.
+    The period indicator is derived from session_date and user-declared school-year periods when needed by the UI.
+  '''
+}
+
+Table planned_session_activities {
+  id integer [pk, increment]
+  planned_session_id integer [not null, ref: > planned_sessions.id]
+  activity_id integer [ref: > activities.id]
+  template_session_activity_id integer [ref: > template_session_activities.id]
+  activity_type_id integer [ref: > activity_types.id]
+  local_title text
+  local_description_markdown text
+  activity_order integer [not null]
+  planned_duration_minutes integer
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (planned_session_id, activity_order) [unique]
+  }
+
+  Note: '''
+    activity_id is nullable so a planned session can contain local planned work that should not become reusable teaching content.
+    activity_type_id is for local planned work only; reusable activities get their type from activities.activity_type_id.
+    Local planned work does not carry its own chapter; the planned session main_chapter_id remains the pedagogical anchor.
+    When activity_id is null, local_title should be provided.
+    A row should reference either activity_id or local fields, not both; activity_type_id is part of the local side.
+    planned_duration_minutes is the contextual planned duration for this planned session and can differ from activities.estimated_duration_minutes.
+    SQL migrations should enforce this with a CHECK constraint portable to SQLite and PostgreSQL.
+    Promoting local planned work to reusable teaching content replaces local fields with activity_id; no promotion history is stored.
+  '''
+}
+
+Table actual_sessions {
+  id integer [pk, increment]
+  class_id integer [not null, ref: > classes.id]
+  planned_session_id integer [ref: > planned_sessions.id]
+  main_chapter_id integer [ref: > chapters.id]
+  title text
+  session_date date [not null]
+  start_time time [not null]
+  duration_minutes integer [not null]
+  session_order integer [not null]
+  state actual_session_state [not null]
+  completed_at datetime
+  note_markdown text
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (class_id, session_order)
+    (class_id, session_date, start_time)
+  }
+
+  Note: '''
+    planned_session_id is nullable because actual teaching work can be recorded without a planned origin.
+    When created from a planned session, actual sessions should be prefilled with useful planned fields, including title, main_chapter_id, date/time/duration, note, and ordered activities.
+    All planned_session_activities should be copied immediately into actual_session_activities when creating an actual session from a planned session.
+    The copied planned note is an editable writing base for what actually happened, not a live link to the planned note.
+    The actual session remains independently editable after creation.
+    This supports unplanned actual sessions such as improvised catch-up work, discussions, or adjustments.
+    Several actual sessions can link to the same planned session to represent partial realization, catch-up work, or shifted work.
+    Only completed actual sessions count toward tracking indicators, chapter completion, and planned-vs-actual comparison.
+    completed_at records when the actual session moved from draft to completed.
+    main_chapter_id is nullable because an actual session can be dedicated to non-course work such as discussion.
+    A completed actual session can have no actual_session_activities when nothing needs to be detailed as reusable or local activity work.
+    A past actual session still in draft should drive a UI reminder; no separate treatment state is stored.
+    Physical deletion should require user confirmation and should set outcome_review_required on the linked planned session when one exists.
+    school_week and calendar_week are not stored; they are computed indicators derived from session_date and school_year.first_teaching_day.
+    session_order represents actual progression order and can include manual ordering choices.
+    When actual sessions are added, moved, rescheduled, completed, or deleted, the UI should offer to recalculate following session orders instead of doing it silently.
+    Recalculation only affects following actual sessions for the same class.
+    Recalculation proposals are transient UI decisions; only the resulting session_order values are persisted.
+    The period indicator is derived from session_date and user-declared school-year periods when needed by the UI.
+  '''
+}
+
+Table actual_session_activities {
+  id integer [pk, increment]
+  actual_session_id integer [not null, ref: > actual_sessions.id]
+  activity_id integer [ref: > activities.id]
+  planned_session_activity_id integer [ref: > planned_session_activities.id]
+  replaces_planned_session_activity_id integer [ref: > planned_session_activities.id]
+  activity_type_id integer [ref: > activity_types.id]
+  local_title text
+  local_description_markdown text
+  activity_order integer [not null]
+  actual_duration_minutes integer
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (actual_session_id, activity_order) [unique]
+  }
+
+  Note: '''
+    activity_id is nullable so an actual session can record a local activity that should not become reusable teaching content.
+    activity_type_id is for local actual work only; reusable activities get their type from activities.activity_type_id.
+    Local actual work does not carry its own chapter; the actual session main_chapter_id remains the pedagogical anchor.
+    When activity_id is null, local_title should be provided.
+    A row should reference either activity_id or local fields, not both; activity_type_id is part of the local side.
+    actual_duration_minutes is the contextual actual duration for this actual session and can differ from activities.estimated_duration_minutes.
+    The presence of this row records that the activity was part of what actually happened; no separate activity result is stored in the initial model.
+    If a copied planned activity did not happen, its actual_session_activities row should be removed.
+    SQL migrations should enforce this with a CHECK constraint portable to SQLite and PostgreSQL.
+    Promoting local actual work to reusable teaching content replaces local fields with activity_id; no promotion history is stored.
+    planned_session_activity_id links an actual activity to the planned activity it follows.
+    replaces_planned_session_activity_id records a replacement activity when the teacher did something else.
+    When planned work is replaced, the copied actual row for the planned activity should be removed and only the replacement actual row should remain.
+    An added actual activity has neither planned_session_activity_id nor replaces_planned_session_activity_id.
+    planned_session_activity_id and replaces_planned_session_activity_id are mutually exclusive and should be enforced with a CHECK constraint.
+    If this row links to or replaces planned work, that planned work must belong to the same planned session referenced by actual_sessions.planned_session_id.
+  '''
+}
+
+Table interruptions {
+  id integer [pk, increment]
+  school_year_id integer [not null, ref: > school_years.id]
+  interruption_type_id integer [not null, ref: > interruption_types.id]
+  scope interruption_scope [not null]
+  title text [not null]
+  starts_at datetime [not null]
+  ends_at datetime [not null]
+  note_markdown text
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (school_year_id, starts_at)
+  }
+
+  Note: '''
+    scope = global means the interruption applies to every class in the school year.
+    If only some classes are affected, scope should be class and interruption_classes should list them.
+  '''
+}
+
+Table interruption_classes {
+  id integer [pk, increment]
+  interruption_id integer [not null, ref: > interruptions.id]
+  class_id integer [not null, ref: > classes.id]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (interruption_id, class_id) [unique]
+  }
+
+  Note: '''
+    For a global interruption, this table should remain empty.
+    For a class interruption, it supports one or more affected classes.
+  '''
+}
+
+Table planning_conflicts {
+  id integer [pk, increment]
+  planned_session_id integer [not null, ref: > planned_sessions.id]
+  interruption_id integer [not null, ref: > interruptions.id]
+  resolved_at datetime
+  resolution_note_markdown text
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (planned_session_id, interruption_id) [unique]
+  }
+
+  Note: '''
+    Conflicts are facts created when an interruption overlaps existing planned sessions.
+    Resolved conflicts remain stored with resolved_at and optional resolution notes as planning history.
+    Cascade rescheduling proposals can be computed from these facts and confirmed by editing planned_sessions.
+  '''
+}

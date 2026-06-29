@@ -1,0 +1,19 @@
+{
+  "name": "progressio",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "yarn@4.17.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "yarn workspace @progressio/web dev",
+    "build": "yarn workspace @progressio/web build",
+    "lint": "yarn workspace @progressio/web lint",
+    "typecheck": "yarn workspace @progressio/web typecheck",
+    "test": "yarn workspace @progressio/web test",
+    "format": "yarn workspace @progressio/web format",
+    "format:check": "yarn workspace @progressio/web format:check"
+  }
+}
