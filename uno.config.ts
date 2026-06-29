@@ -1,4 +1,5 @@
 import { defineConfig, presetWebFonts, presetWind4, transformerDirectives, transformerVariantGroup } from "unocss"
+import presetIcons from "@unocss/preset-icons/browser"
 
 const contentFilesystem = [
   "apps/web/inertia/**/*.{ts,tsx,js,jsx}",
@@ -18,6 +19,13 @@ export default defineConfig({
   },
   presets: [
     presetWind4(),
+    presetIcons({
+      collections: {
+        hugeicons: () => import("@iconify-json/hugeicons/icons.json").then((module) => module.default),
+      },
+      scale: 1.5,
+      unit: "rem",
+    }),
     presetWebFonts({
       //   provider: "bunny",
       //   fonts: {

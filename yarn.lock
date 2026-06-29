@@ -1315,7 +1315,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify/types@npm:^2.0.0":
+"@iconify-json/hugeicons@npm:^1.2.29":
+  version: 1.2.29
+  resolution: "@iconify-json/hugeicons@npm:1.2.29"
+  dependencies:
+    "@iconify/types": "npm:*"
+  checksum: 10c0/8a976a97d72ca6e90b2c0acf67efd0738b248ad0bf9ca2559168e974b19143fe36663d76399b91a3f70314e1cdc87774eb387eee295ef242163ef49fd05cceb2
+  languageName: node
+  linkType: hard
+
+"@iconify/types@npm:*, @iconify/types@npm:^2.0.0":
   version: 2.0.0
   resolution: "@iconify/types@npm:2.0.0"
   checksum: 10c0/65a3be43500c7ccacf360e136d00e1717f050b7b91da644e94370256ac66f582d59212bdb30d00788aab4fc078262e91c95b805d1808d654b72f6d2072a7e4b2
@@ -3341,7 +3350,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unocss/preset-icons@npm:66.7.3":
+"@unocss/preset-icons@npm:66.7.3, @unocss/preset-icons@npm:^66.7.3":
   version: 66.7.3
   resolution: "@unocss/preset-icons@npm:66.7.3"
   dependencies:
@@ -7943,6 +7952,8 @@ __metadata:
   dependencies:
     "@adonisjs/eslint-config": "npm:^3.1.0"
     "@adonisjs/prettier-config": "npm:^1.5.0"
+    "@iconify-json/hugeicons": "npm:^1.2.29"
+    "@unocss/preset-icons": "npm:^66.7.3"
     eslint: "npm:10.6.0"
     eslint-plugin-react: "npm:^7.37.5"
     eslint-plugin-react-hooks: "npm:^7.1.1"
