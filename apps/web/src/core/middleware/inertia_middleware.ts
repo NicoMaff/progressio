@@ -1,7 +1,7 @@
-import type { HttpContext } from '@adonisjs/core/http'
-import type { NextFn } from '@adonisjs/core/types/http'
-import UserTransformer from '#transformers/user_transformer'
-import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
+import type { HttpContext } from "@adonisjs/core/http"
+import type { NextFn } from "@adonisjs/core/types/http"
+import UserTransformer from "#transformers/user_transformer"
+import BaseInertiaMiddleware from "@adonisjs/inertia/inertia_middleware"
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   share(ctx: HttpContext) {
@@ -18,8 +18,8 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     /**
      * Fetching the first error from the flash messages
      */
-    const error = session?.flashMessages.get('error') as string
-    const success = session?.flashMessages.get('success') as string
+    const error = session?.flashMessages.get("error") as string
+    const success = session?.flashMessages.get("success") as string
 
     /**
      * Data shared with all Inertia pages. Make sure you are using
@@ -45,7 +45,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
   }
 }
 
-declare module '@adonisjs/inertia/types' {
+declare module "@adonisjs/inertia/types" {
   type MiddlewareSharedProps = InferSharedProps<InertiaMiddleware>
   export interface SharedProps extends MiddlewareSharedProps {}
 }

@@ -9,10 +9,5 @@
       "@generated/*": ["../.adonisjs/client/*"]
     }
   },
-  "include": [
-    "./**/*.ts",
-    "./**/*.tsx",
-    "../.adonisjs/client/**/*.ts",
-    "../.adonisjs/server/**/*.ts"
-  ]
+  "include": ["./**/*.ts", "./**/*.tsx", "../.adonisjs/client/**/*.ts", "../.adonisjs/server/**/*.ts"]
 }

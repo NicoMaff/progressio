@@ -1,4 +1,4 @@
-import { Form } from '@adonisjs/inertia/react'
+import { Form } from "@adonisjs/inertia/react"
 
 export default function Signup() {
   return (
@@ -14,12 +14,7 @@ export default function Signup() {
             <>
               <div>
                 <label htmlFor="fullName">Full name</label>
-                <input
-                  type="text"
-                  name="fullName"
-                  id="fullName"
-                  data-invalid={errors.fullName ? 'true' : undefined}
-                />
+                <input type="text" name="fullName" id="fullName" data-invalid={errors.fullName ? "true" : undefined} />
                 {errors.fullName && <div>{errors.fullName}</div>}
               </div>
 
@@ -30,7 +25,7 @@ export default function Signup() {
                   name="email"
                   id="email"
                   autoComplete="email"
-                  data-invalid={errors.email ? 'true' : undefined}
+                  data-invalid={errors.email ? "true" : undefined}
                 />
                 {errors.email && <div>{errors.email}</div>}
               </div>
@@ -42,7 +37,7 @@ export default function Signup() {
                   name="password"
                   id="password"
                   autoComplete="new-password"
-                  data-invalid={errors.password ? 'true' : undefined}
+                  data-invalid={errors.password ? "true" : undefined}
                 />
                 {errors.password && <div>{errors.password}</div>}
               </div>
@@ -54,7 +49,7 @@ export default function Signup() {
                   name="passwordConfirmation"
                   id="passwordConfirmation"
                   autoComplete="new-password"
-                  data-invalid={errors.passwordConfirmation ? 'true' : undefined}
+                  data-invalid={errors.passwordConfirmation ? "true" : undefined}
                 />
                 {errors.passwordConfirmation && <div>{errors.passwordConfirmation}</div>}
               </div>
