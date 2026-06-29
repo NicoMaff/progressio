@@ -7,7 +7,19 @@
   "exports": {
     ".": "./src/index.ts",
     "./atoms": "./src/atoms/index.ts",
-    "./molecules": "./src/molecules/index.ts"
+    "./molecules": "./src/molecules/index.ts",
+    "./atoms/*": "./src/atoms/*.tsx",
+    "./hooks/*": "./src/hooks/*.ts",
+    "./lib/*": "./src/lib/*.ts",
+    "./molecules/*": "./src/molecules/*.tsx",
+    "./styles.css": "./src/styles.css"
+  },
+  "imports": {
+    "#atoms/*": "./src/atoms/*.tsx",
+    "#hooks/*": "./src/hooks/*.ts",
+    "#lib/*": "./src/lib/*.ts",
+    "#molecules/*": "./src/molecules/*.tsx",
+    "#ui/*": "./src/atoms/*.tsx"
   },
   "scripts": {
     "storybook": "storybook dev -p 6006",
@@ -23,9 +35,17 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
+    "@hookform/resolvers": "catalog:",
     "@radix-ui/react-dialog": "catalog:",
+    "@radix-ui/react-dropdown-menu": "catalog:",
+    "@radix-ui/react-label": "catalog:",
     "@radix-ui/react-select": "catalog:",
-    "class-variance-authority": "catalog:"
+    "@radix-ui/react-slot": "catalog:",
+    "@radix-ui/react-tabs": "catalog:",
+    "@radix-ui/react-tooltip": "catalog:",
+    "class-variance-authority": "catalog:",
+    "react-hook-form": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@storybook/addon-docs": "catalog:",

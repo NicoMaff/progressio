@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import { forwardRef, type InputHTMLAttributes } from "react"
+import { cn } from "#lib/utils"
 
 export const inputVariants = cva(
   "h-10 w-full rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-950 transition-colors placeholder:text-neutral-400 focus:border-[#2076FF] focus:ring-2 focus:ring-sky-200 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:text-neutral-500",
@@ -19,7 +20,7 @@ export const inputVariants = cva(
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & VariantProps<typeof inputVariants>
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ className, invalid, ...props }, ref) {
-  const classes = [inputVariants({ invalid }), className].filter(Boolean).join(" ")
+  const classes = cn(inputVariants({ invalid }), className)
 
   return <input ref={ref} className={classes} aria-invalid={invalid || undefined} {...props} />
 })

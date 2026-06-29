@@ -1,4 +1,23 @@
 :root {
+  --background: 0 0% 98.5%;
+  --foreground: 0 0% 14.5%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 14.5%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 14.5%;
+  --primary: 217 100% 56%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 97%;
+  --secondary-foreground: 0 0% 14.5%;
+  --muted: 0 0% 97%;
+  --muted-foreground: 0 0% 43.9%;
+  --accent: 204 94% 94%;
+  --accent-foreground: 217 73% 31%;
+  --destructive: 356 84% 57%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 87%;
+  --input: 0 0% 87%;
+  --ring: 207 90% 54%;
   --gray-1: oklch(98.5% 0 0);
   --gray-2: oklch(97% 0 0);
   --gray-3: oklch(92.2% 0 0);
@@ -171,12 +190,12 @@ input {
   border: 1px solid var(--gray-4);
   padding: 0 16px;
 }
-input[data-invalid='true'],
-textarea[data-invalid='true'] {
+input[data-invalid="true"],
+textarea[data-invalid="true"] {
   border-color: #fb2c36;
 }
-input[data-invalid='true'] + div,
-textarea[data-invalid='true'] + div {
+input[data-invalid="true"] + div,
+textarea[data-invalid="true"] + div {
   color: #fb2c36;
   font-size: 14px;
   font-weight: 500;

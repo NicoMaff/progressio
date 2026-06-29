@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import type { HTMLAttributes, ReactNode } from "react"
+import { cn } from "#lib/utils"
 
 export const tagVariants = cva("font-500 inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs", {
   variants: {
@@ -22,7 +23,7 @@ export type TagProps = HTMLAttributes<HTMLSpanElement> &
   }
 
 export function Tag({ children, className, tone, ...props }: TagProps) {
-  const classes = [tagVariants({ tone }), className].filter(Boolean).join(" ")
+  const classes = cn(tagVariants({ tone }), className)
 
   return (
     <span className={classes} {...props}>

@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import { forwardRef, type TextareaHTMLAttributes } from "react"
+import { cn } from "#lib/utils"
 
 export const textareaVariants = cva(
   "min-h-28 w-full resize-y rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-950 transition-colors placeholder:text-neutral-400 focus:border-[#2076FF] focus:ring-2 focus:ring-sky-200 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:text-neutral-500",
@@ -22,7 +23,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
   { className, invalid, ...props },
   ref
 ) {
-  const classes = [textareaVariants({ invalid }), className].filter(Boolean).join(" ")
+  const classes = cn(textareaVariants({ invalid }), className)
 
   return <textarea ref={ref} className={classes} aria-invalid={invalid || undefined} {...props} />
 })
