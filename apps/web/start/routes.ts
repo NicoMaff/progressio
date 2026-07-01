@@ -8,23 +8,37 @@
 */
 
 import { middleware } from "#start/kernel"
-import { controllers } from "#generated/controllers"
 import router from "@adonisjs/core/services/router"
+
+const NewAccountController = () => import("#controllers/new_account_controller")
+const SessionController = () => import("#controllers/session_controller")
+const TeachingContentThemesPageController = () => import("#controllers/teaching_content_themes_page_controller")
+const TeachingContentCreateThemeController = () => import("#controllers/teaching_content_create_theme_controller")
+const TeachingContentUpdateThemeController = () => import("#controllers/teaching_content_update_theme_controller")
 
 router.on("/").renderInertia("home", {}).as("home")
 
 router
   .group(() => {
-    router.get("signup", [controllers.NewAccount, "create"])
-    router.post("signup", [controllers.NewAccount, "store"])
+    router.get("levels/:levelId/themes", [TeachingContentThemesPageController, "render"]).as("themes.index")
+    router.post("levels/:levelId/themes", [TeachingContentCreateThemeController, "execute"]).as("themes.store")
+    router.put("levels/:levelId/themes/:themeId", [TeachingContentUpdateThemeController, "execute"]).as("themes.update")
+  })
+  .prefix("teaching-content")
+  .as("teaching_content")
 
-    router.get("login", [controllers.Session, "create"])
-    router.post("login", [controllers.Session, "store"])
+router
+  .group(() => {
+    router.get("signup", [NewAccountController, "create"])
+    router.post("signup", [NewAccountController, "store"])
+
+    router.get("login", [SessionController, "create"])
+    router.post("login", [SessionController, "store"])
   })
   .use(middleware.guest())
 
 router
   .group(() => {
-    router.post("logout", [controllers.Session, "destroy"])
+    router.post("logout", [SessionController, "destroy"])
   })
   .use(middleware.auth())
