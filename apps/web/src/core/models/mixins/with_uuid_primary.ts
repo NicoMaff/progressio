@@ -12,6 +12,8 @@ type ModelWithUuidPrimaryClass<Model extends NormalizeConstructor<typeof BaseMod
 
 export function withUuidPrimary<Model extends NormalizeConstructor<typeof BaseModel>>(superclass: Model) {
   class ModelWithUuidPrimary extends superclass {
+    static selfAssignPrimaryKey = true
+
     @beforeCreate()
     static assignUuidPrimary(model: UuidPrimaryModel) {
       model.id ??= randomUUID()
