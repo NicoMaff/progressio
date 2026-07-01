@@ -196,10 +196,16 @@ button {
   border-radius: 4px;
   font: inherit;
 }
-input {
+input,
+textarea {
   height: 40px;
   border: 1px solid var(--gray-4);
   padding: 0 16px;
+}
+textarea {
+  min-height: 120px;
+  padding: 10px 16px;
+  resize: vertical;
 }
 input[data-invalid="true"],
 textarea[data-invalid="true"] {

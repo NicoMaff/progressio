@@ -4,6 +4,11 @@ import type { routes } from './index.ts'
 export interface ApiDefinition {
   home: typeof routes['home']
   teachingContent: {
+    themes: {
+      index: typeof routes['teaching_content.themes.index']
+      store: typeof routes['teaching_content.themes.store']
+      update: typeof routes['teaching_content.themes.update']
+    }
     render: typeof routes['teaching_content.render']
   }
   newAccount: {
