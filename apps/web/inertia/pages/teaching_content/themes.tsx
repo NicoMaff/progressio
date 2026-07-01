@@ -1,6 +1,7 @@
 import { Form } from "@adonisjs/inertia/react"
+import { type InertiaProps } from "~/types"
 
-type ThemeScreenTheme = {
+type ThemePageTheme = {
   id: string
   name: string
   shortCode: string
@@ -8,7 +9,7 @@ type ThemeScreenTheme = {
   noteMarkdown: string | null
 }
 
-type ThemesProps = {
+type PageProps = InertiaProps<{
   schoolYear: {
     id: string
     label: string
@@ -19,26 +20,26 @@ type ThemesProps = {
     name: string
     shortCode: string
   }
-  themes: ThemeScreenTheme[]
-}
+  themes: ThemePageTheme[]
+}>
 
-export default function Themes({ schoolYear, level, themes }: ThemesProps) {
+export default function Themes({ schoolYear, level, themes }: PageProps) {
   const themesUrl = `/teaching-content/levels/${level.id}/themes`
 
   return (
-    <section className="content-page">
-      <header className="content-header">
+    <section className="w-full p-9">
+      <header className="mb-7 p-0">
         <div>
-          <p className="content-kicker">
+          <p className="font-600 text-sm text-[var(--gray-7)] uppercase">
             {schoolYear.label} · {schoolYear.subject} · {level.shortCode}
           </p>
-          <h1>Thèmes actifs de {level.name}</h1>
+          <h1 className="text-8 font-650">Thèmes actifs de {level.name}</h1>
         </div>
       </header>
 
-      <div className="content-grid">
-        <section className="panel">
-          <h2>Nouveau thème</h2>
+      <div className="grid grid-cols-1 items-start gap-7 lg:grid-cols-[minmax(280px,360px)_1fr]">
+        <section className="rounded-2 border border-[var(--gray-3)] p-5">
+          <h2 className="text-5 mb-4.5">Nouveau thème</h2>
           <Form action={{ url: themesUrl, method: "post" }}>
             {({ errors, processing }) => (
               <>
@@ -51,24 +52,28 @@ export default function Themes({ schoolYear, level, themes }: ThemesProps) {
           </Form>
         </section>
 
-        <section className="panel">
-          <h2>Thèmes actifs</h2>
+        <section className="rounded-2 border border-[var(--gray-3)] p-5">
+          <h2 className="text-5 mb-4.5">Thèmes actifs</h2>
           {themes.length === 0 ? (
-            <p className="empty-state">Aucun thème actif pour ce niveau.</p>
+            <p className="text-[var(--gray-7)]">Aucun thème actif pour ce niveau.</p>
           ) : (
-            <div className="theme-list">
+            <div className="grid gap-3.5">
               {themes.map((theme) => (
-                <article key={theme.id} className="theme-row">
-                  <div className="theme-row__summary">
-                    <span className="theme-color" style={{ backgroundColor: theme.color }} aria-hidden="true" />
+                <article key={theme.id} className="rounded-2 border border-[var(--gray-3)] p-4">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="h-6 w-6 flex-shrink-0 rounded-full border border-[var(--gray-4)]"
+                      style={{ backgroundColor: theme.color }}
+                      aria-hidden="true"
+                    />
                     <div>
-                      <h3>{theme.name}</h3>
-                      <p>{theme.shortCode}</p>
+                      <h3 className="text-4.5">{theme.name}</h3>
+                      <p className="font-600 text-sm text-[var(--gray-7)]">{theme.shortCode}</p>
                     </div>
                   </div>
 
-                  <details>
-                    <summary>Modifier</summary>
+                  <details className="mt-3.5">
+                    <summary className="font-600 cursor-pointer text-[var(--gray-8)]">Modifier</summary>
                     <Form action={{ url: `${themesUrl}/${theme.id}`, method: "put" }}>
                       {({ errors, processing }) => (
                         <>
@@ -90,7 +95,7 @@ export default function Themes({ schoolYear, level, themes }: ThemesProps) {
   )
 }
 
-function ThemeFields({ errors, theme }: { errors: Record<string, string>; theme?: ThemeScreenTheme }) {
+function ThemeFields({ errors, theme }: { errors: Record<string, string>; theme?: ThemePageTheme }) {
   return (
     <>
       <div>
