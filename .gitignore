@@ -8,6 +8,7 @@ node_modules
 !**/tmp/.gitkeep
 **/public/assets
 **/storybook-static
+docs/prd/
 
 # Local work files
 **/storage/work_files/*.sqlite
