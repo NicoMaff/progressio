@@ -63,6 +63,17 @@ h5,
 h6 {
   color: var(--gray-12);
 }
+h1 {
+  font-size: 34px;
+  font-weight: 650;
+}
+h2 {
+  margin-bottom: 8px;
+  font-size: 22px;
+}
+p {
+  color: var(--gray-7);
+}
 
 /* Header */
 header {

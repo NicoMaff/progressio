@@ -1,13 +1,5 @@
 import { LevelSchema } from "#database/schema"
-import { beforeCreate } from "@adonisjs/lucid/orm"
-import { randomUUID } from "node:crypto"
+import { withUuidPrimary } from "#models/mixins/with_uuid_primary"
+import { compose } from "@adonisjs/core/helpers"
 
-export default class Level extends LevelSchema {
-  static table = "levels"
-  static selfAssignPrimaryKey = true
-
-  @beforeCreate()
-  static assignUuidPrimary(level: Level) {
-    level.id ??= randomUUID()
-  }
-}
+export default class Level extends compose(LevelSchema, withUuidPrimary) {}

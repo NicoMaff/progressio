@@ -19,6 +19,10 @@ const TeachingContentUpdateThemeController = () => import("#controllers/teaching
 router.on("/").renderInertia("home", {}).as("home")
 
 router
+  .get("/teaching-content/levels/:levelId", [controllers.teachingContent.TeachingContent, "render"])
+  .as("teaching_content.render")
+
+router
   .group(() => {
     router.get("levels/:levelId/themes", [TeachingContentThemesPageController, "render"]).as("themes.index")
     router.post("levels/:levelId/themes", [TeachingContentCreateThemeController, "execute"]).as("themes.store")

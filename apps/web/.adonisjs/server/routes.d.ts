@@ -8,6 +8,7 @@ export type ScannedRoutes = {
     'teaching_content.themes.index': { paramsTuple?: [ParamValue]; params?: { levelId: ParamValue } }
     'teaching_content.themes.store': { paramsTuple?: [ParamValue]; params?: { levelId: ParamValue } }
     'teaching_content.themes.update': { paramsTuple?: [ParamValue, ParamValue]; params?: { levelId: ParamValue; themeId: ParamValue } }
+    'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
@@ -17,12 +18,14 @@ export type ScannedRoutes = {
   GET: {
     'home': { paramsTuple?: []; params?: {} }
     'teaching_content.themes.index': { paramsTuple?: [ParamValue]; params?: { levelId: ParamValue } }
+    'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
     'teaching_content.themes.index': { paramsTuple?: [ParamValue]; params?: { levelId: ParamValue } }
+    'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
   }

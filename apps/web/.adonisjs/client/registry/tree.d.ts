@@ -9,6 +9,7 @@ export interface ApiDefinition {
       store: typeof routes['teaching_content.themes.store']
       update: typeof routes['teaching_content.themes.update']
     }
+    render: typeof routes['teaching_content.render']
   }
   newAccount: {
     create: typeof routes['new_account.create']

@@ -1,13 +1,5 @@
 import { SchoolYearSchema } from "#database/schema"
-import { beforeCreate } from "@adonisjs/lucid/orm"
-import { randomUUID } from "node:crypto"
+import { withUuidPrimary } from "#models/mixins/with_uuid_primary"
+import { compose } from "@adonisjs/core/helpers"
 
-export default class SchoolYear extends SchoolYearSchema {
-  static table = "school_years"
-  static selfAssignPrimaryKey = true
-
-  @beforeCreate()
-  static assignUuidPrimary(schoolYear: SchoolYear) {
-    schoolYear.id ??= randomUUID()
-  }
-}
+export default class SchoolYear extends compose(SchoolYearSchema, withUuidPrimary) {}

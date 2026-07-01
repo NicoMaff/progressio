@@ -22,6 +22,9 @@ export interface Registry {
   'teaching_content.themes.index': {
     methods: ["GET","HEAD"]
     pattern: '/teaching-content/levels/:levelId/themes'
+  'teaching_content.render': {
+    methods: ["GET","HEAD"]
+    pattern: '/teaching-content/levels/:levelId'
     types: {
       body: {}
       paramsTuple: [ParamValue]
@@ -53,6 +56,8 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('../../../src/teaching_content/validators/theme_validator.js').updateThemeValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/teaching_content_update_theme_controller').default['execute']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/teaching_content_update_theme_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/teaching_content_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/teaching_content_controller').default['render']>>>
     }
   }
   'new_account.create': {
@@ -63,8 +68,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['create']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['create']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/controllers/new_account_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/controllers/new_account_controller').default['create']>>>
     }
   }
   'new_account.store': {
@@ -75,8 +80,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: ExtractQuery<InferInput<(typeof import('#validators/user').signupValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+      response: ExtractResponse<Awaited<ReturnType<import('#src/controllers/new_account_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/controllers/new_account_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'session.create': {
@@ -87,8 +92,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['create']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['create']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/controllers/session_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/controllers/session_controller').default['create']>>>
     }
   }
   'session.store': {
@@ -99,8 +104,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['store']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/controllers/session_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/controllers/session_controller').default['store']>>>
     }
   }
   'session.destroy': {
@@ -111,8 +116,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/controllers/session_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/controllers/session_controller').default['destroy']>>>
     }
   }
 }
