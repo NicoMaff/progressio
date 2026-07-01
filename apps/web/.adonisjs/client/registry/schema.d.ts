@@ -19,6 +19,42 @@ export interface Registry {
       errorResponse: unknown
     }
   }
+  'teaching_content.themes.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/teaching-content/levels/:levelId/themes'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/teaching_content_themes_page_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/teaching_content_themes_page_controller').default['render']>>>
+    }
+  }
+  'teaching_content.themes.store': {
+    methods: ["POST"]
+    pattern: '/teaching-content/levels/:levelId/themes'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('../../../src/teaching_content/validators/theme_validator.js').createThemeValidator)>>
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('../../../src/teaching_content/validators/theme_validator.js').createThemeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/teaching_content_create_theme_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/teaching_content_create_theme_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'teaching_content.themes.update': {
+    methods: ["PUT"]
+    pattern: '/teaching-content/levels/:levelId/themes/:themeId'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('../../../src/teaching_content/validators/theme_validator.js').updateThemeValidator)>>
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; themeId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('../../../src/teaching_content/validators/theme_validator.js').updateThemeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/teaching_content_update_theme_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/teaching_content_update_theme_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'new_account.create': {
     methods: ["GET","HEAD"]
     pattern: '/signup'

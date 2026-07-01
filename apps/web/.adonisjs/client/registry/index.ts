@@ -12,6 +12,24 @@ const routes = {
     tokens: [{"old":"/","type":0,"val":"/","end":""}],
     types: placeholder as Registry['home']['types'],
   },
+  'teaching_content.themes.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/teaching-content/levels/:levelId/themes',
+    tokens: [{"old":"/teaching-content","type":0,"val":"teaching-content","end":""},{"old":"/levels","type":0,"val":"levels","end":""},{"old":"/:levelId","type":1,"val":"levelId","end":""},{"old":"/themes","type":0,"val":"themes","end":""}],
+    types: placeholder as Registry['teaching_content.themes.index']['types'],
+  },
+  'teaching_content.themes.store': {
+    methods: ["POST"],
+    pattern: '/teaching-content/levels/:levelId/themes',
+    tokens: [{"old":"/teaching-content","type":0,"val":"teaching-content","end":""},{"old":"/levels","type":0,"val":"levels","end":""},{"old":"/:levelId","type":1,"val":"levelId","end":""},{"old":"/themes","type":0,"val":"themes","end":""}],
+    types: placeholder as Registry['teaching_content.themes.store']['types'],
+  },
+  'teaching_content.themes.update': {
+    methods: ["PUT"],
+    pattern: '/teaching-content/levels/:levelId/themes/:themeId',
+    tokens: [{"old":"/teaching-content","type":0,"val":"teaching-content","end":""},{"old":"/levels","type":0,"val":"levels","end":""},{"old":"/:levelId","type":1,"val":"levelId","end":""},{"old":"/themes","type":0,"val":"themes","end":""},{"old":"/:themeId","type":1,"val":"themeId","end":""}],
+    types: placeholder as Registry['teaching_content.themes.update']['types'],
+  },
   'new_account.create': {
     methods: ["GET","HEAD"],
     pattern: '/signup',
