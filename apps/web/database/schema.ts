@@ -7,6 +7,485 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class ActivitySchema extends BaseModel {
+  static $columns = ['activityTypeId', 'archivedAt', 'chapterId', 'createdAt', 'estimatedDurationMinutes', 'id', 'levelId', 'noteMarkdown', 'title', 'updatedAt'] as const
+  $columns = ActivitySchema.$columns
+  @column()
+  declare activityTypeId: string
+  @column.dateTime()
+  declare archivedAt: DateTime | null
+  @column()
+  declare chapterId: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare estimatedDurationMinutes: number | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare levelId: string
+  @column()
+  declare noteMarkdown: string | null
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class ActivityTypeSchema extends BaseModel {
+  static $columns = ['color', 'createdAt', 'displayOrder', 'id', 'name', 'schoolYearId', 'updatedAt'] as const
+  $columns = ActivityTypeSchema.$columns
+  @column()
+  declare color: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare displayOrder: number
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare name: string
+  @column()
+  declare schoolYearId: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class ActualSessionActivitySchema extends BaseModel {
+  static $columns = ['activityId', 'activityOrder', 'activityTypeId', 'actualDurationMinutes', 'actualSessionId', 'createdAt', 'id', 'localDescriptionMarkdown', 'localTitle', 'plannedSessionActivityId', 'replacesPlannedSessionActivityId', 'updatedAt'] as const
+  $columns = ActualSessionActivitySchema.$columns
+  @column()
+  declare activityId: string | null
+  @column()
+  declare activityOrder: number
+  @column()
+  declare activityTypeId: string | null
+  @column()
+  declare actualDurationMinutes: number | null
+  @column()
+  declare actualSessionId: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare localDescriptionMarkdown: string | null
+  @column()
+  declare localTitle: string | null
+  @column()
+  declare plannedSessionActivityId: string | null
+  @column()
+  declare replacesPlannedSessionActivityId: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class ActualSessionSchema extends BaseModel {
+  static $columns = ['classId', 'completedAt', 'createdAt', 'durationMinutes', 'id', 'mainChapterId', 'noteMarkdown', 'plannedSessionId', 'sessionDate', 'sessionOrder', 'startTime', 'state', 'title', 'updatedAt'] as const
+  $columns = ActualSessionSchema.$columns
+  @column()
+  declare classId: string
+  @column.dateTime()
+  declare completedAt: DateTime | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare durationMinutes: number
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare mainChapterId: string | null
+  @column()
+  declare noteMarkdown: string | null
+  @column()
+  declare plannedSessionId: string | null
+  @column.date()
+  declare sessionDate: DateTime
+  @column()
+  declare sessionOrder: number
+  @column()
+  declare startTime: string
+  @column()
+  declare state: string
+  @column()
+  declare title: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class ChapterSchema extends BaseModel {
+  static $columns = ['archivedAt', 'createdAt', 'id', 'levelId', 'name', 'noteMarkdown', 'shortCode', 'themeId', 'updatedAt'] as const
+  $columns = ChapterSchema.$columns
+  @column.dateTime()
+  declare archivedAt: DateTime | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare levelId: string
+  @column()
+  declare name: string
+  @column()
+  declare noteMarkdown: string | null
+  @column()
+  declare shortCode: string
+  @column()
+  declare themeId: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class ClassSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'levelId', 'name', 'schoolYearId', 'shortCode', 'updatedAt'] as const
+  $columns = ClassSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare levelId: string
+  @column()
+  declare name: string
+  @column()
+  declare schoolYearId: string
+  @column()
+  declare shortCode: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class InterruptionClassSchema extends BaseModel {
+  static $columns = ['classId', 'createdAt', 'id', 'interruptionId', 'updatedAt'] as const
+  $columns = InterruptionClassSchema.$columns
+  @column()
+  declare classId: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare interruptionId: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class InterruptionTypeSchema extends BaseModel {
+  static $columns = ['color', 'createdAt', 'displayOrder', 'id', 'name', 'schoolYearId', 'updatedAt'] as const
+  $columns = InterruptionTypeSchema.$columns
+  @column()
+  declare color: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare displayOrder: number
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare name: string
+  @column()
+  declare schoolYearId: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class InterruptionSchema extends BaseModel {
+  static $columns = ['createdAt', 'endsAt', 'id', 'interruptionTypeId', 'noteMarkdown', 'schoolYearId', 'scope', 'startsAt', 'title', 'updatedAt'] as const
+  $columns = InterruptionSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.dateTime()
+  declare endsAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare interruptionTypeId: string
+  @column()
+  declare noteMarkdown: string | null
+  @column()
+  declare schoolYearId: string
+  @column()
+  declare scope: string
+  @column.dateTime()
+  declare startsAt: DateTime
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class LevelSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'name', 'schoolYearId', 'shortCode', 'updatedAt'] as const
+  $columns = LevelSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare name: string
+  @column()
+  declare schoolYearId: string
+  @column()
+  declare shortCode: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class PeriodSchema extends BaseModel {
+  static $columns = ['createdAt', 'endDate', 'id', 'name', 'schoolYearId', 'startDate', 'updatedAt'] as const
+  $columns = PeriodSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.date()
+  declare endDate: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare name: string
+  @column()
+  declare schoolYearId: string
+  @column.date()
+  declare startDate: DateTime
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class PlannedSessionActivitySchema extends BaseModel {
+  static $columns = ['activityId', 'activityOrder', 'activityTypeId', 'createdAt', 'id', 'localDescriptionMarkdown', 'localTitle', 'plannedDurationMinutes', 'plannedSessionId', 'templateSessionActivityId', 'updatedAt'] as const
+  $columns = PlannedSessionActivitySchema.$columns
+  @column()
+  declare activityId: string | null
+  @column()
+  declare activityOrder: number
+  @column()
+  declare activityTypeId: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare localDescriptionMarkdown: string | null
+  @column()
+  declare localTitle: string | null
+  @column()
+  declare plannedDurationMinutes: number | null
+  @column()
+  declare plannedSessionId: string
+  @column()
+  declare templateSessionActivityId: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class PlannedSessionSchema extends BaseModel {
+  static $columns = ['classId', 'createdAt', 'durationMinutes', 'id', 'mainChapterId', 'noteMarkdown', 'outcome', 'outcomeReviewRequired', 'outcomeReviewedAt', 'recurringSlotId', 'sessionDate', 'sessionOrder', 'startTime', 'templateSessionId', 'title', 'updatedAt'] as const
+  $columns = PlannedSessionSchema.$columns
+  @column()
+  declare classId: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare durationMinutes: number
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare mainChapterId: string | null
+  @column()
+  declare noteMarkdown: string | null
+  @column()
+  declare outcome: string | null
+  @column()
+  declare outcomeReviewRequired: boolean
+  @column.dateTime()
+  declare outcomeReviewedAt: DateTime | null
+  @column()
+  declare recurringSlotId: string | null
+  @column.date()
+  declare sessionDate: DateTime
+  @column()
+  declare sessionOrder: number
+  @column()
+  declare startTime: string
+  @column()
+  declare templateSessionId: string | null
+  @column()
+  declare title: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class PlanningConflictSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'interruptionId', 'plannedSessionId', 'resolutionNoteMarkdown', 'resolvedAt', 'updatedAt'] as const
+  $columns = PlanningConflictSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare interruptionId: string
+  @column()
+  declare plannedSessionId: string
+  @column()
+  declare resolutionNoteMarkdown: string | null
+  @column.dateTime()
+  declare resolvedAt: DateTime | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class RecurringSlotSchema extends BaseModel {
+  static $columns = ['classId', 'createdAt', 'durationMinutes', 'id', 'slotTypeId', 'startTime', 'updatedAt', 'validFrom', 'validUntil', 'weekday'] as const
+  $columns = RecurringSlotSchema.$columns
+  @column()
+  declare classId: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare durationMinutes: number
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare slotTypeId: string
+  @column()
+  declare startTime: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+  @column.date()
+  declare validFrom: DateTime | null
+  @column.date()
+  declare validUntil: DateTime | null
+  @column()
+  declare weekday: number
+}
+
+export class SchoolYearSchema extends BaseModel {
+  static $columns = ['createdAt', 'endDate', 'firstTeachingDay', 'id', 'label', 'startDate', 'subject', 'teachingHourDurationMinutes', 'updatedAt'] as const
+  $columns = SchoolYearSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.date()
+  declare endDate: DateTime
+  @column.date()
+  declare firstTeachingDay: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare label: string
+  @column.date()
+  declare startDate: DateTime
+  @column()
+  declare subject: string
+  @column()
+  declare teachingHourDurationMinutes: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class SlotTypeSchema extends BaseModel {
+  static $columns = ['color', 'createdAt', 'displayOrder', 'id', 'name', 'schoolYearId', 'updatedAt'] as const
+  $columns = SlotTypeSchema.$columns
+  @column()
+  declare color: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare displayOrder: number
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare name: string
+  @column()
+  declare schoolYearId: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class TemplateProgressionSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'levelId', 'name', 'updatedAt'] as const
+  $columns = TemplateProgressionSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare levelId: string
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class TemplateSessionActivitySchema extends BaseModel {
+  static $columns = ['activityId', 'activityOrder', 'activityTypeId', 'createdAt', 'id', 'localDescriptionMarkdown', 'localTitle', 'plannedDurationMinutes', 'templateSessionId', 'updatedAt'] as const
+  $columns = TemplateSessionActivitySchema.$columns
+  @column()
+  declare activityId: string | null
+  @column()
+  declare activityOrder: number
+  @column()
+  declare activityTypeId: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare localDescriptionMarkdown: string | null
+  @column()
+  declare localTitle: string | null
+  @column()
+  declare plannedDurationMinutes: number | null
+  @column()
+  declare templateSessionId: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class TemplateSessionSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'mainChapterId', 'noteMarkdown', 'plannedDurationMinutes', 'sessionOrder', 'templateProgressionId', 'title', 'updatedAt'] as const
+  $columns = TemplateSessionSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare mainChapterId: string | null
+  @column()
+  declare noteMarkdown: string | null
+  @column()
+  declare plannedDurationMinutes: number | null
+  @column()
+  declare sessionOrder: number
+  @column()
+  declare templateProgressionId: string
+  @column()
+  declare title: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class ThemeSchema extends BaseModel {
+  static $columns = ['archivedAt', 'color', 'createdAt', 'id', 'levelId', 'name', 'noteMarkdown', 'shortCode', 'updatedAt'] as const
+  $columns = ThemeSchema.$columns
+  @column.dateTime()
+  declare archivedAt: DateTime | null
+  @column()
+  declare color: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare levelId: string
+  @column()
+  declare name: string
+  @column()
+  declare noteMarkdown: string | null
+  @column()
+  declare shortCode: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
   $columns = UserSchema.$columns
@@ -17,9 +496,9 @@ export class UserSchema extends BaseModel {
   @column()
   declare fullName: string | null
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
   @column({ serializeAs: null })
   declare password: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
+  declare updatedAt: DateTime
 }

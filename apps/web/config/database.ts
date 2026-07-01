@@ -1,5 +1,9 @@
 import app from "@adonisjs/core/services/app"
 import { defineConfig } from "@adonisjs/lucid"
+import { isAbsolute } from "node:path"
+import env from "#start/env"
+
+const workFilePath = env.get("WORK_FILE_PATH") ?? "storage/work_files/dev.sqlite"
 
 const dbConfig = defineConfig({
   /**
@@ -18,7 +22,7 @@ const dbConfig = defineConfig({
         /**
          * Database file location.
          */
-        filename: app.tmpPath("db.sqlite3"),
+        filename: isAbsolute(workFilePath) ? workFilePath : app.makePath(workFilePath),
       },
 
       /**
