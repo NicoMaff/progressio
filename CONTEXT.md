@@ -8,6 +8,14 @@ Progressio helps a teacher plan and follow the progression of teaching work acro
 A reusable piece of teaching work that can be placed inside a session. An activity is pedagogical content, not a dated calendar item.
 _Avoid_: Lesson, event
 
+**Theme**:
+A broad teaching content grouping for a level, used to organize chapters in dense progression views.
+_Avoid_: Period, category
+
+**Chapter**:
+A teaching content unit inside a level, optionally grouped under a theme, and used as the main pedagogical anchor for sessions and activities.
+_Avoid_: Session, lesson
+
 **Local Actual Activity**:
 An activity recorded only inside an actual session, without becoming reusable teaching content. It supports improvised or incidental work that happened in class but does not need to be added to the activity catalog. It can optionally have an activity type for display and tracking.
 _Avoid_: Reusable activity, orphan activity
@@ -117,7 +125,7 @@ The optional link from a planned session back to the recurring slot it was gener
 _Avoid_: Slot constraint
 
 **Archived Teaching Content**:
-Teaching content that is hidden from normal planning without being removed from existing progressions. Archived teaching content remains archived while it is still used, and permanent deletion is blocked until no references remain.
+Teaching content that is hidden from normal planning without being removed from existing progressions. Archived teaching content remains archived while it is still used, and permanent deletion is only available for archived content with no remaining references.
 _Avoid_: Deleted content
 
 **Reference Indicator**:
