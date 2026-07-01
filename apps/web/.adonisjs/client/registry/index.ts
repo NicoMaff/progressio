@@ -12,6 +12,12 @@ const routes = {
     tokens: [{"old":"/","type":0,"val":"/","end":""}],
     types: placeholder as Registry['home']['types'],
   },
+  'teaching_content.render': {
+    methods: ["GET","HEAD"],
+    pattern: '/teaching-content/levels/:levelId',
+    tokens: [{"old":"/teaching-content/levels/:levelId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId","type":1,"val":"levelId","end":""}],
+    types: placeholder as Registry['teaching_content.render']['types'],
+  },
   'new_account.create': {
     methods: ["GET","HEAD"],
     pattern: '/signup',

@@ -4,6 +4,9 @@
  */
 
 export const controllers = {
-  NewAccount: () => import('#controllers/new_account_controller'),
-  Session: () => import('#controllers/session_controller'),
+  NewAccount: () => import('#src/controllers/new_account_controller'),
+  Session: () => import('#src/controllers/session_controller'),
+  teachingContent: {
+    TeachingContent: () => import('#src/teaching_content/controllers/teaching_content_controller'),
+  },
 }

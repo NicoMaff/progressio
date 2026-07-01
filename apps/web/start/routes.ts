@@ -14,6 +14,10 @@ import router from "@adonisjs/core/services/router"
 router.on("/").renderInertia("home", {}).as("home")
 
 router
+  .get("/teaching-content/levels/:levelId", [controllers.teachingContent.TeachingContent, "render"])
+  .as("teaching_content.render")
+
+router
   .group(() => {
     router.get("signup", [controllers.NewAccount, "create"])
     router.post("signup", [controllers.NewAccount, "store"])
