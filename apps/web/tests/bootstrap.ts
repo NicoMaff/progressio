@@ -4,9 +4,8 @@ import type { Config } from "@japa/runner/types"
 import { pluginAdonisJS } from "@japa/plugin-adonisjs"
 import { dbAssertions } from "@adonisjs/lucid/plugins/db"
 import testUtils from "@adonisjs/core/services/test_utils"
-import { browserClient } from "@japa/browser-client"
-import { authBrowserClient } from "@adonisjs/auth/plugins/browser_client"
-import { sessionBrowserClient } from "@adonisjs/session/plugins/browser_client"
+
+const browserPlugins = await loadBrowserPlugins()
 
 /**
  * This file is imported by the "bin/test.ts" entrypoint file
@@ -16,14 +15,7 @@ import { sessionBrowserClient } from "@adonisjs/session/plugins/browser_client"
  * Configure Japa plugins in the plugins array.
  * Learn more - https://japa.dev/docs/runner-config#plugins-optional
  */
-export const plugins: Config["plugins"] = [
-  assert(),
-  pluginAdonisJS(app),
-  dbAssertions(app),
-  browserClient({ runInSuites: ["browser"] }),
-  sessionBrowserClient(app),
-  authBrowserClient(app),
-]
+export const plugins: Config["plugins"] = [assert(), pluginAdonisJS(app), dbAssertions(app), ...browserPlugins]
 
 /**
  * Configure lifecycle function to run before and after all the
@@ -45,4 +37,20 @@ export const configureSuite: Config["configureSuite"] = (suite) => {
   if (["browser", "functional", "e2e"].includes(suite.name)) {
     return suite.setup(() => testUtils.httpServer().start())
   }
+}
+
+async function loadBrowserPlugins(): Promise<NonNullable<Config["plugins"]>> {
+  try {
+    await import("play" + "wright")
+  } catch {
+    return []
+  }
+
+  const [{ browserClient }, { authBrowserClient }, { sessionBrowserClient }] = await Promise.all([
+    import("@japa/browser-client"),
+    import("@adonisjs/auth/plugins/browser_client"),
+    import("@adonisjs/session/plugins/browser_client"),
+  ])
+
+  return [browserClient({ runInSuites: ["browser"] }), sessionBrowserClient(app), authBrowserClient(app)]
 }
