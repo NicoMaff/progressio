@@ -32,6 +32,12 @@ storage/work_files/*backup*
 **/storage/work_files/*.sqlite-*
 **/storage/work_files/*backup*
 
+# Secrets and local environment
+.env
+.env.*
+**/.env
+**/.env.*
+
 # Logs
 npm-debug.log
 yarn-error.log

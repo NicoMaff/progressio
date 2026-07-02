@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "dev": "yarn workspace @progressio/web dev",
+    "refresh:demo-work-file": "yarn workspace @progressio/web refresh:demo-work-file",
     "build": "yarn workspace @progressio/web build",
     "storybook": "yarn workspace @progressio/ui storybook",
     "storybook:build": "yarn workspace @progressio/ui storybook:build",

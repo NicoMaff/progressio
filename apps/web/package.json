@@ -11,6 +11,7 @@
     "start": "node bin/server.js",
     "build": "node ace build",
     "dev": "node ace serve --hmr",
+    "refresh:demo-work-file": "node ace dev:refresh-work-file",
     "test": "node ace test",
     "lint": "yarn run -T eslint . --config ../../eslint.config.mjs",
     "format": "yarn run -T prettier --write . --ignore-path ../../.prettierignore",
