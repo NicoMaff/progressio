@@ -1,9 +1,8 @@
-import CreateThemeAction from "../../../src/teaching_content/actions/create_theme_action.js"
-import ListActiveThemesAction from "../../../src/teaching_content/actions/list_active_themes_action.js"
-import UpdateThemeAction from "../../../src/teaching_content/actions/update_theme_action.js"
-import { ThemeShortCodeAlreadyExistsError } from "../../../src/teaching_content/actions/theme_input.js"
-import Level from "#models/level"
-import SchoolYear from "#models/school_year"
+import CreateThemeAction from "#teaching_content/actions/create_theme_action"
+import ListActiveThemesAction from "#teaching_content/actions/list_active_themes_action"
+import UpdateThemeAction from "#teaching_content/actions/update_theme_action"
+import { ThemeShortCodeAlreadyExistsError } from "#teaching_content/actions/theme_input"
+import { LevelFactory } from "#database/factories"
 import Theme from "#models/theme"
 import testUtils from "@adonisjs/core/services/test_utils"
 import { test } from "@japa/runner"
@@ -114,20 +113,8 @@ test.group("teaching content theme actions", (group) => {
 })
 
 async function createLevel(input: { name?: string; shortCode?: string } = {}) {
-  const schoolYear = await SchoolYear.create({
-    id: randomUUID(),
-    label: "2026-2027",
-    subject: "Mathématiques",
-    startDate: DateTime.fromISO("2026-09-01"),
-    endDate: DateTime.fromISO("2027-07-05"),
-    firstTeachingDay: DateTime.fromISO("2026-09-02"),
-    teachingHourDurationMinutes: 55,
-  })
-
-  return Level.create({
-    id: randomUUID(),
-    schoolYearId: schoolYear.id,
+  return LevelFactory.merge({
     name: input.name ?? "Quatrième",
     shortCode: input.shortCode ?? "4E",
-  })
+  }).create()
 }

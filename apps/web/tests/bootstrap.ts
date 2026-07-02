@@ -48,19 +48,3 @@ export const configureSuite: Config["configureSuite"] = (suite) => {
     return suite.setup(() => testUtils.httpServer().start())
   }
 }
-
-async function loadBrowserPlugins(): Promise<NonNullable<Config["plugins"]>> {
-  try {
-    await import("play" + "wright")
-  } catch {
-    return []
-  }
-
-  const [{ browserClient }, { authBrowserClient }, { sessionBrowserClient }] = await Promise.all([
-    import("@japa/browser-client"),
-    import("@adonisjs/auth/plugins/browser_client"),
-    import("@adonisjs/session/plugins/browser_client"),
-  ])
-
-  return [browserClient({ runInSuites: ["browser"] }), sessionBrowserClient(app), authBrowserClient(app)]
-}
