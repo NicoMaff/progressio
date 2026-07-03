@@ -32,7 +32,7 @@ export default class DevRefreshWorkFile extends BaseCommand {
 
     await this.execOrFail("db:wipe", ["--force"])
     await this.execOrFail("migration:run", ["--force"])
-    await this.execOrFail("db:seed", ["--files=database/seeders/demo_work_file_seeder"])
+    await this.execOrFail("db:seed", ["--files=./database/seeders/demo_work_file/index_seeder.ts"])
 
     this.logger.success("Demo work file refreshed.")
   }
