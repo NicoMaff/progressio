@@ -14,10 +14,14 @@ import {
   ActualSessionActivityFactory,
   ActualSessionFactory,
   ChapterFactory,
+  InterruptionClassFactory,
+  InterruptionFactory,
+  InterruptionTypeFactory,
   LevelFactory,
   PeriodFactory,
   PlannedSessionActivityFactory,
   PlannedSessionFactory,
+  PlanningConflictFactory,
   RecurringSlotFactory,
   SchoolYearFactory,
   SlotTypeFactory,
@@ -91,6 +95,12 @@ const SLOT_TYPES = [
   { name: "Devoir surveillé", color: "#DC2626" },
 ]
 
+const INTERRUPTION_TYPES = [
+  { name: "Sortie pédagogique", color: "#EA580C" },
+  { name: "Réunion institutionnelle", color: "#7C3AED" },
+  { name: "Indisponibilité de salle", color: "#0F766E" },
+]
+
 const TEMPLATE_SESSION_BLUEPRINTS = [
   { chapterShortCode: "CALC", title: "Installer les automatismes de calcul", durationMinutes: 55 },
   { chapterShortCode: "PROB", title: "Résoudre des problèmes en étapes", durationMinutes: 55 },
@@ -152,6 +162,19 @@ function completionDateTime(sessionDate: DateTime, hour: number, minute = 0) {
   )
 }
 
+function dateTimeOnSessionDate(sessionDate: DateTime, hour: number, minute = 0) {
+  return DateTime.fromObject(
+    {
+      year: sessionDate.year,
+      month: sessionDate.month,
+      day: sessionDate.day,
+      hour,
+      minute,
+    },
+    { zone: "utc" }
+  )
+}
+
 export default class DemoWorkFileSeeder {
   static environment = ["development"]
 
@@ -192,6 +215,21 @@ export default class DemoWorkFileSeeder {
             name: activityType.name,
             color: activityType.color,
             displayOrder: activityTypeIndex + 1,
+          })
+          .create()
+      )
+    }
+
+    const interruptionTypes = []
+
+    for (const [interruptionTypeIndex, interruptionType] of INTERRUPTION_TYPES.entries()) {
+      interruptionTypes.push(
+        await InterruptionTypeFactory.client(this.client)
+          .merge({
+            schoolYearId: schoolYear.id,
+            name: interruptionType.name,
+            color: interruptionType.color,
+            displayOrder: interruptionTypeIndex + 1,
           })
           .create()
       )
@@ -634,6 +672,72 @@ export default class DemoWorkFileSeeder {
     })
 
     await addLocalActualActivity(draftCatchUpActualSession, 1, "Préparation du rattrapage individualisé")
+
+    const globalConflictSessionSet = plannedSessionSets[0]!
+    const classConflictClass = classesByShortCode.get("5B")!
+    const classConflictSessionSet =
+      plannedSessionSets.find(({ session }) => session.classId === classConflictClass.id) ?? plannedSessionSets[1]!
+    const resolvedConflictSessionSet =
+      plannedSessionSets.find(({ session }) => session.id !== globalConflictSessionSet.session.id) ??
+      classConflictSessionSet
+
+    const globalInterruption = await InterruptionFactory.client(this.client)
+      .merge({
+        schoolYearId: schoolYear.id,
+        interruptionTypeId: interruptionTypes[0]!.id,
+        scope: "global",
+        title: "Matinée banalisée de rentrée",
+        startsAt: dateTimeOnSessionDate(globalConflictSessionSet.session.sessionDate, 8),
+        endsAt: dateTimeOnSessionDate(globalConflictSessionSet.session.sessionDate, 12),
+        noteMarkdown: "Interruption globale utilisée pour inspecter les conflits non résolus.",
+      })
+      .create()
+
+    const classInterruption = await InterruptionFactory.client(this.client)
+      .merge({
+        schoolYearId: schoolYear.id,
+        interruptionTypeId: interruptionTypes[2]!.id,
+        scope: "class",
+        title: `Salle indisponible - ${classConflictClass.name}`,
+        startsAt: dateTimeOnSessionDate(classConflictSessionSet.session.sessionDate, 8),
+        endsAt: dateTimeOnSessionDate(classConflictSessionSet.session.sessionDate, 18),
+        noteMarkdown: "Interruption limitée à une classe pour préparer les écrans de résolution.",
+      })
+      .create()
+
+    await InterruptionClassFactory.client(this.client)
+      .merge({
+        interruptionId: classInterruption.id,
+        classId: classConflictClass.id,
+      })
+      .create()
+
+    await PlanningConflictFactory.client(this.client)
+      .merge({
+        plannedSessionId: globalConflictSessionSet.session.id,
+        interruptionId: globalInterruption.id,
+        resolvedAt: null,
+        resolutionNoteMarkdown: null,
+      })
+      .create()
+
+    await PlanningConflictFactory.client(this.client)
+      .merge({
+        plannedSessionId: classConflictSessionSet.session.id,
+        interruptionId: classInterruption.id,
+        resolvedAt: null,
+        resolutionNoteMarkdown: null,
+      })
+      .create()
+
+    await PlanningConflictFactory.client(this.client)
+      .merge({
+        plannedSessionId: resolvedConflictSessionSet.session.id,
+        interruptionId: globalInterruption.id,
+        resolvedAt: DateTime.utc().minus({ days: 2 }),
+        resolutionNoteMarkdown: "Conflit résolu par déplacement de la séance dans le planning de démonstration.",
+      })
+      .create()
 
     const unplannedClass = classesByShortCode.get("4A")!
     const unplannedActualSession = await ActualSessionFactory.client(this.client)
