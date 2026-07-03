@@ -1,9 +1,13 @@
 import type { QueryClientContract } from "@adonisjs/lucid/types/database"
 import { DateTime } from "luxon"
+import type Activity from "#models/activity"
 import type ActivityType from "#models/activity_type"
 import type Chapter from "#models/chapter"
 import type TeachingClass from "#models/class"
 import type Level from "#models/level"
+import type RecurringSlot from "#models/recurring_slot"
+import type TemplateSession from "#models/template_session"
+import type TemplateSessionActivity from "#models/template_session_activity"
 import {
   ActivityFactory,
   ActivityTypeFactory,
@@ -76,6 +80,47 @@ const CHAPTERS = [
 
 const ACTIVITY_TITLES = ["Découverte guidée", "Entraînement progressif", "Synthèse de méthode", "Défi d'application"]
 
+const SLOT_TYPES = [
+  { name: "Cours standard", color: "#0F766E" },
+  { name: "Atelier", color: "#2563EB" },
+  { name: "Devoir surveillé", color: "#DC2626" },
+]
+
+const TEMPLATE_SESSION_BLUEPRINTS = [
+  { chapterShortCode: "CALC", title: "Installer les automatismes de calcul", durationMinutes: 55 },
+  { chapterShortCode: "PROB", title: "Résoudre des problèmes en étapes", durationMinutes: 55 },
+  { chapterShortCode: "FIG", title: "Construire et décrire des figures", durationMinutes: 55 },
+  { chapterShortCode: null, title: "Réactivation et méthodes transversales", durationMinutes: 55 },
+  { chapterShortCode: "CONV", title: null, durationMinutes: 55 },
+]
+
+const RECURRING_SLOT_BLUEPRINTS = [
+  { classShortCode: "6A", slotTypeIndex: 0, weekday: 2, startTime: "09:00", durationMinutes: 55 },
+  { classShortCode: "6B", slotTypeIndex: 1, weekday: 4, startTime: "13:30", durationMinutes: 55 },
+  { classShortCode: "5A", slotTypeIndex: 0, weekday: 1, startTime: "10:10", durationMinutes: 55 },
+  { classShortCode: "5B", slotTypeIndex: 2, weekday: 5, startTime: "08:00", durationMinutes: 55 },
+  { classShortCode: "4A", slotTypeIndex: 0, weekday: 3, startTime: "14:35", durationMinutes: 55 },
+]
+
+type TemplateSessionSet = {
+  sessions: TemplateSession[]
+  activitiesByTemplateSessionId: Map<string, TemplateSessionActivity[]>
+}
+
+type PlannedSessionInput = {
+  teachingClass: TeachingClass
+  recurringSlot: RecurringSlot
+  templateSession: TemplateSession | null
+  templateActivities: TemplateSessionActivity[]
+  sessionDate: DateTime
+  sessionOrder: number
+  title: string | null
+}
+
+function firstDateWithWeekday(startDate: DateTime, weekday: number) {
+  return startDate.plus({ days: (weekday - startDate.weekday + 7) % 7 })
+}
+
 export default class DemoWorkFileSeeder {
   static environment = ["development"]
 
@@ -124,6 +169,7 @@ export default class DemoWorkFileSeeder {
     const levels: Level[] = []
     const classesByShortCode = new Map<string, TeachingClass>()
     const chaptersByShortCode = new Map<string, Chapter>()
+    const activitiesByChapterKey = new Map<string, Activity[]>()
 
     for (const levelDefinition of LEVELS) {
       const level = await LevelFactory.client(this.client)
@@ -177,117 +223,242 @@ export default class DemoWorkFileSeeder {
           .create()
 
         chaptersByShortCode.set(`${level.shortCode}:${chapter.shortCode}`, chapter)
+        const chapterActivities: Activity[] = []
 
         for (const [activityIndex, activityTitle] of ACTIVITY_TITLES.entries()) {
-          await ActivityFactory.client(this.client)
-            .merge({
-              levelId: level.id,
-              chapterId: chapter.id,
-              activityTypeId: activityTypes[activityIndex % activityTypes.length].id,
-              title: `${activityTitle} - ${chapter.name}`,
-              estimatedDurationMinutes: activityIndex % 2 === 0 ? 30 + activityIndex * 10 : null,
-              noteMarkdown: "Activité réutilisable du dataset de démonstration.",
-            })
-            .create()
+          chapterActivities.push(
+            await ActivityFactory.client(this.client)
+              .merge({
+                levelId: level.id,
+                chapterId: chapter.id,
+                activityTypeId: activityTypes[activityIndex % activityTypes.length].id,
+                title: `${activityTitle} - ${chapter.name}`,
+                estimatedDurationMinutes: activityIndex % 2 === 0 ? 30 + activityIndex * 10 : null,
+                noteMarkdown: "Activité réutilisable du dataset de démonstration.",
+              })
+              .create()
+          )
         }
+
+        activitiesByChapterKey.set(`${level.shortCode}:${chapter.shortCode}`, chapterActivities)
       }
     }
 
-    const slotType = await SlotTypeFactory.client(this.client)
-      .merge({
-        schoolYearId: schoolYear.id,
-        name: "Cours standard",
-        color: "#0F766E",
-        displayOrder: 1,
-      })
-      .create()
+    const slotTypes = []
 
-    const sixieme = levels[0]!
-    const sixiemeA = classesByShortCode.get("6A")!
-    const cinquiemeB = classesByShortCode.get("5B")!
-    const fractionsChapter = chaptersByShortCode.get("6E:CALC")!
-    const fractionActivity = await ActivityFactory.client(this.client)
-      .merge({
-        levelId: sixieme.id,
-        chapterId: fractionsChapter.id,
-        activityTypeId: activityTypes[0]!.id,
-        title: "Séance de découverte - calcul numérique",
-        estimatedDurationMinutes: 35,
-      })
-      .create()
+    for (const [slotTypeIndex, slotType] of SLOT_TYPES.entries()) {
+      slotTypes.push(
+        await SlotTypeFactory.client(this.client)
+          .merge({
+            schoolYearId: schoolYear.id,
+            name: slotType.name,
+            color: slotType.color,
+            displayOrder: slotTypeIndex + 1,
+          })
+          .create()
+      )
+    }
 
-    const progression = await TemplateProgressionFactory.client(this.client)
-      .merge({
-        levelId: sixieme.id,
-        name: "Progression annuelle 6e",
-      })
-      .create()
+    const templateSessionSetsByLevelId = new Map<string, TemplateSessionSet>()
 
-    const templateSession = await TemplateSessionFactory.client(this.client)
-      .merge({
-        templateProgressionId: progression.id,
-        mainChapterId: fractionsChapter.id,
-        title: "Découverte en calcul numérique",
-        sessionOrder: 1,
-        plannedDurationMinutes: 55,
-      })
-      .create()
+    for (const level of levels) {
+      const progression = await TemplateProgressionFactory.client(this.client)
+        .merge({
+          levelId: level.id,
+          name: `Progression annuelle ${level.name}`,
+        })
+        .create()
+      const sessions: TemplateSession[] = []
+      const activitiesByTemplateSessionId = new Map<string, TemplateSessionActivity[]>()
 
-    const templateActivity = await TemplateSessionActivityFactory.client(this.client)
-      .merge({
-        templateSessionId: templateSession.id,
-        activityId: fractionActivity.id,
-        activityOrder: 1,
-        plannedDurationMinutes: 35,
-      })
-      .create()
+      for (const [templateSessionIndex, blueprint] of TEMPLATE_SESSION_BLUEPRINTS.entries()) {
+        const chapter =
+          blueprint.chapterShortCode === null
+            ? null
+            : chaptersByShortCode.get(`${level.shortCode}:${blueprint.chapterShortCode}`)!
+        const templateSession = await TemplateSessionFactory.client(this.client)
+          .merge({
+            templateProgressionId: progression.id,
+            mainChapterId: chapter?.id ?? null,
+            title: blueprint.title,
+            sessionOrder: templateSessionIndex + 1,
+            plannedDurationMinutes: blueprint.durationMinutes,
+            noteMarkdown: "Séance modèle du dataset de démonstration.",
+          })
+          .create()
+        const reusableActivities =
+          blueprint.chapterShortCode === null
+            ? []
+            : activitiesByChapterKey.get(`${level.shortCode}:${blueprint.chapterShortCode}`)!
+        const templateActivities: TemplateSessionActivity[] = []
 
-    const recurringSlot = await RecurringSlotFactory.client(this.client)
-      .merge({
-        classId: sixiemeA.id,
-        slotTypeId: slotType.id,
-        weekday: 2,
-        startTime: "09:00",
-        durationMinutes: 55,
-        validFrom: DateTime.fromISO("2025-09-02"),
-        validUntil: null,
-      })
-      .create()
+        if (reusableActivities[0] !== undefined) {
+          templateActivities.push(
+            await TemplateSessionActivityFactory.client(this.client)
+              .merge({
+                templateSessionId: templateSession.id,
+                activityId: reusableActivities[0].id,
+                activityOrder: 1,
+                plannedDurationMinutes: reusableActivities[0].estimatedDurationMinutes ?? 25,
+              })
+              .create()
+          )
+        }
 
-    const plannedSession = await PlannedSessionFactory.client(this.client)
-      .merge({
-        classId: sixiemeA.id,
-        recurringSlotId: recurringSlot.id,
-        templateSessionId: templateSession.id,
-        mainChapterId: fractionsChapter.id,
-        title: "Découverte en calcul numérique",
-        sessionDate: DateTime.fromISO("2025-09-09"),
-        startTime: "09:00",
-        durationMinutes: 55,
-        sessionOrder: 1,
-      })
-      .create()
+        templateActivities.push(
+          await TemplateSessionActivityFactory.client(this.client)
+            .merge({
+              templateSessionId: templateSession.id,
+              activityId: null,
+              activityTypeId: activityTypes[templateSessionIndex % activityTypes.length].id,
+              localTitle:
+                blueprint.chapterShortCode === null
+                  ? "Point méthode et organisation du classeur"
+                  : `Trace écrite - ${chapter!.name}`,
+              localDescriptionMarkdown: "Activité locale définie uniquement dans la séance modèle.",
+              activityOrder: templateActivities.length + 1,
+              plannedDurationMinutes: 20,
+            })
+            .create()
+        )
 
-    await PlannedSessionActivityFactory.client(this.client)
-      .merge({
-        plannedSessionId: plannedSession.id,
-        activityId: fractionActivity.id,
-        templateSessionActivityId: templateActivity.id,
-        activityOrder: 1,
-        plannedDurationMinutes: 35,
-      })
-      .create()
+        if (reusableActivities[1] !== undefined && templateSessionIndex % 2 === 0) {
+          templateActivities.push(
+            await TemplateSessionActivityFactory.client(this.client)
+              .merge({
+                templateSessionId: templateSession.id,
+                activityId: reusableActivities[1].id,
+                activityOrder: templateActivities.length + 1,
+                plannedDurationMinutes: reusableActivities[1].estimatedDurationMinutes ?? 20,
+              })
+              .create()
+          )
+        }
 
-    await RecurringSlotFactory.client(this.client)
-      .merge({
-        classId: cinquiemeB.id,
-        slotTypeId: slotType.id,
-        weekday: 4,
-        startTime: "10:10",
-        durationMinutes: 55,
-        validFrom: DateTime.fromISO("2025-09-04"),
-        validUntil: null,
+        sessions.push(templateSession)
+        activitiesByTemplateSessionId.set(templateSession.id, templateActivities)
+      }
+
+      templateSessionSetsByLevelId.set(level.id, {
+        sessions,
+        activitiesByTemplateSessionId,
       })
-      .create()
+    }
+
+    const sessionOrdersByClassId = new Map<string, number>()
+
+    const createPlannedSession = async (input: PlannedSessionInput) => {
+      const plannedSession = await PlannedSessionFactory.client(this.client)
+        .merge({
+          classId: input.teachingClass.id,
+          recurringSlotId: input.recurringSlot.id,
+          templateSessionId: input.templateSession?.id ?? null,
+          mainChapterId: input.templateSession?.mainChapterId ?? null,
+          title: input.title,
+          sessionDate: input.sessionDate,
+          startTime: input.recurringSlot.startTime,
+          durationMinutes: input.recurringSlot.durationMinutes,
+          sessionOrder: input.sessionOrder,
+          noteMarkdown: "Séance prévisionnelle générée pour le dataset de démonstration.",
+        })
+        .create()
+
+      for (const templateActivity of input.templateActivities) {
+        await PlannedSessionActivityFactory.client(this.client)
+          .merge({
+            plannedSessionId: plannedSession.id,
+            activityId: templateActivity.activityId,
+            templateSessionActivityId: templateActivity.id,
+            activityTypeId: templateActivity.activityTypeId,
+            localTitle: templateActivity.localTitle,
+            localDescriptionMarkdown: templateActivity.localDescriptionMarkdown,
+            activityOrder: templateActivity.activityOrder,
+            plannedDurationMinutes: templateActivity.plannedDurationMinutes,
+          })
+          .create()
+      }
+
+      return plannedSession
+    }
+
+    const createStandalonePlannedSession = async (
+      teachingClass: TeachingClass,
+      sessionDate: DateTime,
+      sessionOrder: number
+    ) => {
+      const plannedSession = await PlannedSessionFactory.client(this.client)
+        .merge({
+          classId: teachingClass.id,
+          recurringSlotId: null,
+          templateSessionId: null,
+          mainChapterId: null,
+          title: "Séance de régulation",
+          sessionDate,
+          startTime: "16:00",
+          durationMinutes: 40,
+          sessionOrder,
+          noteMarkdown: "Séance ajoutée hors créneau récurrent pour montrer une origine manuelle.",
+        })
+        .create()
+
+      await PlannedSessionActivityFactory.client(this.client)
+        .merge({
+          plannedSessionId: plannedSession.id,
+          activityId: null,
+          activityTypeId: activityTypes[3]!.id,
+          localTitle: "Reprise ciblée des difficultés",
+          localDescriptionMarkdown: "Activité locale copiée directement dans la séance planifiée.",
+          activityOrder: 1,
+          plannedDurationMinutes: 30,
+        })
+        .create()
+
+      return plannedSession
+    }
+
+    for (const blueprint of RECURRING_SLOT_BLUEPRINTS) {
+      const teachingClass = classesByShortCode.get(blueprint.classShortCode)!
+      const recurringSlot = await RecurringSlotFactory.client(this.client)
+        .merge({
+          classId: teachingClass.id,
+          slotTypeId: slotTypes[blueprint.slotTypeIndex]!.id,
+          weekday: blueprint.weekday,
+          startTime: blueprint.startTime,
+          durationMinutes: blueprint.durationMinutes,
+          validFrom: firstDateWithWeekday(schoolYear.firstTeachingDay, blueprint.weekday),
+          validUntil: schoolYear.endDate,
+        })
+        .create()
+      const templateSessionSet = templateSessionSetsByLevelId.get(teachingClass.levelId)!
+      let sessionDate = firstDateWithWeekday(schoolYear.firstTeachingDay, blueprint.weekday)
+
+      for (let generatedSessionIndex = 0; sessionDate <= schoolYear.endDate; generatedSessionIndex += 1) {
+        const nextOrder = (sessionOrdersByClassId.get(teachingClass.id) ?? 0) + 1
+        sessionOrdersByClassId.set(teachingClass.id, nextOrder)
+
+        const templateSession = templateSessionSet.sessions[generatedSessionIndex % templateSessionSet.sessions.length]!
+        const title = generatedSessionIndex % 5 === 4 ? null : templateSession.title
+        const templateActivities = templateSessionSet.activitiesByTemplateSessionId.get(templateSession.id)!
+
+        await createPlannedSession({
+          teachingClass,
+          recurringSlot,
+          templateSession,
+          templateActivities,
+          sessionDate,
+          sessionOrder: nextOrder,
+          title,
+        })
+
+        sessionDate = sessionDate.plus({ weeks: 3 })
+      }
+    }
+
+    for (const classShortCode of ["6A", "5B"]) {
+      const teachingClass = classesByShortCode.get(classShortCode)!
+      const nextOrder = (sessionOrdersByClassId.get(teachingClass.id) ?? 0) + 1
+      sessionOrdersByClassId.set(teachingClass.id, nextOrder)
+      await createStandalonePlannedSession(teachingClass, DateTime.fromISO("2026-01-15"), nextOrder)
+    }
   }
 }
