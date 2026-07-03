@@ -78,6 +78,28 @@ test.group("domain factories", (group) => {
     assert.equal(level.schoolYearId, schoolYear.id)
     assert.equal(level.name, "Sixième")
     assert.equal(level.shortCode, "6E")
+
+    const plannedSession = await PlannedSessionFactory.merge({
+      title: "Séance explicitement imposée",
+      outcome: "to_catch_up",
+      outcomeReviewRequired: true,
+    }).create()
+    const actualSession = await ActualSessionFactory.merge({
+      classId: plannedSession.classId,
+      plannedSessionId: plannedSession.id,
+      title: "Brouillon imposé",
+      state: "draft",
+      completedAt: null,
+    }).create()
+
+    assert.equal(plannedSession.title, "Séance explicitement imposée")
+    assert.equal(plannedSession.outcome, "to_catch_up")
+    assert.isTrue(plannedSession.outcomeReviewRequired)
+    assert.equal(actualSession.classId, plannedSession.classId)
+    assert.equal(actualSession.plannedSessionId, plannedSession.id)
+    assert.equal(actualSession.title, "Brouillon imposé")
+    assert.equal(actualSession.state, "draft")
+    assert.isNull(actualSession.completedAt)
   })
 
   test("keeps imposed relations instead of creating unrelated parents", async ({ assert }) => {
