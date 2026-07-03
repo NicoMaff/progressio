@@ -1,5 +1,9 @@
 import type { QueryClientContract } from "@adonisjs/lucid/types/database"
 import { DateTime } from "luxon"
+import type ActivityType from "#models/activity_type"
+import type Chapter from "#models/chapter"
+import type TeachingClass from "#models/class"
+import type Level from "#models/level"
 import {
   ActivityFactory,
   ActivityTypeFactory,
@@ -18,6 +22,60 @@ import {
   ThemeFactory,
 } from "#database/factories"
 
+const PERIOD_SETS = [
+  [
+    { name: "Semestre 1", startDate: "2025-09-01", endDate: "2026-01-23" },
+    { name: "Semestre 2", startDate: "2026-01-26", endDate: "2026-07-04" },
+  ],
+  [
+    { name: "Trimestre 1", startDate: "2025-09-01", endDate: "2025-11-28" },
+    { name: "Trimestre 2", startDate: "2025-12-01", endDate: "2026-03-13" },
+    { name: "Trimestre 3", startDate: "2026-03-16", endDate: "2026-07-04" },
+  ],
+]
+
+const LEVELS = [
+  {
+    name: "Sixième",
+    shortCode: "6E",
+    classes: ["6e A", "6e B"],
+  },
+  {
+    name: "Cinquième",
+    shortCode: "5E",
+    classes: ["5e A", "5e B"],
+  },
+  {
+    name: "Quatrième",
+    shortCode: "4E",
+    classes: ["4e A", "4e B"],
+  },
+]
+
+const THEMES = [
+  { name: "Nombres et calculs", shortCode: "NUM", color: "#2563EB" },
+  { name: "Géométrie", shortCode: "GEO", color: "#16A34A" },
+  { name: "Grandeurs et mesures", shortCode: "MES", color: "#D97706" },
+  { name: "Organisation de données", shortCode: "DON", color: "#7C3AED" },
+]
+
+const ACTIVITY_TYPES = [
+  { name: "Cours", color: "#2563EB" },
+  { name: "Exercices", color: "#16A34A" },
+  { name: "Évaluation", color: "#DC2626" },
+  { name: "Remédiation", color: "#7C3AED" },
+]
+
+const CHAPTERS = [
+  { name: "Calcul numérique", shortCode: "CALC", themeIndex: 0 },
+  { name: "Résolution de problèmes", shortCode: "PROB", themeIndex: 0 },
+  { name: "Figures usuelles", shortCode: "FIG", themeIndex: 1 },
+  { name: "Mesures et conversions", shortCode: "CONV", themeIndex: 2 },
+  { name: "Méthodes transversales", shortCode: "METH", themeIndex: null },
+]
+
+const ACTIVITY_TITLES = ["Découverte guidée", "Entraînement progressif", "Synthèse de méthode", "Défi d'application"]
+
 export default class DemoWorkFileSeeder {
   static environment = ["development"]
 
@@ -35,75 +93,105 @@ export default class DemoWorkFileSeeder {
       })
       .create()
 
-    await PeriodFactory.client(this.client)
-      .merge({
-        schoolYearId: schoolYear.id,
-        name: "Période 1",
-        startDate: DateTime.fromISO("2025-09-01"),
-        endDate: DateTime.fromISO("2025-10-17"),
-      })
-      .create()
+    const selectedPeriods = PERIOD_SETS[Math.floor(Math.random() * PERIOD_SETS.length)]!
 
-    await PeriodFactory.client(this.client)
-      .merge({
-        schoolYearId: schoolYear.id,
-        name: "Période 2",
-        startDate: DateTime.fromISO("2025-11-03"),
-        endDate: DateTime.fromISO("2025-12-19"),
-      })
-      .create()
+    for (const period of selectedPeriods) {
+      await PeriodFactory.client(this.client)
+        .merge({
+          schoolYearId: schoolYear.id,
+          name: period.name,
+          startDate: DateTime.fromISO(period.startDate),
+          endDate: DateTime.fromISO(period.endDate),
+        })
+        .create()
+    }
 
-    const sixieme = await LevelFactory.client(this.client)
-      .merge({
-        schoolYearId: schoolYear.id,
-        name: "Sixième",
-        shortCode: "6E",
-      })
-      .create()
+    const activityTypes: ActivityType[] = []
 
-    const cinquieme = await LevelFactory.client(this.client)
-      .merge({
-        schoolYearId: schoolYear.id,
-        name: "Cinquième",
-        shortCode: "5E",
-      })
-      .create()
+    for (const [activityTypeIndex, activityType] of ACTIVITY_TYPES.entries()) {
+      activityTypes.push(
+        await ActivityTypeFactory.client(this.client)
+          .merge({
+            schoolYearId: schoolYear.id,
+            name: activityType.name,
+            color: activityType.color,
+            displayOrder: activityTypeIndex + 1,
+          })
+          .create()
+      )
+    }
 
-    const sixiemeA = await TeachingClassFactory.client(this.client)
-      .merge({
-        schoolYearId: schoolYear.id,
-        levelId: sixieme.id,
-        name: "6e A",
-        shortCode: "6A",
-      })
-      .create()
+    const levels: Level[] = []
+    const classesByShortCode = new Map<string, TeachingClass>()
+    const chaptersByShortCode = new Map<string, Chapter>()
 
-    const cinquiemeB = await TeachingClassFactory.client(this.client)
-      .merge({
-        schoolYearId: schoolYear.id,
-        levelId: cinquieme.id,
-        name: "5e B",
-        shortCode: "5B",
-      })
-      .create()
+    for (const levelDefinition of LEVELS) {
+      const level = await LevelFactory.client(this.client)
+        .merge({
+          schoolYearId: schoolYear.id,
+          name: levelDefinition.name,
+          shortCode: levelDefinition.shortCode,
+        })
+        .create()
 
-    const cours = await ActivityTypeFactory.client(this.client)
-      .merge({
-        schoolYearId: schoolYear.id,
-        name: "Cours",
-        color: "#2563EB",
-        displayOrder: 1,
-      })
-      .create()
+      levels.push(level)
 
-    await ActivityTypeFactory.client(this.client)
-      .merge({
-        schoolYearId: schoolYear.id,
-        name: "Exercices",
-        color: "#16A34A",
-        displayOrder: 2,
-      })
-      .create()
+      for (const [classIndex, className] of levelDefinition.classes.entries()) {
+        const teachingClass = await TeachingClassFactory.client(this.client)
+          .merge({
+            schoolYearId: schoolYear.id,
+            levelId: level.id,
+            name: className,
+            shortCode: `${levelDefinition.shortCode.replace("E", "")}${String.fromCharCode(65 + classIndex)}`,
+          })
+          .create()
+
+        classesByShortCode.set(teachingClass.shortCode, teachingClass)
+      }
+
+      const themes = []
+
+      for (const theme of THEMES) {
+        themes.push(
+          await ThemeFactory.client(this.client)
+            .merge({
+              levelId: level.id,
+              name: theme.name,
+              shortCode: theme.shortCode,
+              color: theme.color,
+              noteMarkdown: "Regroupement fonctionnel pour les données de démonstration.",
+            })
+            .create()
+        )
+      }
+
+      for (const chapterDefinition of CHAPTERS) {
+        const chapter = await ChapterFactory.client(this.client)
+          .merge({
+            levelId: level.id,
+            themeId: chapterDefinition.themeIndex === null ? null : themes[chapterDefinition.themeIndex]!.id,
+            name: chapterDefinition.name,
+            shortCode: chapterDefinition.shortCode,
+            noteMarkdown: "Chapitre générique utilisé pour alimenter les écrans de contenu.",
+          })
+          .create()
+
+        chaptersByShortCode.set(`${level.shortCode}:${chapter.shortCode}`, chapter)
+
+        for (const [activityIndex, activityTitle] of ACTIVITY_TITLES.entries()) {
+          await ActivityFactory.client(this.client)
+            .merge({
+              levelId: level.id,
+              chapterId: chapter.id,
+              activityTypeId: activityTypes[activityIndex % activityTypes.length].id,
+              title: `${activityTitle} - ${chapter.name}`,
+              estimatedDurationMinutes: activityIndex % 2 === 0 ? 30 + activityIndex * 10 : null,
+              noteMarkdown: "Activité réutilisable du dataset de démonstration.",
+            })
+            .create()
+        }
+      }
+    }
 
     const slotType = await SlotTypeFactory.client(this.client)
       .merge({
@@ -114,31 +202,16 @@ export default class DemoWorkFileSeeder {
       })
       .create()
 
-    const numerationTheme = await ThemeFactory.client(this.client)
-      .merge({
-        levelId: sixieme.id,
-        name: "Nombres et calculs",
-        shortCode: "NC",
-        color: "#4F46E5",
-        noteMarkdown: "Repères de calcul mental, numération et premiers problèmes.",
-      })
-      .create()
-
-    const fractionsChapter = await ChapterFactory.client(this.client)
-      .merge({
-        levelId: sixieme.id,
-        themeId: numerationTheme.id,
-        name: "Fractions",
-        shortCode: "FRAC",
-      })
-      .create()
-
+    const sixieme = levels[0]!
+    const sixiemeA = classesByShortCode.get("6A")!
+    const cinquiemeB = classesByShortCode.get("5B")!
+    const fractionsChapter = chaptersByShortCode.get("6E:CALC")!
     const fractionActivity = await ActivityFactory.client(this.client)
       .merge({
         levelId: sixieme.id,
         chapterId: fractionsChapter.id,
-        activityTypeId: cours.id,
-        title: "Découvrir les fractions comme partage",
+        activityTypeId: activityTypes[0]!.id,
+        title: "Séance de découverte - calcul numérique",
         estimatedDurationMinutes: 35,
       })
       .create()
@@ -154,7 +227,7 @@ export default class DemoWorkFileSeeder {
       .merge({
         templateProgressionId: progression.id,
         mainChapterId: fractionsChapter.id,
-        title: "Fractions comme partage",
+        title: "Découverte en calcul numérique",
         sessionOrder: 1,
         plannedDurationMinutes: 55,
       })
@@ -187,7 +260,7 @@ export default class DemoWorkFileSeeder {
         recurringSlotId: recurringSlot.id,
         templateSessionId: templateSession.id,
         mainChapterId: fractionsChapter.id,
-        title: "Fractions comme partage",
+        title: "Découverte en calcul numérique",
         sessionDate: DateTime.fromISO("2025-09-09"),
         startTime: "09:00",
         durationMinutes: 55,
