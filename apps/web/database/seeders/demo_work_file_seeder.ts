@@ -11,6 +11,8 @@ import type TemplateSessionActivity from "#models/template_session_activity"
 import {
   ActivityFactory,
   ActivityTypeFactory,
+  ActualSessionActivityFactory,
+  ActualSessionFactory,
   ChapterFactory,
   LevelFactory,
   PeriodFactory,
@@ -25,6 +27,9 @@ import {
   TemplateSessionFactory,
   ThemeFactory,
 } from "#database/factories"
+import type ActualSession from "#models/actual_session"
+import type PlannedSession from "#models/planned_session"
+import type PlannedSessionActivity from "#models/planned_session_activity"
 
 const PERIOD_SETS = [
   [
@@ -102,9 +107,22 @@ const RECURRING_SLOT_BLUEPRINTS = [
   { classShortCode: "4A", slotTypeIndex: 0, weekday: 3, startTime: "14:35", durationMinutes: 55 },
 ]
 
+const PLANNED_SESSION_OUTCOMES = [
+  { outcome: "realized", reviewRequired: false, reviewed: true },
+  { outcome: "shifted", reviewRequired: true, reviewed: false },
+  { outcome: "partial", reviewRequired: true, reviewed: false },
+  { outcome: "cancelled", reviewRequired: false, reviewed: true },
+  { outcome: "to_catch_up", reviewRequired: true, reviewed: false },
+]
+
 type TemplateSessionSet = {
   sessions: TemplateSession[]
   activitiesByTemplateSessionId: Map<string, TemplateSessionActivity[]>
+}
+
+type PlannedSessionSet = {
+  session: PlannedSession
+  activities: PlannedSessionActivity[]
 }
 
 type PlannedSessionInput = {
@@ -119,6 +137,19 @@ type PlannedSessionInput = {
 
 function firstDateWithWeekday(startDate: DateTime, weekday: number) {
   return startDate.plus({ days: (weekday - startDate.weekday + 7) % 7 })
+}
+
+function completionDateTime(sessionDate: DateTime, hour: number, minute = 0) {
+  return DateTime.fromObject(
+    {
+      year: sessionDate.year,
+      month: sessionDate.month,
+      day: sessionDate.day,
+      hour,
+      minute,
+    },
+    { zone: "utc" }
+  )
 }
 
 export default class DemoWorkFileSeeder {
@@ -170,6 +201,7 @@ export default class DemoWorkFileSeeder {
     const classesByShortCode = new Map<string, TeachingClass>()
     const chaptersByShortCode = new Map<string, Chapter>()
     const activitiesByChapterKey = new Map<string, Activity[]>()
+    let archivedReusableActivityCreated = false
 
     for (const levelDefinition of LEVELS) {
       const level = await LevelFactory.client(this.client)
@@ -226,6 +258,10 @@ export default class DemoWorkFileSeeder {
         const chapterActivities: Activity[] = []
 
         for (const [activityIndex, activityTitle] of ACTIVITY_TITLES.entries()) {
+          const shouldArchiveActivity: boolean =
+            !archivedReusableActivityCreated && chapterDefinition.shortCode === "CALC"
+          archivedReusableActivityCreated = archivedReusableActivityCreated || shouldArchiveActivity
+
           chapterActivities.push(
             await ActivityFactory.client(this.client)
               .merge({
@@ -235,6 +271,7 @@ export default class DemoWorkFileSeeder {
                 title: `${activityTitle} - ${chapter.name}`,
                 estimatedDurationMinutes: activityIndex % 2 === 0 ? 30 + activityIndex * 10 : null,
                 noteMarkdown: "Activité réutilisable du dataset de démonstration.",
+                archivedAt: shouldArchiveActivity ? DateTime.utc().minus({ days: 30 }) : null,
               })
               .create()
           )
@@ -346,8 +383,10 @@ export default class DemoWorkFileSeeder {
     }
 
     const sessionOrdersByClassId = new Map<string, number>()
+    const plannedSessionSets: PlannedSessionSet[] = []
 
     const createPlannedSession = async (input: PlannedSessionInput) => {
+      const plannedSessionOutcome = PLANNED_SESSION_OUTCOMES[plannedSessionSets.length]
       const plannedSession = await PlannedSessionFactory.client(this.client)
         .merge({
           classId: input.teachingClass.id,
@@ -359,24 +398,35 @@ export default class DemoWorkFileSeeder {
           startTime: input.recurringSlot.startTime,
           durationMinutes: input.recurringSlot.durationMinutes,
           sessionOrder: input.sessionOrder,
+          outcome: plannedSessionOutcome?.outcome ?? null,
+          outcomeReviewRequired: plannedSessionOutcome?.reviewRequired ?? false,
+          outcomeReviewedAt: plannedSessionOutcome?.reviewed ? completionDateTime(input.sessionDate, 17) : null,
           noteMarkdown: "Séance prévisionnelle générée pour le dataset de démonstration.",
         })
         .create()
+      const plannedSessionActivities: PlannedSessionActivity[] = []
 
       for (const templateActivity of input.templateActivities) {
-        await PlannedSessionActivityFactory.client(this.client)
-          .merge({
-            plannedSessionId: plannedSession.id,
-            activityId: templateActivity.activityId,
-            templateSessionActivityId: templateActivity.id,
-            activityTypeId: templateActivity.activityTypeId,
-            localTitle: templateActivity.localTitle,
-            localDescriptionMarkdown: templateActivity.localDescriptionMarkdown,
-            activityOrder: templateActivity.activityOrder,
-            plannedDurationMinutes: templateActivity.plannedDurationMinutes,
-          })
-          .create()
+        plannedSessionActivities.push(
+          await PlannedSessionActivityFactory.client(this.client)
+            .merge({
+              plannedSessionId: plannedSession.id,
+              activityId: templateActivity.activityId,
+              templateSessionActivityId: templateActivity.id,
+              activityTypeId: templateActivity.activityTypeId,
+              localTitle: templateActivity.localTitle,
+              localDescriptionMarkdown: templateActivity.localDescriptionMarkdown,
+              activityOrder: templateActivity.activityOrder,
+              plannedDurationMinutes: templateActivity.plannedDurationMinutes,
+            })
+            .create()
+        )
       }
+
+      plannedSessionSets.push({
+        session: plannedSession,
+        activities: plannedSessionActivities,
+      })
 
       return plannedSession
     }
@@ -400,20 +450,98 @@ export default class DemoWorkFileSeeder {
           noteMarkdown: "Séance ajoutée hors créneau récurrent pour montrer une origine manuelle.",
         })
         .create()
+      const plannedSessionActivities = [
+        await PlannedSessionActivityFactory.client(this.client)
+          .merge({
+            plannedSessionId: plannedSession.id,
+            activityId: null,
+            activityTypeId: activityTypes[3]!.id,
+            localTitle: "Reprise ciblée des difficultés",
+            localDescriptionMarkdown: "Activité locale copiée directement dans la séance planifiée.",
+            activityOrder: 1,
+            plannedDurationMinutes: 30,
+          })
+          .create(),
+      ]
 
-      await PlannedSessionActivityFactory.client(this.client)
-        .merge({
-          plannedSessionId: plannedSession.id,
-          activityId: null,
-          activityTypeId: activityTypes[3]!.id,
-          localTitle: "Reprise ciblée des difficultés",
-          localDescriptionMarkdown: "Activité locale copiée directement dans la séance planifiée.",
-          activityOrder: 1,
-          plannedDurationMinutes: 30,
-        })
-        .create()
+      plannedSessionSets.push({
+        session: plannedSession,
+        activities: plannedSessionActivities,
+      })
 
       return plannedSession
+    }
+
+    const copyPlannedActivityToActual = async (
+      actualSession: ActualSession,
+      plannedSessionActivity: PlannedSessionActivity,
+      activityOrder: number,
+      actualDurationMinutes = plannedSessionActivity.plannedDurationMinutes
+    ) => {
+      await ActualSessionActivityFactory.client(this.client)
+        .merge({
+          actualSessionId: actualSession.id,
+          activityId: plannedSessionActivity.activityId,
+          plannedSessionActivityId: plannedSessionActivity.id,
+          replacesPlannedSessionActivityId: null,
+          activityTypeId: plannedSessionActivity.activityTypeId,
+          localTitle: plannedSessionActivity.localTitle,
+          localDescriptionMarkdown: plannedSessionActivity.localDescriptionMarkdown,
+          activityOrder,
+          actualDurationMinutes,
+        })
+        .create()
+    }
+
+    const addLocalActualActivity = async (
+      actualSession: ActualSession,
+      activityOrder: number,
+      localTitle: string,
+      plannedSessionActivityToReplace: PlannedSessionActivity | null = null
+    ) => {
+      await ActualSessionActivityFactory.client(this.client)
+        .merge({
+          actualSessionId: actualSession.id,
+          activityId: null,
+          plannedSessionActivityId: null,
+          replacesPlannedSessionActivityId: plannedSessionActivityToReplace?.id ?? null,
+          activityTypeId: activityTypes[3]!.id,
+          localTitle,
+          localDescriptionMarkdown: "Activité réelle locale saisie pendant le suivi de séance.",
+          activityOrder,
+          actualDurationMinutes: 25,
+        })
+        .create()
+    }
+
+    const createActualSessionForPlanned = async (
+      plannedSessionSet: PlannedSessionSet,
+      attributes: {
+        title: string
+        sessionDate?: DateTime
+        durationMinutes?: number
+        state?: "draft" | "completed"
+        noteMarkdown: string
+      }
+    ) => {
+      const state = attributes.state ?? "completed"
+      const sessionDate = attributes.sessionDate ?? plannedSessionSet.session.sessionDate
+
+      return ActualSessionFactory.client(this.client)
+        .merge({
+          classId: plannedSessionSet.session.classId,
+          plannedSessionId: plannedSessionSet.session.id,
+          mainChapterId: plannedSessionSet.session.mainChapterId,
+          title: attributes.title,
+          sessionDate,
+          startTime: plannedSessionSet.session.startTime,
+          durationMinutes: attributes.durationMinutes ?? plannedSessionSet.session.durationMinutes,
+          sessionOrder: plannedSessionSet.session.sessionOrder,
+          state,
+          completedAt: state === "completed" ? completionDateTime(sessionDate, 18) : null,
+          noteMarkdown: attributes.noteMarkdown,
+        })
+        .create()
     }
 
     for (const blueprint of RECURRING_SLOT_BLUEPRINTS) {
@@ -460,5 +588,70 @@ export default class DemoWorkFileSeeder {
       sessionOrdersByClassId.set(teachingClass.id, nextOrder)
       await createStandalonePlannedSession(teachingClass, DateTime.fromISO("2026-01-15"), nextOrder)
     }
+
+    const realizedSessionSet = plannedSessionSets.find(({ session }) => session.outcome === "realized")!
+    const shiftedSessionSet = plannedSessionSets.find(({ session }) => session.outcome === "shifted")!
+    const partialSessionSet = plannedSessionSets.find(({ session }) => session.outcome === "partial")!
+    const catchUpSessionSet = plannedSessionSets.find(({ session }) => session.outcome === "to_catch_up")!
+
+    const realizedActualSession = await createActualSessionForPlanned(realizedSessionSet, {
+      title: "Séance réalisée - automatismes de calcul",
+      noteMarkdown: "Réalisation conforme au prévu, avec trace des activités suivies.",
+    })
+
+    for (const [activityIndex, plannedSessionActivity] of realizedSessionSet.activities.entries()) {
+      await copyPlannedActivityToActual(realizedActualSession, plannedSessionActivity, activityIndex + 1)
+    }
+
+    const shiftedActualSession = await createActualSessionForPlanned(shiftedSessionSet, {
+      title: "Séance déplacée après sortie pédagogique",
+      sessionDate: shiftedSessionSet.session.sessionDate.plus({ days: 2 }),
+      noteMarkdown: "Séance réalisée à une autre date que le prévisionnel initial.",
+    })
+
+    for (const [activityIndex, plannedSessionActivity] of shiftedSessionSet.activities.entries()) {
+      await copyPlannedActivityToActual(shiftedActualSession, plannedSessionActivity, activityIndex + 1)
+    }
+
+    const partialActualSession = await createActualSessionForPlanned(partialSessionSet, {
+      title: "Séance partielle avec remplacement d'activité",
+      durationMinutes: 35,
+      noteMarkdown: "Séance écourtée, une activité prévue a été remplacée par une remédiation.",
+    })
+
+    await copyPlannedActivityToActual(partialActualSession, partialSessionSet.activities[0]!, 1, 15)
+    await addLocalActualActivity(
+      partialActualSession,
+      2,
+      "Remédiation sur les prérequis observés",
+      partialSessionSet.activities[1]!
+    )
+
+    const draftCatchUpActualSession = await createActualSessionForPlanned(catchUpSessionSet, {
+      title: "Brouillon de séance à rattraper",
+      state: "draft",
+      noteMarkdown: "Brouillon passé volontairement laissé à reprendre dans les futurs rappels.",
+    })
+
+    await addLocalActualActivity(draftCatchUpActualSession, 1, "Préparation du rattrapage individualisé")
+
+    const unplannedClass = classesByShortCode.get("4A")!
+    const unplannedActualSession = await ActualSessionFactory.client(this.client)
+      .merge({
+        classId: unplannedClass.id,
+        plannedSessionId: null,
+        mainChapterId: null,
+        title: "Atelier non planifié de consolidation",
+        sessionDate: DateTime.fromISO("2026-03-20"),
+        startTime: "15:30",
+        durationMinutes: 45,
+        sessionOrder: 99,
+        state: "completed",
+        completedAt: DateTime.fromISO("2026-03-20T16:20:00", { zone: "utc" }),
+        noteMarkdown: "Séance réelle ajoutée sans origine prévisionnelle.",
+      })
+      .create()
+
+    await addLocalActualActivity(unplannedActualSession, 1, "Activité ajoutée sans origine planifiée")
   }
 }
