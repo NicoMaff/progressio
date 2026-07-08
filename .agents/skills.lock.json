@@ -1,0 +1,125 @@
+{
+  "installedAt": "2026-07-08T16:21:25.131Z",
+  "skills": [
+    {
+      "name": "adonisjs-controller-flow",
+      "displayName": "adonisjs-controller-flow",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "skills/local/backend/adonisjs-controller-flow",
+      "installPath": "adonisjs-controller-flow"
+    },
+    {
+      "name": "adonisjs-data-transformers",
+      "displayName": "adonisjs-data-transformers",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "skills/local/backend/adonisjs-data-transformers",
+      "installPath": "adonisjs-data-transformers"
+    },
+    {
+      "name": "adonisjs-general-conventions",
+      "displayName": "adonisjs-general-conventions",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "skills/local/backend/adonisjs-general-conventions",
+      "installPath": "adonisjs-general-conventions"
+    },
+    {
+      "name": "adonisjs-japa-testing",
+      "displayName": "adonisjs-japa-testing",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "skills/local/testing/adonisjs-japa-testing",
+      "installPath": "adonisjs-japa-testing"
+    },
+    {
+      "name": "adonisjs-persistence-services",
+      "displayName": "adonisjs-persistence-services",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "skills/local/backend/adonisjs-persistence-services",
+      "installPath": "adonisjs-persistence-services"
+    },
+    {
+      "name": "adonis-backend-convention",
+      "displayName": "backend/adonis-backend-convention",
+      "version": "0.0.0",
+      "type": "local",
+      "sourcePath": "backend/adonis-backend-convention",
+      "installPath": "backend/adonis-backend-convention"
+    },
+    {
+      "name": "adonis-controller-flow",
+      "displayName": "backend/adonis-controller-flow",
+      "version": "0.0.0",
+      "type": "local",
+      "sourcePath": "backend/adonis-controller-flow",
+      "installPath": "backend/adonis-controller-flow"
+    },
+    {
+      "name": "adonis-data-transformers",
+      "displayName": "backend/adonis-data-transformers",
+      "version": "0.0.0",
+      "type": "local",
+      "sourcePath": "backend/adonis-data-transformers",
+      "installPath": "backend/adonis-data-transformers"
+    },
+    {
+      "name": "adonis-persistence-services",
+      "displayName": "backend/adonis-persistence-services",
+      "version": "0.0.0",
+      "type": "local",
+      "sourcePath": "backend/adonis-persistence-services",
+      "installPath": "backend/adonis-persistence-services"
+    },
+    {
+      "name": "inertia-react-convention",
+      "displayName": "frontend/inertia-react",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "frontend/inertia-react",
+      "installPath": "frontend/inertia-react"
+    },
+    {
+      "name": "tuyau-client-convention",
+      "displayName": "frontend/tuyau-client",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "frontend/tuyau-client",
+      "installPath": "frontend/tuyau-client"
+    },
+    {
+      "name": "unocss-convention",
+      "displayName": "frontend/unocss",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "frontend/unocss",
+      "installPath": "frontend/unocss"
+    },
+    {
+      "name": "inertia-react-conventions",
+      "displayName": "inertia-react-conventions",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "skills/local/frontend/inertia-react-conventions",
+      "installPath": "inertia-react-conventions"
+    },
+    {
+      "name": "tuyau-adonisjs-client-conventions",
+      "displayName": "tuyau-adonisjs-client-conventions",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "skills/local/frontend/tuyau-adonisjs-client-conventions",
+      "installPath": "tuyau-adonisjs-client-conventions"
+    },
+    {
+      "name": "unocss-styling-conventions",
+      "displayName": "unocss-styling-conventions",
+      "version": "0.1.0",
+      "type": "local",
+      "sourcePath": "skills/local/frontend/unocss-styling-conventions",
+      "installPath": "unocss-styling-conventions"
+    }
+  ]
+}
