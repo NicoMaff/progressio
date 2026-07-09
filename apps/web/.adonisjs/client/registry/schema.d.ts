@@ -67,6 +67,30 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/teaching_content_update_theme_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'teaching_content.chapters.store': {
+    methods: ["POST"]
+    pattern: '/teaching-content/levels/:levelId/chapters'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('src/teaching_content/validators/chapter_validator.js').createChapterValidator)>>
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('src/teaching_content/validators/chapter_validator.js').createChapterValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/teaching_content_create_chapter_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/teaching_content_create_chapter_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'teaching_content.chapters.update': {
+    methods: ["PUT"]
+    pattern: '/teaching-content/levels/:levelId/chapters/:chapterId'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('src/teaching_content/validators/chapter_validator.js').updateChapterValidator)>>
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; chapterId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('src/teaching_content/validators/chapter_validator.js').updateChapterValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/teaching_content_update_chapter_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/teaching_content_update_chapter_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'new_account.create': {
     methods: ["GET","HEAD"]
     pattern: '/signup'

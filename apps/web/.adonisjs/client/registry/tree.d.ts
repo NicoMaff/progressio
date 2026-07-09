@@ -10,6 +10,10 @@ export interface ApiDefinition {
       store: typeof routes['teaching_content.themes.store']
       update: typeof routes['teaching_content.themes.update']
     }
+    chapters: {
+      store: typeof routes['teaching_content.chapters.store']
+      update: typeof routes['teaching_content.chapters.update']
+    }
   }
   newAccount: {
     create: typeof routes['new_account.create']

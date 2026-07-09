@@ -1,32 +1,32 @@
+import type Chapter from "#models/chapter"
 import type Level from "#models/level"
 import type SchoolYear from "#models/school_year"
+import type Theme from "#models/theme"
+import TeachingContentPageChapterTransformer from "#teaching_content/transformers/teaching_content_page_chapter_transformer"
+import TeachingContentPageLevelTransformer from "#teaching_content/transformers/teaching_content_page_level_transformer"
+import TeachingContentPageSchoolYearTransformer from "#teaching_content/transformers/teaching_content_page_school_year_transformer"
+import TeachingContentPageThemeTransformer from "#teaching_content/transformers/teaching_content_page_theme_transformer"
+import { BaseTransformer } from "@adonisjs/core/transformers"
 
-export type TeachingContentPageProps = {
-  level: {
-    id: string
-    name: string
-    shortCode: string
+export default class TeachingContentPageTransformer extends BaseTransformer<Level> {
+  constructor(
+    resource: Level,
+    private readonly schoolYear: SchoolYear,
+    private readonly themes: Theme[],
+    private readonly chapters: Chapter[],
+    private readonly chapterCountsByThemeId: Map<string, number>,
+    private readonly themesById: Map<string, Theme>,
+    private readonly activityCounts: Map<string, number>
+  ) {
+    super(resource)
   }
-  schoolYear: {
-    id: string
-    label: string
-    subject: string
-  }
-}
 
-export default class TeachingContentPageTransformer {
-  transform(level: Level, schoolYear: SchoolYear): TeachingContentPageProps {
+  toObject() {
     return {
-      level: {
-        id: level.id,
-        name: level.name,
-        shortCode: level.shortCode,
-      },
-      schoolYear: {
-        id: schoolYear.id,
-        label: schoolYear.label,
-        subject: schoolYear.subject,
-      },
+      level: TeachingContentPageLevelTransformer.transform(this.resource),
+      schoolYear: TeachingContentPageSchoolYearTransformer.transform(this.schoolYear),
+      themes: TeachingContentPageThemeTransformer.transform(this.themes, this.chapterCountsByThemeId),
+      chapters: TeachingContentPageChapterTransformer.transform(this.chapters, this.themesById, this.activityCounts),
     }
   }
 }
