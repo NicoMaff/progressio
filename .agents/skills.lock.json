@@ -1,5 +1,5 @@
 {
-  "installedAt": "2026-07-08T16:21:25.131Z",
+  "installedAt": "2026-07-09T14:50:20.759Z",
   "skills": [
     {
       "name": "adonisjs-controller-flow",
@@ -12,7 +12,7 @@
     {
       "name": "adonisjs-data-transformers",
       "displayName": "adonisjs-data-transformers",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "type": "local",
       "sourcePath": "skills/local/backend/adonisjs-data-transformers",
       "installPath": "adonisjs-data-transformers"

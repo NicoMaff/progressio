@@ -1,6 +1,6 @@
 ---
 name: adonisjs-data-transformers
-version: 0.1.0
+version: 0.2.0
 description: AdonisJS data transformer and payload conventions. Use in AdonisJS projects when changing or reviewing transformers, browser/API payloads, exposed Lucid data, generated frontend types, or Tuyau client contracts.
 ---
 
@@ -33,6 +33,8 @@ description: AdonisJS data transformer and payload conventions. Use in AdonisJS 
 - Lazy loading inside transformer-related code is acceptable only when explicitly needed and when it follows the documented `this.whenLoaded(...)` pattern.
 - Use Lucid computed properties for simple derived fields that naturally belong on the model.
 - For complex derived fields, permission-aware values, expensive calculations, or aggregates, calculate values in the controller, action, or service, then pass only the final value into the response/transformer flow.
+- Use `toObject()` only to make the output shape explicit: it defines which fields and related resources should be returned in the serialized payload. Do not call `toObject()` from controllers or services; call `Transformer.transform(...)` for single items and collections, then let AdonisJS route the data through the transformer lifecycle.
+- Do not add an explicit TypeScript return type to transformer `toObject()` methods. AdonisJS creates and manages this method as part of its transformer API, and its frontend types are inferred/generated from the transformer output (`InferData`, `InferVariants`, and `.adonisjs/client/data.d.ts`), so trying to manually type `toObject()` adds duplication and can fight the framework.
 - Do not put complex business logic, database writes, reusable domain decisions, or custom exception logic in transformers.
 
 ## Tuyau And Types
