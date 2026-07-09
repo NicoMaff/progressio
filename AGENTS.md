@@ -31,121 +31,46 @@
   - `packages/ui` contains the `@progressio/ui` reusable React UI components and Storybook.
 - Do not introduce a separate backend API, SPA app, shared domain package, or service boundary unless a documented decision explicitly calls for it.
 
-## AdonisJS And Inertia
+## Agent Scope
 
-- The web app uses AdonisJS with InertiaJS, React, and TypeScript.
-- Use AdonisJS-integrated Tuyau for generated route, page, and client contracts when available.
-- Follow the AdonisJS Inertia adapter convention: Inertia views live under `apps/web/inertia/pages`.
-- Keep Adonis routes and controllers server-side. Do not add a client-side router for Inertia pages.
-- Store backend application code under `apps/web/src`.
-- Organize backend code by feature first. Each feature may use the same generic subfolders, such as `controllers`, `validators`, `transformers`, `services`, and `actions`.
-- Use these initial backend feature areas unless the codebase proves a different boundary is clearer: `work_files`, `school_years`, `teaching_content`, `planning`, `actuals`, and `interruptions`.
-- Keep `Class` ownership in `teaching_content` with levels and other teaching reference data. Planning and actuals may reference classes but should not own class configuration.
-- Keep `Period` ownership in `school_years`; periods are global subdivisions of the school year, not class or session-owned data.
-- Keep `Recurring Slot` ownership in `planning`; recurring slots exist to generate and organize planned sessions for classes.
-- Keep `Planning Conflict` ownership in `interruptions`; planning may consume conflict resolutions or apply rescheduling, but conflicts are created by interruptions.
-- Keep `Template Progression` and `Template Session` ownership in `planning`; they structure planned teaching sequences and reference teaching content.
-- Keep confirmed `Session Outcome` ownership in `planning` because it is the tracking result of a planned session. `actuals` provides the actual-session facts used to suggest or review outcomes.
-- Store feature-owned enums inside the owning feature. Use `src/core/enums` only for genuinely cross-feature enum values.
-- Each backend feature may define its own import alias in `apps/web/package.json`.
-- Use `apps/web/src/core` for shared or cross-feature backend code only, including shared models, middleware, providers, exceptions, helpers, utils, enums, and transverse services.
-- Store Lucid models in `apps/web/src/core/models` unless a later ADR introduces a stricter bounded-context split.
-- Keep database migrations and seeders in the standard Adonis location under `apps/web/database`.
-- Do not let `core` become a catch-all for feature behavior. Put feature-specific rules, actions, services, validators, and transformers inside the owning feature.
-- Keep controllers thin. Use them to coordinate HTTP concerns, validation, authorization, and Inertia rendering; move use-case logic into feature actions or services, and shape browser-facing payloads with feature transformers.
-- Keep `apps/web/start/routes.ts` as the main route entry point. Extract dedicated feature route files only when route complexity justifies it, and import those files from the main route file.
-- Routes should import controllers from automatically generated barrel files when the Adonis setup provides them.
-- Prefer atomic controllers with `render` for read/page responses and `execute` for command/write flows.
+- Read only the files useful for the current task: user-cited files first, then nearby files that establish the feature convention. Do not scan the whole project unless the impact is genuinely cross-cutting.
+- Prefer local code, package scripts, ADRs, and skills before external documentation.
+- Do not browse official documentation by default. Use it only for a concrete API/version doubt, a missing local answer, or an explicit theoretical/framework question.
+- Do not manually edit generated Adonis, Tuyau, or Inertia output. Regenerate through project scripts or dev-server reload when needed.
 
-## Naming
+## Skill Routing
 
-- Use `camelCase` for variables, functions, methods, and local non-static constants.
-- Use `PascalCase` for classes, React components, TypeScript types, TypeScript interfaces, and enums.
-- Use `snake_case` for file and folder names unless an external framework convention requires otherwise.
-- Use `SCREAMING_SNAKE_CASE` for global constants, static immutable constants, environment variables, and immutable configuration keys.
-- React component names must use `PascalCase`; when no stricter local convention exists, their files should use `snake_case.tsx`.
-- In `packages/ui`, component files should use `snake_case.tsx` and export `PascalCase` component names. Prefer `src/atoms/button.tsx` over `src/atoms/button/index.tsx` unless a component genuinely needs a local folder.
-- Prefer named functional React components.
-- Type React props with `type` by default; use `interface` only when extension or declaration merging is intentionally useful.
-- Accept `className` on reusable UI components when composition or layout customization is expected.
-- Declare `children` explicitly when a component renders children.
-- Use `forwardRef` only for DOM-interactive or composition-heavy components that need ref forwarding.
-- Use `class-variance-authority` for reusable component variants. Keep UnoCSS classes statically visible inside variant definitions so extraction remains reliable.
-- Do not add a shared `cn` helper until the project has confirmed merge semantics that fit UnoCSS.
-- Use the Tailwind Prettier plugin to order utility classes, while keeping UnoCSS as the styling engine.
-- Use Radix UI as the initial accessibility primitive choice for complex components such as dialogs, popovers, dropdown menus, tabs, tooltips, and selects. Keep simple atoms like buttons, cards, badges, inputs, and labels local unless Radix provides clear value.
-- shadcn-style components may be tested as a spike, but shadcn is not an official project architecture yet. Adapt any useful patterns to `@progressio/ui`, UnoCSS, CVA, and the atoms/molecules structure instead of importing incompatible assumptions blindly.
-- Do not pass Lucid models or raw database rows directly to browser-facing components. Shape explicit payloads through Adonis transformers first.
-- Transformers should return UI-neutral screen data: identifiers, canonical domain values, dates, durations, and displayable text when it belongs to the application contract. Do not return component-specific props, CSS classes, badge colors, or icon names from transformers.
-- Prefer generated Tuyau/Inertia helpers and types over duplicated route strings, hand-written page contracts, or ad hoc fetch types.
-- Do not manually edit generated Tuyau or Adonis output; regenerate it through the project scripts when backend routes, controllers, validators, or response contracts change.
+Use the smallest useful set of skills from `.agents/skills/`; combine focused skills when a task crosses boundaries.
 
-## Frontend Boundaries
+- `adonisjs-general-conventions`: backend structure, feature organization, `src/core` boundaries, or choosing a more specific Adonis skill.
+- `adonisjs-controller-flow`: routes, controllers, HTTP validation, authorization, generated barrel imports, Inertia render/submit flows, API response flow.
+- `adonisjs-persistence-services`: actions, services, Lucid queries/models, transactions, dependency injection, persistence rules, action/service errors.
+- `adonisjs-data-transformers`: transformers, browser/API payloads, exposed data, generated frontend types, Tuyau/Inertia response contracts.
+- `inertia-react-conventions`: Inertia React pages, layouts, forms, shared props, generated page/route types, navigation, client state, browser UI behavior.
+- `tuyau-adonisjs-client-conventions`: Tuyau API calls, generated clients, typed request helpers, generated API contracts.
+- `unocss-styling-conventions`: UnoCSS utilities, shortcuts, tokens, presets, extractors, CVA variants, styling changes.
+- `adonisjs-japa-testing`: AdonisJS/Japa test structure, commands, database isolation, API/browser clients, regression strategy.
+- `security-sensitive-files-policy`: mandatory for secrets, credentials, environment files, certificates, keys, tokens, or any task that could read, expose, move, delete, diff, or commit sensitive material.
+- `personal-naming-conventions`: identifiers, file names, component names, TypeScript types/interfaces/enums, constants, and renames.
+- `git-commit-message-convention`: commit creation, commit message proposals, commit review, amend, or squash-message work.
 
-- `packages/ui` must not depend on AdonisJS, Lucid, Inertia, route helpers, or application persistence.
-- Consume `@progressio/ui` from source inside the workspace. Do not add a library build pipeline or require a generated `dist` unless a concrete external consumption need appears.
-- Expose `@progressio/ui` through controlled barrel exports such as `src/index.ts`, `src/atoms/index.ts`, and `src/molecules/index.ts`. App code should import from `@progressio/ui` instead of deep source paths.
-- `packages/ui` may expose component layers such as:
-  - `atoms`
-  - `molecules`
-  - `organisms`, only when a component is genuinely composed enough to justify it
-- UI components can include Progressio-specific visual components, but they must be driven by plain props and not backend models.
-- Inertia pages in `apps/web/inertia/pages` compose UI components and adapt generated Adonis/Tuyau-backed page data into UI props.
-- Organize Inertia pages by product area under `apps/web/inertia/pages`, aligned with the main feature areas when practical.
-- Use `apps/web/inertia/layouts` for page layouts, `apps/web/inertia/components` for app-specific reusable components, and `apps/web/inertia/partials` for reusable page blocks such as headers, footers, and navigation.
-- App-specific Inertia components, layouts, and partials may depend on Inertia helpers, typed routes, and shared props. This exception does not apply to `@progressio/ui`.
-- Put Inertia-aware or app-specific React hooks in `apps/web/inertia/hooks`. Put only UI-agnostic hooks in `packages/ui/src/hooks`, and do not put domain or Inertia behavior in the UI package.
-- Prefer page props and local React state for frontend state. If cross-page or genuinely shared client state is needed, use Zustand stores under `apps/web/inertia/stores`; do not put app state stores in `@progressio/ui`.
-- Use Adonis/Inertia form and request helpers as long as they are sufficient. Add custom form abstractions only after repeated local patterns justify them.
-- Do not add an i18n library initially. Use French product copy by default, and centralize repeated domain labels when needed.
-- Keep generated backend/frontend contracts owned by `@progressio/web`; keep UI component prop types owned by `@progressio/ui`.
-- Prefer TypeScript `satisfies` at the adaptation boundary to keep generated page data and UI props aligned:
+## Local Boundaries Not Owned By Skills
 
-```ts
-const cardProps = {
-  title: session.title,
-  dateLabel: formatDate(session.date),
-  outcome: session.outcome,
-} satisfies SessionCardProps
-```
+- Backend feature areas: `work_files`, `school_years`, `teaching_content`, `planning`, `actuals`, `interruptions`.
+- Domain ownership: `Class` belongs to `teaching_content`; `Period` belongs to `school_years`; `Recurring Slot`, `Template Progression`, `Template Session`, and confirmed `Session Outcome` belong to `planning`; `Planning Conflict` belongs to `interruptions`.
+- Backend code lives under `apps/web/src`; shared backend code belongs in `apps/web/src/core` only when it is genuinely cross-feature. Lucid models stay in `apps/web/src/core/models` unless a later ADR changes this.
+- Migrations and seeders stay under `apps/web/database`; `apps/web/start/routes.ts` remains the main route entry point.
+- Inertia pages live under `apps/web/inertia/pages`; app-specific layouts/components/partials/hooks/stores stay under `apps/web/inertia`.
+- `packages/ui` must not depend on AdonisJS, Lucid, Inertia, route helpers, or persistence. App code imports UI through `@progressio/ui`, not deep source paths.
+- Storybook belongs to `packages/ui/.storybook` and must not require AdonisJS, Inertia, database access, or app routes.
+- Use French product copy by default. Do not add i18n initially.
 
-## Styling
+## Global Conventions
 
-- UnoCSS is configured at the monorepo root and shared by workspace packages.
-- Use the Wind 4 preset.
-- Use the UnoCSS Icons preset for icons. Do not add an icon React package by default; choose the icon collection deliberately when implementing the UI.
-- `packages/ui` consumes shared styling conventions but does not own the theme.
-- Prefer reusable UI component behavior and accessible states over page-specific styling inside `packages/ui`.
-- Add UnoCSS shortcuts or tokens at the root only when repetition or design consistency justifies it.
-- Treat class sorting as formatting only. Do not rely on it to validate whether a utility class exists or whether conflicting UnoCSS utilities merge correctly.
-
-## Tooling
-
-- Keep shared quality configuration at the monorepo root, including Prettier, ESLint, and the base TypeScript configuration.
-- Use the root `.prettierrc` as the formatting source of truth. It uses double quotes, no semicolons, `printWidth: 120`, `trailingComma: "es5"`, and `prettier-plugin-tailwindcss`.
-- Use root ESLint flat config with TypeScript and React support. Use Prettier separately for formatting; do not replace this setup with Biome unless an ADR changes the decision.
-- Name the root ESLint config `eslint.config.mjs` so it remains ESM without matching AdonisJS' default `eslint.config.js` ignore pattern.
-- Keep package-level lint, format, and typecheck scripts delegating to root-installed tools with `yarn run -T` when the tool is owned by the root package.
-- Workspace packages may define package-local scripts and `tsconfig.json` files, but they should extend the root conventions.
-- Root scripts should delegate to workspaces for common tasks: `dev` to `@progressio/web`, `storybook` to `@progressio/ui`, and workspace-wide `lint`, `typecheck`, `test`, `format`, and `format:check` commands.
-- If a workspace has no meaningful tests yet, make that explicit with a no-op script or configure the workspace command so missing scripts are handled intentionally.
-- Before proposing a commit message in this repository, run or report the relevant quality checks first: formatting/linting, typechecking, and tests appropriate to the changed scope.
-
-## Storybook
-
-- Storybook belongs with the UI package.
-- Keep Storybook configuration in `packages/ui/.storybook`.
-- Root scripts may delegate to `@progressio/ui` Storybook commands, but Storybook itself should not own app-level concerns.
-- Stories should document component states, variants, accessibility-relevant behavior, and expected composition.
-- Stories must not require AdonisJS, Inertia, database access, or app routes.
-- Do not add UI unit test tooling by default. Add Vitest, Testing Library, or interaction tests only when a component has behavior that Storybook alone does not cover well.
-
-## Testing
-
-- Use Japa for AdonisJS backend tests.
-- Focus backend tests on behavior with real risk: feature actions, services, domain rules, persistence constraints, important HTTP/Inertia flows, and regressions.
-- Keep controllers thin enough that most behavior is tested through actions or services; add controller or HTTP tests when routing, validation, middleware, Inertia responses, or persistence integration matters.
-- Prefer the package scripts defined in `apps/web/package.json` for running tests.
+- Apply `security-sensitive-files-policy` for sensitive files, secrets, credentials, environment files, certificates, keys, and tokens.
+- Apply `personal-naming-conventions` for identifiers, file names, component names, constants, and renames.
+- Apply `git-commit-message-convention` for commit messages and commit workflows.
+- Prefer package scripts over hard-coded commands. Before proposing a commit message, inspect the relevant diff and run or report the relevant format/lint, typecheck, and test checks for the changed scope.
 
 ## Domain Language
 
