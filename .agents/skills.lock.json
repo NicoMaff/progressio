@@ -1,5 +1,5 @@
 {
-  "installedAt": "2026-07-09T14:50:20.759Z",
+  "installedAt": "2026-07-09T16:36:06.500Z",
   "skills": [
     {
       "name": "adonisjs-controller-flow",
@@ -28,7 +28,7 @@
     {
       "name": "adonisjs-japa-testing",
       "displayName": "adonisjs-japa-testing",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "type": "local",
       "sourcePath": "skills/local/testing/adonisjs-japa-testing",
       "installPath": "adonisjs-japa-testing"

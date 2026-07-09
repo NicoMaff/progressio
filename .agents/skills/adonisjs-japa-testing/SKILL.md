@@ -1,6 +1,6 @@
 ---
 name: adonisjs-japa-testing
-version: 0.1.0
+version: 0.2.0
 description: AdonisJS testing conventions for Japa. Use in AdonisJS projects when adding, updating, diagnosing, or running Japa tests, including unit, functional, API, browser, database, and regression tests.
 ---
 
@@ -49,7 +49,12 @@ Before applying this skill:
 
 ## Verification
 
-- During implementation, run the smallest relevant target first, such as `node ace test <suite>`, `--files`, `--groups`, `--tests`, `--tags`, or `--failed` when supported locally.
+- Prefer package manager scripts from `package.json` when they exist. Otherwise, use `node ace test`.
+- Run all tests with `node ace test`.
+- Run tests by suite/type with `node ace test <suite>`, for example `node ace test unit`, `node ace test functional`, or `node ace test browser`, using the suite names configured in `adonisrc.ts`.
+- Run tests by file or folder with `node ace test --files="<path>"`, for example `node ace test --files="posts/index"` or `node ace test --files="posts/*"`.
+- Narrow further with `--groups="<group title>"`, `--tests="<test title>"`, `--tags="<tag>"`, or `--failed` when supported locally.
+- During implementation, run the smallest relevant target first, then broaden the run as confidence increases.
 - Before finishing a risky change, run the package's broader test script or the repository's documented checks.
 - If a command fails, report the exact command and the relevant failure summary.
 - Do not claim tests passed unless they actually ran successfully.
