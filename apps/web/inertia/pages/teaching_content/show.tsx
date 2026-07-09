@@ -6,8 +6,17 @@ type TeachingContentPageData = Data.TeachingContent.TeachingContentPage
 type TeachingContentPageProps = InertiaProps<TeachingContentPageData>
 type TeachingContentPageTheme = TeachingContentPageData["themes"][number]
 type TeachingContentPageChapter = TeachingContentPageData["chapters"][number]
+type TeachingContentPageActivityType = TeachingContentPageData["activityTypes"][number]
+type TeachingContentPageActivity = TeachingContentPageData["activities"][number]
 
-export default function TeachingContentShow({ level, schoolYear, themes, chapters }: TeachingContentPageProps) {
+export default function TeachingContentShow({
+  level,
+  schoolYear,
+  themes,
+  chapters,
+  activityTypes,
+  activities,
+}: TeachingContentPageProps) {
   return (
     <section className="flex flex-1 flex-col">
       <header className="border-border flex items-start justify-between gap-6 border-b px-12 py-10">
@@ -23,21 +32,100 @@ export default function TeachingContentShow({ level, schoolYear, themes, chapter
       </header>
 
       <div className="grid grid-cols-1 items-start gap-8 px-12 py-10 xl:grid-cols-[minmax(300px,380px)_1fr]">
-        <section className="border-border rounded-md border p-5">
-          <h2 className="mb-5 text-xl font-semibold">Nouveau chapitre</h2>
-          <Form route="teaching_content.chapters.store" routeParams={{ levelId: level.id }}>
-            {({ errors, processing }) => (
-              <>
-                <ChapterFields errors={errors} themes={themes} />
-                <button type="submit" disabled={processing}>
-                  Créer le chapitre
-                </button>
-              </>
-            )}
-          </Form>
-        </section>
+        <div className="grid gap-6">
+          <section className="border-border rounded-md border p-5">
+            <h2 className="mb-5 text-xl font-semibold">Nouvelle activité</h2>
+            <Form action={{ url: `/teaching-content/levels/${level.id}/activities`, method: "post" }}>
+              {({ errors, processing }) => (
+                <>
+                  <ActivityFields errors={errors} chapters={chapters} activityTypes={activityTypes} />
+                  <button type="submit" disabled={processing}>
+                    Créer l’activité
+                  </button>
+                </>
+              )}
+            </Form>
+          </section>
+
+          <section className="border-border rounded-md border p-5">
+            <h2 className="mb-5 text-xl font-semibold">Nouveau chapitre</h2>
+            <Form route="teaching_content.chapters.store" routeParams={{ levelId: level.id }}>
+              {({ errors, processing }) => (
+                <>
+                  <ChapterFields errors={errors} themes={themes} />
+                  <button type="submit" disabled={processing}>
+                    Créer le chapitre
+                  </button>
+                </>
+              )}
+            </Form>
+          </section>
+        </div>
 
         <div className="grid gap-8">
+          <section>
+            <div className="mb-4 flex items-end justify-between gap-4">
+              <h2 className="text-xl font-semibold">Activités actives</h2>
+              <span className="text-muted-foreground text-sm font-semibold">{activities.length} actives</span>
+            </div>
+
+            {activities.length === 0 ? (
+              <p className="text-muted-foreground">Aucune activité active pour ce niveau.</p>
+            ) : (
+              <div className="grid gap-3">
+                {activities.map((activity) => (
+                  <article key={activity.id} className="border-border rounded-md border p-4">
+                    <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-start">
+                      <div>
+                        <div className="mb-1 flex flex-wrap items-center gap-2">
+                          <h3 className="text-lg font-semibold">{activity.title}</h3>
+                          {activity.activityType && (
+                            <span className="border-border text-muted-foreground rounded-md border px-2 py-0.5 text-sm font-bold">
+                              {activity.activityType.name}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-muted-foreground text-sm">
+                          {activity.chapter
+                            ? `${activity.chapter.name} · ${activity.chapter.shortCode}`
+                            : "Sans chapitre"}
+                        </p>
+                      </div>
+                      <div className="text-muted-foreground flex flex-wrap gap-2 text-sm">
+                        <span>{activity.archivedAt ? "Archivée" : "Active"}</span>
+                        <span>{formatDuration(activity.estimatedDurationMinutes)}</span>
+                      </div>
+                    </div>
+
+                    <details className="mt-4">
+                      <summary className="cursor-pointer font-semibold">Modifier</summary>
+                      <Form
+                        action={{
+                          url: `/teaching-content/levels/${level.id}/activities/${activity.id}`,
+                          method: "put",
+                        }}
+                      >
+                        {({ errors, processing }) => (
+                          <>
+                            <ActivityFields
+                              errors={errors}
+                              chapters={chapters}
+                              activityTypes={activityTypes}
+                              activity={activity}
+                            />
+                            <button type="submit" disabled={processing}>
+                              Enregistrer
+                            </button>
+                          </>
+                        )}
+                      </Form>
+                    </details>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+
           <section>
             <div className="mb-4 flex items-end justify-between gap-4">
               <h2 className="text-xl font-semibold">Chapitres actifs</h2>
@@ -126,6 +214,103 @@ export default function TeachingContentShow({ level, schoolYear, themes, chapter
   )
 }
 
+function ActivityFields({
+  errors,
+  chapters,
+  activityTypes,
+  activity,
+}: {
+  errors: Record<string, string>
+  chapters: TeachingContentPageChapter[]
+  activityTypes: TeachingContentPageActivityType[]
+  activity?: TeachingContentPageActivity
+}) {
+  const fieldId = (name: string) => (activity ? `${name}-${activity.id}` : name)
+
+  return (
+    <div className="mb-4 grid gap-4">
+      <div>
+        <label htmlFor={fieldId("title")}>Titre</label>
+        <input
+          id={fieldId("title")}
+          name="title"
+          defaultValue={activity?.title}
+          maxLength={160}
+          data-invalid={errors.title ? "true" : undefined}
+          required
+        />
+        {errors.title && <div>{errors.title}</div>}
+      </div>
+
+      <div>
+        <label htmlFor={fieldId("activityTypeId")}>Type d’activité</label>
+        <select
+          id={fieldId("activityTypeId")}
+          name="activityTypeId"
+          defaultValue={activity?.activityTypeId ?? ""}
+          data-invalid={errors.activityTypeId ? "true" : undefined}
+          required
+        >
+          <option value="" disabled>
+            Sélectionner un type
+          </option>
+          {activityTypes.map((activityType) => (
+            <option key={activityType.id} value={activityType.id}>
+              {activityType.name}
+            </option>
+          ))}
+        </select>
+        {errors.activityTypeId && <div>{errors.activityTypeId}</div>}
+      </div>
+
+      <div>
+        <label htmlFor={fieldId("chapterId")}>Chapitre</label>
+        <select
+          id={fieldId("chapterId")}
+          name="chapterId"
+          defaultValue={activity?.chapterId ?? ""}
+          data-invalid={errors.chapterId ? "true" : undefined}
+        >
+          <option value="">Sans chapitre</option>
+          {chapters.map((chapter) => (
+            <option key={chapter.id} value={chapter.id}>
+              {chapter.shortCode} · {chapter.name}
+            </option>
+          ))}
+        </select>
+        {errors.chapterId && <div>{errors.chapterId}</div>}
+      </div>
+
+      <div>
+        <label htmlFor={fieldId("estimatedDurationMinutes")}>Durée estimée</label>
+        <input
+          id={fieldId("estimatedDurationMinutes")}
+          name="estimatedDurationMinutes"
+          type="number"
+          min={1}
+          max={1440}
+          defaultValue={activity?.estimatedDurationMinutes ?? ""}
+          data-invalid={errors.estimatedDurationMinutes ? "true" : undefined}
+        />
+        {errors.estimatedDurationMinutes && <div>{errors.estimatedDurationMinutes}</div>}
+      </div>
+
+      <div>
+        <label htmlFor={fieldId("noteMarkdown")}>Notes</label>
+        <textarea
+          id={fieldId("noteMarkdown")}
+          name="noteMarkdown"
+          defaultValue={activity?.noteMarkdown ?? ""}
+          maxLength={5000}
+          rows={4}
+          data-invalid={errors.noteMarkdown ? "true" : undefined}
+        />
+        {errors.noteMarkdown && <div>{errors.noteMarkdown}</div>}
+      </div>
+    </div>
+  )
+}
+
 function ChapterFields({
   errors,
   themes,
@@ -197,4 +382,8 @@ function ChapterFields({
       </div>
     </div>
   )
+}
+
+function formatDuration(durationMinutes: number | null) {
+  return durationMinutes ? `${durationMinutes} min` : "Durée non renseignée"
 }

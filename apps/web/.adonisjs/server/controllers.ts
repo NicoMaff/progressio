@@ -6,9 +6,11 @@
 export const controllers = {
   NewAccount: () => import('#src/controllers/new_account_controller'),
   Session: () => import('#src/controllers/session_controller'),
+  TeachingContentCreateActivity: () => import('#src/controllers/teaching_content_create_activity_controller'),
   TeachingContentCreateChapter: () => import('#src/controllers/teaching_content_create_chapter_controller'),
   TeachingContentCreateTheme: () => import('#src/controllers/teaching_content_create_theme_controller'),
   TeachingContentThemesPage: () => import('#src/controllers/teaching_content_themes_page_controller'),
+  TeachingContentUpdateActivity: () => import('#src/controllers/teaching_content_update_activity_controller'),
   TeachingContentUpdateChapter: () => import('#src/controllers/teaching_content_update_chapter_controller'),
   TeachingContentUpdateTheme: () => import('#src/controllers/teaching_content_update_theme_controller'),
   teachingContent: {

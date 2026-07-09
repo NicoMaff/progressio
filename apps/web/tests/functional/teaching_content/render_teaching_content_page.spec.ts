@@ -1,6 +1,6 @@
 import Level from "#models/level"
 import SchoolYear from "#models/school_year"
-import { ActivityFactory, ChapterFactory, ThemeFactory } from "#database/factories"
+import { ActivityFactory, ActivityTypeFactory, ChapterFactory, ThemeFactory } from "#database/factories"
 import { test } from "@japa/runner"
 import testUtils from "@adonisjs/core/services/test_utils"
 import { DateTime } from "luxon"
@@ -46,10 +46,18 @@ test.group("Teaching content page", (group) => {
       name: "Suites numériques",
       shortCode: "SUIT",
     }).create()
-    await ActivityFactory.merge({
+    const activityType = await ActivityTypeFactory.merge({
+      schoolYearId: schoolYear.id,
+      name: "Exercice",
+      color: "#22C55E",
+      displayOrder: 10,
+    }).create()
+    const activity = await ActivityFactory.merge({
       levelId: level.id,
       chapterId: chapter.id,
+      activityTypeId: activityType.id,
       title: "Découvrir les suites",
+      estimatedDurationMinutes: 55,
     }).create()
 
     const response = await client.get(`/teaching-content/levels/${level.id}`)
@@ -93,6 +101,35 @@ test.group("Teaching content page", (group) => {
             },
             archivedAt: null,
             activityCount: 1,
+            noteMarkdown: null,
+          },
+        ],
+        activityTypes: [
+          {
+            id: activityType.id,
+            name: "Exercice",
+            color: "#22C55E",
+            displayOrder: 10,
+          },
+        ],
+        activities: [
+          {
+            id: activity.id,
+            title: "Découvrir les suites",
+            chapterId: chapter.id,
+            chapter: {
+              id: chapter.id,
+              name: "Suites numériques",
+              shortCode: "SUIT",
+            },
+            activityTypeId: activityType.id,
+            activityType: {
+              id: activityType.id,
+              name: "Exercice",
+              color: "#22C55E",
+            },
+            estimatedDurationMinutes: 55,
+            archivedAt: null,
             noteMarkdown: null,
           },
         ],

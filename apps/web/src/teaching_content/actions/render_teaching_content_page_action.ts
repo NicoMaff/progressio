@@ -1,4 +1,5 @@
 import Activity from "#models/activity"
+import ActivityType from "#models/activity_type"
 import Chapter from "#models/chapter"
 import Level from "#models/level"
 import SchoolYear from "#models/school_year"
@@ -20,8 +21,16 @@ export default class RenderTeachingContentPageAction {
       .orderBy("short_code", "asc")
     const activityCounts = await this.countActiveActivitiesByChapter(chapters.map((chapter) => chapter.id))
     const chapterCountsByThemeId = this.countChaptersByThemeId(chapters)
+    const activityTypes = await ActivityType.query()
+      .where("school_year_id", schoolYear.id)
+      .orderBy("display_order", "asc")
+      .orderBy("name", "asc")
+    const activities = await Activity.query()
+      .where("level_id", level.id)
+      .whereNull("archived_at")
+      .orderBy("title", "asc")
 
-    return { level, schoolYear, themes, chapters, activityCounts, chapterCountsByThemeId }
+    return { level, schoolYear, themes, chapters, activityTypes, activities, activityCounts, chapterCountsByThemeId }
   }
 
   private async countActiveActivitiesByChapter(chapterIds: string[]) {

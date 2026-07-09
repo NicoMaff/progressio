@@ -1,0 +1,71 @@
+import Activity from "#models/activity"
+import ActivityType from "#models/activity_type"
+import Chapter from "#models/chapter"
+import Level from "#models/level"
+import {
+  ACTIVITY_ESTIMATED_DURATION_MAX_MINUTES,
+  ActivityChapterLevelMismatchError,
+  ActivityEstimatedDurationOutOfRangeError,
+  ActivityTypeSchoolYearMismatchError,
+  normalizeActivityInput,
+  type ActivityInput,
+  type NormalizedActivityInput,
+} from "./activity_input.js"
+
+export default class UpdateActivityAction {
+  async execute(levelId: string, activityId: string, input: ActivityInput) {
+    const level = await Level.findOrFail(levelId)
+    const activity = await Activity.query()
+      .where("id", activityId)
+      .where("level_id", level.id)
+      .whereNull("archived_at")
+      .firstOrFail()
+    const payload = normalizeActivityInput(input)
+
+    await this.ensureChapterBelongsToLevel(level.id, payload.chapterId)
+    await this.ensureActivityTypeBelongsToSchoolYear(level.schoolYearId, payload.activityTypeId)
+    this.ensureEstimatedDurationIsInRange(payload)
+
+    activity.merge(payload)
+    await activity.save()
+
+    return activity
+  }
+
+  private async ensureChapterBelongsToLevel(levelId: string, chapterId: string | null) {
+    if (!chapterId) {
+      return
+    }
+
+    const chapter = await Chapter.query()
+      .where("id", chapterId)
+      .where("level_id", levelId)
+      .whereNull("archived_at")
+      .first()
+
+    if (!chapter) {
+      throw new ActivityChapterLevelMismatchError()
+    }
+  }
+
+  private async ensureActivityTypeBelongsToSchoolYear(schoolYearId: string, activityTypeId: string) {
+    const activityType = await ActivityType.query()
+      .where("id", activityTypeId)
+      .where("school_year_id", schoolYearId)
+      .first()
+
+    if (!activityType) {
+      throw new ActivityTypeSchoolYearMismatchError()
+    }
+  }
+
+  private ensureEstimatedDurationIsInRange(payload: NormalizedActivityInput) {
+    if (
+      payload.estimatedDurationMinutes !== null &&
+      (payload.estimatedDurationMinutes <= 0 ||
+        payload.estimatedDurationMinutes > ACTIVITY_ESTIMATED_DURATION_MAX_MINUTES)
+    ) {
+      throw new ActivityEstimatedDurationOutOfRangeError()
+    }
+  }
+}

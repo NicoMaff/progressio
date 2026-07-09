@@ -18,6 +18,8 @@ const TeachingContentCreateThemeController = () => import("#controllers/teaching
 const TeachingContentUpdateThemeController = () => import("#controllers/teaching_content_update_theme_controller")
 const TeachingContentCreateChapterController = () => import("#controllers/teaching_content_create_chapter_controller")
 const TeachingContentUpdateChapterController = () => import("#controllers/teaching_content_update_chapter_controller")
+const TeachingContentCreateActivityController = () => import("#controllers/teaching_content_create_activity_controller")
+const TeachingContentUpdateActivityController = () => import("#controllers/teaching_content_update_activity_controller")
 
 router.on("/").renderInertia("home", {}).as("home")
 
@@ -34,6 +36,12 @@ router
     router
       .put("levels/:levelId/chapters/:chapterId", [TeachingContentUpdateChapterController, "execute"])
       .as("chapters.update")
+    router
+      .post("levels/:levelId/activities", [TeachingContentCreateActivityController, "execute"])
+      .as("activities.store")
+    router
+      .put("levels/:levelId/activities/:activityId", [TeachingContentUpdateActivityController, "execute"])
+      .as("activities.update")
   })
   .prefix("teaching-content")
   .as("teaching_content")
