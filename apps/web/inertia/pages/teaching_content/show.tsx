@@ -129,6 +129,9 @@ export default function TeachingContentShow({
                       contentId={activity.id}
                       archived={Boolean(activity.archivedAt)}
                     />
+                    {activity.archivedAt && (
+                      <DeleteContentForm levelId={level.id} contentType="activities" contentId={activity.id} />
+                    )}
 
                     {!activity.archivedAt && (
                       <details className="mt-4">
@@ -199,6 +202,9 @@ export default function TeachingContentShow({
                       contentId={chapter.id}
                       archived={Boolean(chapter.archivedAt)}
                     />
+                    {chapter.archivedAt && (
+                      <DeleteContentForm levelId={level.id} contentType="chapters" contentId={chapter.id} />
+                    )}
 
                     {!chapter.archivedAt && (
                       <details className="mt-4">
@@ -257,6 +263,9 @@ export default function TeachingContentShow({
                       contentId={theme.id}
                       archived={Boolean(theme.archivedAt)}
                     />
+                    {theme.archivedAt && (
+                      <DeleteContentForm levelId={level.id} contentType="themes" contentId={theme.id} />
+                    )}
                   </article>
                 ))}
               </div>
@@ -333,6 +342,59 @@ function ArchiveRestoreForm({
       route={`teaching_content.activities.${action}`}
       routeParams={{ levelId, activityId: contentId }}
       className="mt-4"
+    >
+      {renderButton}
+    </Form>
+  )
+}
+
+function DeleteContentForm({
+  levelId,
+  contentType,
+  contentId,
+}: {
+  levelId: string
+  contentType: "themes" | "chapters" | "activities"
+  contentId: string
+}) {
+  const renderButton = ({ processing }: { processing: boolean }) => (
+    <button type="submit" disabled={processing} className="text-red-700">
+      Supprimer définitivement
+    </button>
+  )
+
+  if (contentType === "themes") {
+    return (
+      <Form
+        route="teaching_content.themes.destroy"
+        routeParams={{ levelId, themeId: contentId }}
+        className="mt-2"
+        options={{ preserveScroll: true }}
+      >
+        {renderButton}
+      </Form>
+    )
+  }
+
+  if (contentType === "chapters") {
+    return (
+      <Form
+        route="teaching_content.chapters.destroy"
+        routeParams={{ levelId, chapterId: contentId }}
+        className="mt-2"
+        options={{ preserveScroll: true }}
+      >
+        {renderButton}
+      </Form>
+    )
+  }
+
+  return (
+    <Form
+      route="teaching_content.activities.destroy"
+      routeParams={{ levelId, activityId: contentId }}
+      className="mt-2"
+      options={{ preserveScroll: true }}
     >
       {renderButton}
     </Form>
