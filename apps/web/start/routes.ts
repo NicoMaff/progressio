@@ -49,9 +49,6 @@ router
       .delete("levels/:levelId/chapters/:chapterId", [controllers.teachingContent.DeleteChapter, "execute"])
       .as("chapters.destroy")
     router
-      .post("levels/:levelId/activities", [controllers.teachingContent.CreateActivity, "execute"])
-      .as("activities.store")
-    router
       .put("levels/:levelId/activities/:activityId", [controllers.activities.UpdateActivity, "execute"])
       .as("activities.update")
     router

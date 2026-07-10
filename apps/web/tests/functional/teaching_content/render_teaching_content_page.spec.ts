@@ -45,6 +45,7 @@ test.group("Teaching content page", (group) => {
       themeId: theme.id,
       name: "Suites numériques",
       shortCode: "SUIT",
+      noteMarkdown: "Note de chapitre privée",
     }).create()
     const activityType = await ActivityTypeFactory.merge({
       schoolYearId: schoolYear.id,
@@ -58,6 +59,7 @@ test.group("Teaching content page", (group) => {
       activityTypeId: activityType.id,
       title: "Découvrir les suites",
       estimatedDurationMinutes: 55,
+      noteMarkdown: "Note d’activité privée",
     }).create()
 
     const response = await client.get(`/teaching-content/levels/${level.id}`)
@@ -102,7 +104,7 @@ test.group("Teaching content page", (group) => {
             },
             archivedAt: null,
             activityCount: 1,
-            noteMarkdown: null,
+            noteMarkdown: "Note de chapitre privée",
           },
         ],
         activityTypes: [
@@ -131,11 +133,44 @@ test.group("Teaching content page", (group) => {
             },
             estimatedDurationMinutes: 55,
             archivedAt: null,
-            noteMarkdown: null,
+            noteMarkdown: "Note d’activité privée",
           },
         ],
       },
     })
+
+    assert.deepEqual(Object.keys(inertiaPage.props.level).sort(), ["id", "name", "shortCode"])
+    assert.deepEqual(Object.keys(inertiaPage.props.schoolYear).sort(), ["id", "label", "subject"])
+    assert.deepEqual(Object.keys(inertiaPage.props.themes[0]).sort(), [
+      "archivedAt",
+      "chapterCount",
+      "color",
+      "id",
+      "name",
+      "shortCode",
+    ])
+    assert.deepEqual(Object.keys(inertiaPage.props.chapters[0]).sort(), [
+      "activityCount",
+      "archivedAt",
+      "id",
+      "name",
+      "noteMarkdown",
+      "shortCode",
+      "theme",
+      "themeId",
+    ])
+    assert.deepEqual(Object.keys(inertiaPage.props.activityTypes[0]).sort(), ["color", "displayOrder", "id", "name"])
+    assert.deepEqual(Object.keys(inertiaPage.props.activities[0]).sort(), [
+      "activityType",
+      "activityTypeId",
+      "archivedAt",
+      "chapter",
+      "chapterId",
+      "estimatedDurationMinutes",
+      "id",
+      "noteMarkdown",
+      "title",
+    ])
   })
 
   test("renders archived content with its parent projections", async ({ assert, client }) => {
@@ -199,5 +234,24 @@ test.group("Teaching content page", (group) => {
 
     await chapter.refresh()
     assert.isNotNull(chapter.archivedAt)
+  })
+
+  test("redirects back with a success flash after creating a theme", async ({ client }) => {
+    const schoolYear = await SchoolYear.create({
+      label: "2026-2027",
+      subject: "Mathématiques",
+      startDate: DateTime.fromISO("2026-09-01"),
+      endDate: DateTime.fromISO("2027-07-05"),
+      firstTeachingDay: DateTime.fromISO("2026-09-02"),
+      teachingHourDurationMinutes: 55,
+    })
+    const level = await Level.create({ schoolYearId: schoolYear.id, name: "Seconde", shortCode: "2DE" })
+    const basePageUrl = `/teaching-content/levels/${level.id}`
+
+    const createResponse = await client
+      .post(`/teaching-content/levels/${level.id}/themes`)
+      .header("referer", basePageUrl)
+      .form({ name: "Analyse", shortCode: "ANA" })
+    createResponse.assertRedirectsTo(basePageUrl)
   })
 })
