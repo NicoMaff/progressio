@@ -30,7 +30,11 @@ router
     router
       .post("levels/:levelId/themes/:themeId/restore", [controllers.themes.RestoreTheme, "execute"])
       .as("themes.restore")
+    router
+      .delete("levels/:levelId/themes/:themeId", [controllers.teachingContent.DeleteTheme, "execute"])
+      .as("themes.destroy")
     router.post("levels/:levelId/chapters", [controllers.chapters.CreateChapter, "execute"]).as("chapters.store")
+
     router
       .put("levels/:levelId/chapters/:chapterId", [controllers.chapters.UpdateChapter, "execute"])
       .as("chapters.update")
@@ -42,6 +46,12 @@ router
       .as("chapters.restore")
     router.post("levels/:levelId/activities", [controllers.activities.CreateActivity, "execute"]).as("activities.store")
     router
+      .delete("levels/:levelId/chapters/:chapterId", [controllers.teachingContent.DeleteChapter, "execute"])
+      .as("chapters.destroy")
+    router
+      .post("levels/:levelId/activities", [controllers.teachingContent.CreateActivity, "execute"])
+      .as("activities.store")
+    router
       .put("levels/:levelId/activities/:activityId", [controllers.activities.UpdateActivity, "execute"])
       .as("activities.update")
     router
@@ -50,6 +60,9 @@ router
     router
       .post("levels/:levelId/activities/:activityId/restore", [controllers.activities.RestoreActivity, "execute"])
       .as("activities.restore")
+    router
+      .delete("levels/:levelId/activities/:activityId", [controllers.teachingContent.DeleteActivity, "execute"])
+      .as("activities.destroy")
   })
   .prefix("teaching-content")
   .as("teaching_content")

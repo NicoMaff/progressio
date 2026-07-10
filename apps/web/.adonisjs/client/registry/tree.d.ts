@@ -11,18 +11,21 @@ export interface ApiDefinition {
       update: typeof routes['teaching_content.themes.update']
       archive: typeof routes['teaching_content.themes.archive']
       restore: typeof routes['teaching_content.themes.restore']
+      destroy: typeof routes['teaching_content.themes.destroy']
     }
     chapters: {
       store: typeof routes['teaching_content.chapters.store']
       update: typeof routes['teaching_content.chapters.update']
       archive: typeof routes['teaching_content.chapters.archive']
       restore: typeof routes['teaching_content.chapters.restore']
+      destroy: typeof routes['teaching_content.chapters.destroy']
     }
     activities: {
       store: typeof routes['teaching_content.activities.store']
       update: typeof routes['teaching_content.activities.update']
       archive: typeof routes['teaching_content.activities.archive']
       restore: typeof routes['teaching_content.activities.restore']
+      destroy: typeof routes['teaching_content.activities.destroy']
     }
   }
   newAccount: {
