@@ -58,7 +58,7 @@ export default function TeachingContentShow({
           <div className="grid gap-6">
             <section className="border-border rounded-md border p-5">
               <h2 className="mb-5 text-xl font-semibold">Nouvelle activité</h2>
-              <Form action={{ url: `/teaching-content/levels/${level.id}/activities`, method: "post" }}>
+              <Form route="activities.store" routeParams={{ levelId: level.id }}>
                 {({ errors, processing }) => (
                   <>
                     <ActivityFields errors={errors} chapters={activeChapters} activityTypes={activityTypes} />
@@ -72,7 +72,7 @@ export default function TeachingContentShow({
 
             <section className="border-border rounded-md border p-5">
               <h2 className="mb-5 text-xl font-semibold">Nouveau chapitre</h2>
-              <Form route="teaching_content.chapters.store" routeParams={{ levelId: level.id }}>
+              <Form route="chapters.store" routeParams={{ levelId: level.id }}>
                 {({ errors, processing }) => (
                   <>
                     <ChapterFields errors={errors} themes={activeThemes} />
@@ -136,12 +136,7 @@ export default function TeachingContentShow({
                     {!activity.archivedAt && (
                       <details className="mt-4">
                         <summary className="cursor-pointer font-semibold">Modifier</summary>
-                        <Form
-                          action={{
-                            url: `/teaching-content/levels/${level.id}/activities/${activity.id}`,
-                            method: "put",
-                          }}
-                        >
+                        <Form route="activities.update" routeParams={{ levelId: level.id, activityId: activity.id }}>
                           {({ errors, processing }) => (
                             <>
                               <ActivityFields
@@ -209,10 +204,7 @@ export default function TeachingContentShow({
                     {!chapter.archivedAt && (
                       <details className="mt-4">
                         <summary className="cursor-pointer font-semibold">Modifier</summary>
-                        <Form
-                          route="teaching_content.chapters.update"
-                          routeParams={{ levelId: level.id, chapterId: chapter.id }}
-                        >
+                        <Form route="chapters.update" routeParams={{ levelId: level.id, chapterId: chapter.id }}>
                           {({ errors, processing }) => (
                             <>
                               <ChapterFields errors={errors} themes={activeThemes} chapter={chapter} />
@@ -319,7 +311,7 @@ function ArchiveRestoreForm({
 
   if (contentType === "themes") {
     return (
-      <Form route={`teaching_content.themes.${action}`} routeParams={{ levelId, themeId: contentId }} className="mt-4">
+      <Form route={`themes.${action}`} routeParams={{ levelId, themeId: contentId }} className="mt-4">
         {renderButton}
       </Form>
     )
@@ -327,22 +319,14 @@ function ArchiveRestoreForm({
 
   if (contentType === "chapters") {
     return (
-      <Form
-        route={`teaching_content.chapters.${action}`}
-        routeParams={{ levelId, chapterId: contentId }}
-        className="mt-4"
-      >
+      <Form route={`chapters.${action}`} routeParams={{ levelId, chapterId: contentId }} className="mt-4">
         {renderButton}
       </Form>
     )
   }
 
   return (
-    <Form
-      route={`teaching_content.activities.${action}`}
-      routeParams={{ levelId, activityId: contentId }}
-      className="mt-4"
-    >
+    <Form route={`activities.${action}`} routeParams={{ levelId, activityId: contentId }} className="mt-4">
       {renderButton}
     </Form>
   )

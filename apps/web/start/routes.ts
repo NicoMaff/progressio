@@ -21,48 +21,34 @@ router
 
 router
   .group(() => {
-    router.get("levels/:levelId/themes", [controllers.themes.ThemesPage, "render"]).as("themes.index")
-    router.post("levels/:levelId/themes", [controllers.themes.CreateTheme, "execute"]).as("themes.store")
-    router.put("levels/:levelId/themes/:themeId", [controllers.themes.UpdateTheme, "execute"]).as("themes.update")
-    router
-      .post("levels/:levelId/themes/:themeId/archive", [controllers.themes.ArchiveTheme, "execute"])
-      .as("themes.archive")
-    router
-      .post("levels/:levelId/themes/:themeId/restore", [controllers.themes.RestoreTheme, "execute"])
-      .as("themes.restore")
-    router
-      .delete("levels/:levelId/themes/:themeId", [controllers.teachingContent.DeleteTheme, "execute"])
-      .as("themes.destroy")
-    router.post("levels/:levelId/chapters", [controllers.chapters.CreateChapter, "execute"]).as("chapters.store")
-
-    router
-      .put("levels/:levelId/chapters/:chapterId", [controllers.chapters.UpdateChapter, "execute"])
-      .as("chapters.update")
-    router
-      .post("levels/:levelId/chapters/:chapterId/archive", [controllers.chapters.ArchiveChapter, "execute"])
-      .as("chapters.archive")
-    router
-      .post("levels/:levelId/chapters/:chapterId/restore", [controllers.chapters.RestoreChapter, "execute"])
-      .as("chapters.restore")
-    router.post("levels/:levelId/activities", [controllers.activities.CreateActivity, "execute"]).as("activities.store")
-    router
-      .delete("levels/:levelId/chapters/:chapterId", [controllers.teachingContent.DeleteChapter, "execute"])
-      .as("chapters.destroy")
-    router
-      .put("levels/:levelId/activities/:activityId", [controllers.activities.UpdateActivity, "execute"])
-      .as("activities.update")
-    router
-      .post("levels/:levelId/activities/:activityId/archive", [controllers.activities.ArchiveActivity, "execute"])
-      .as("activities.archive")
-    router
-      .post("levels/:levelId/activities/:activityId/restore", [controllers.activities.RestoreActivity, "execute"])
-      .as("activities.restore")
-    router
-      .delete("levels/:levelId/activities/:activityId", [controllers.teachingContent.DeleteActivity, "execute"])
-      .as("activities.destroy")
+    router.get("/", [controllers.themes.ListThemes, "render"]).as("list")
+    router.post("/", [controllers.themes.CreateTheme, "execute"]).as("store")
+    router.put(":themeId", [controllers.themes.UpdateTheme, "execute"]).as("update")
+    router.post(":themeId/archive", [controllers.themes.ArchiveTheme, "execute"]).as("archive")
+    router.post(":themeId/restore", [controllers.themes.RestoreTheme, "execute"]).as("restore")
   })
-  .prefix("teaching-content")
-  .as("teaching_content")
+  .prefix("levels/:levelId/themes")
+  .as("themes")
+
+router
+  .group(() => {
+    router.post("/", [controllers.chapters.CreateChapter, "execute"]).as("store")
+    router.put(":chapterId", [controllers.chapters.UpdateChapter, "execute"]).as("update")
+    router.post(":chapterId/archive", [controllers.chapters.ArchiveChapter, "execute"]).as("archive")
+    router.post(":chapterId/restore", [controllers.chapters.RestoreChapter, "execute"]).as("restore")
+  })
+  .prefix("levels/:levelId/chapters")
+  .as("chapters")
+
+router
+  .group(() => {
+    router.post("/", [controllers.activities.CreateActivity, "execute"]).as("store")
+    router.put(":activityId", [controllers.activities.UpdateActivity, "execute"]).as("update")
+    router.post(":activityId/archive", [controllers.activities.ArchiveActivity, "execute"]).as("archive")
+    router.post(":activityId/restore", [controllers.activities.RestoreActivity, "execute"]).as("restore")
+  })
+  .prefix("levels/:levelId/activities")
+  .as("activities")
 
 router
   .group(() => {

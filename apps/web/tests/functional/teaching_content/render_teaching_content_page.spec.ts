@@ -228,7 +228,7 @@ test.group("Teaching content page", (group) => {
     const basePageUrl = `/teaching-content/levels/${level.id}`
 
     const restoreResponse = await client
-      .post(`/teaching-content/levels/${level.id}/chapters/${chapter.id}/restore`)
+      .post(`/levels/${level.id}/chapters/${chapter.id}/restore`)
       .header("referer", basePageUrl)
     restoreResponse.assertRedirectsTo(basePageUrl)
 

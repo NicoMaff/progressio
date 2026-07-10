@@ -9,7 +9,7 @@ import { ActivityFactory, ActivityTypeFactory, ChapterFactory, LevelFactory } fr
 import testUtils from "@adonisjs/core/services/test_utils"
 import { test } from "@japa/runner"
 
-test.group("teaching content activity actions", (group) => {
+test.group("activities actions", (group) => {
   group.setup(() => testUtils.db().migrate())
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
