@@ -1,4 +1,4 @@
-import RestoreChapterAction from "#teaching_content/actions/restore_chapter_action"
+import RestoreChapterAction from "#chapters/actions/restore_chapter_action"
 import { inject } from "@adonisjs/core"
 import type { HttpContext } from "@adonisjs/core/http"
 

@@ -1,5 +1,5 @@
-import UpdateThemeAction from "#teaching_content/actions/update_theme_action"
-import { updateThemeValidator } from "#teaching_content/validators/theme_validator"
+import UpdateThemeAction from "#themes/actions/update_theme_action"
+import { updateThemeValidator } from "#themes/validators/theme_validator"
 import type { HttpContext } from "@adonisjs/core/http"
 import { inject } from "@adonisjs/core"
 

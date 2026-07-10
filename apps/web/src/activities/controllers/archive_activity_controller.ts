@@ -1,4 +1,4 @@
-import ArchiveActivityAction from "#teaching_content/actions/archive_activity_action"
+import ArchiveActivityAction from "#activities/actions/archive_activity_action"
 import { inject } from "@adonisjs/core"
 import type { HttpContext } from "@adonisjs/core/http"
 

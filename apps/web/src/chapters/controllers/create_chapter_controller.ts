@@ -1,5 +1,5 @@
-import CreateChapterAction from "#teaching_content/actions/create_chapter_action"
-import { createChapterValidator } from "#teaching_content/validators/chapter_validator"
+import CreateChapterAction from "#chapters/actions/create_chapter_action"
+import { createChapterValidator } from "#chapters/validators/chapter_validator"
 import type { HttpContext } from "@adonisjs/core/http"
 import { inject } from "@adonisjs/core"
 

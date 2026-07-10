@@ -39,32 +39,32 @@ export interface Registry {
       paramsTuple: [ParamValue]
       params: { levelId: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/themes_page_controller').default['render']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/themes_page_controller').default['render']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/themes/controllers/themes_page_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/themes_page_controller').default['render']>>>
     }
   }
   'teaching_content.themes.store': {
     methods: ["POST"]
     pattern: '/teaching-content/levels/:levelId/themes'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#teaching_content/validators/theme_validator').createThemeValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#themes/validators/theme_validator').createThemeValidator)>>
       paramsTuple: [ParamValue]
       params: { levelId: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#teaching_content/validators/theme_validator').createThemeValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/create_theme_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/create_theme_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#themes/validators/theme_validator').createThemeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/themes/controllers/create_theme_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/create_theme_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'teaching_content.themes.update': {
     methods: ["PUT"]
     pattern: '/teaching-content/levels/:levelId/themes/:themeId'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#teaching_content/validators/theme_validator').updateThemeValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#themes/validators/theme_validator').updateThemeValidator)>>
       paramsTuple: [ParamValue, ParamValue]
       params: { levelId: ParamValue; themeId: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#teaching_content/validators/theme_validator').updateThemeValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/update_theme_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/update_theme_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#themes/validators/theme_validator').updateThemeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/themes/controllers/update_theme_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/update_theme_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'teaching_content.themes.archive': {
@@ -75,8 +75,8 @@ export interface Registry {
       paramsTuple: [ParamValue, ParamValue]
       params: { levelId: ParamValue; themeId: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/archive_theme_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/archive_theme_controller').default['execute']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/themes/controllers/archive_theme_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/archive_theme_controller').default['execute']>>>
     }
   }
   'teaching_content.themes.restore': {
@@ -87,32 +87,32 @@ export interface Registry {
       paramsTuple: [ParamValue, ParamValue]
       params: { levelId: ParamValue; themeId: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/restore_theme_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/restore_theme_controller').default['execute']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/themes/controllers/restore_theme_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/restore_theme_controller').default['execute']>>>
     }
   }
   'teaching_content.chapters.store': {
     methods: ["POST"]
     pattern: '/teaching-content/levels/:levelId/chapters'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#teaching_content/validators/chapter_validator').createChapterValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#chapters/validators/chapter_validator').createChapterValidator)>>
       paramsTuple: [ParamValue]
       params: { levelId: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#teaching_content/validators/chapter_validator').createChapterValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/create_chapter_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/create_chapter_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#chapters/validators/chapter_validator').createChapterValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/chapters/controllers/create_chapter_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/create_chapter_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'teaching_content.chapters.update': {
     methods: ["PUT"]
     pattern: '/teaching-content/levels/:levelId/chapters/:chapterId'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#teaching_content/validators/chapter_validator').updateChapterValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#chapters/validators/chapter_validator').updateChapterValidator)>>
       paramsTuple: [ParamValue, ParamValue]
       params: { levelId: ParamValue; chapterId: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#teaching_content/validators/chapter_validator').updateChapterValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/update_chapter_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/update_chapter_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#chapters/validators/chapter_validator').updateChapterValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/chapters/controllers/update_chapter_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/update_chapter_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'teaching_content.chapters.archive': {
@@ -123,8 +123,8 @@ export interface Registry {
       paramsTuple: [ParamValue, ParamValue]
       params: { levelId: ParamValue; chapterId: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/archive_chapter_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/archive_chapter_controller').default['execute']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/chapters/controllers/archive_chapter_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/archive_chapter_controller').default['execute']>>>
     }
   }
   'teaching_content.chapters.restore': {
@@ -135,32 +135,32 @@ export interface Registry {
       paramsTuple: [ParamValue, ParamValue]
       params: { levelId: ParamValue; chapterId: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/restore_chapter_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/restore_chapter_controller').default['execute']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/chapters/controllers/restore_chapter_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/restore_chapter_controller').default['execute']>>>
     }
   }
   'teaching_content.activities.store': {
     methods: ["POST"]
     pattern: '/teaching-content/levels/:levelId/activities'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#teaching_content/validators/activity_validator').createActivityValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#activities/validators/activity_validator').createActivityValidator)>>
       paramsTuple: [ParamValue]
       params: { levelId: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#teaching_content/validators/activity_validator').createActivityValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/create_activity_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/create_activity_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#activities/validators/activity_validator').createActivityValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/activities/controllers/create_activity_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/activities/controllers/create_activity_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'teaching_content.activities.update': {
     methods: ["PUT"]
     pattern: '/teaching-content/levels/:levelId/activities/:activityId'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#teaching_content/validators/activity_validator').updateActivityValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#activities/validators/activity_validator').updateActivityValidator)>>
       paramsTuple: [ParamValue, ParamValue]
       params: { levelId: ParamValue; activityId: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#teaching_content/validators/activity_validator').updateActivityValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/update_activity_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/update_activity_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#activities/validators/activity_validator').updateActivityValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/activities/controllers/update_activity_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/activities/controllers/update_activity_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'teaching_content.activities.archive': {
@@ -171,8 +171,8 @@ export interface Registry {
       paramsTuple: [ParamValue, ParamValue]
       params: { levelId: ParamValue; activityId: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/archive_activity_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/archive_activity_controller').default['execute']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/activities/controllers/archive_activity_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/activities/controllers/archive_activity_controller').default['execute']>>>
     }
   }
   'teaching_content.activities.restore': {
@@ -183,8 +183,8 @@ export interface Registry {
       paramsTuple: [ParamValue, ParamValue]
       params: { levelId: ParamValue; activityId: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/restore_activity_controller').default['execute']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/restore_activity_controller').default['execute']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/activities/controllers/restore_activity_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/activities/controllers/restore_activity_controller').default['execute']>>>
     }
   }
   'new_account.create': {

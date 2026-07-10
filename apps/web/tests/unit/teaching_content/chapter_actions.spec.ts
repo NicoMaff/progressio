@@ -1,10 +1,10 @@
-import CreateChapterAction from "#teaching_content/actions/create_chapter_action"
-import UpdateChapterAction from "#teaching_content/actions/update_chapter_action"
+import CreateChapterAction from "#chapters/actions/create_chapter_action"
+import UpdateChapterAction from "#chapters/actions/update_chapter_action"
 import {
   ChapterShortCodeAlreadyExistsError,
   ChapterShortCodeFormatError,
   ChapterThemeLevelMismatchError,
-} from "#teaching_content/actions/chapter_input"
+} from "#chapters/actions/chapter_input"
 import { ChapterFactory, LevelFactory, ThemeFactory } from "#database/factories"
 import testUtils from "@adonisjs/core/services/test_utils"
 import { test } from "@japa/runner"

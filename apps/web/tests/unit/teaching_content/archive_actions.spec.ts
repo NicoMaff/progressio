@@ -1,14 +1,12 @@
-import ArchiveActivityAction from "#teaching_content/actions/archive_activity_action"
-import ArchiveChapterAction from "#teaching_content/actions/archive_chapter_action"
-import ArchiveThemeAction from "#teaching_content/actions/archive_theme_action"
+import ArchiveActivityAction from "#activities/actions/archive_activity_action"
+import ArchiveChapterAction from "#chapters/actions/archive_chapter_action"
+import ArchiveThemeAction from "#themes/actions/archive_theme_action"
 import RenderTeachingContentPageAction from "#teaching_content/actions/render_teaching_content_page_action"
 import RestoreActivityAction, {
   ArchivedChapterBlocksActivityRestoreError,
-} from "#teaching_content/actions/restore_activity_action"
-import RestoreChapterAction, {
-  ArchivedThemeBlocksChapterRestoreError,
-} from "#teaching_content/actions/restore_chapter_action"
-import RestoreThemeAction from "#teaching_content/actions/restore_theme_action"
+} from "#activities/actions/restore_activity_action"
+import RestoreChapterAction, { ArchivedThemeBlocksChapterRestoreError } from "#chapters/actions/restore_chapter_action"
+import RestoreThemeAction from "#themes/actions/restore_theme_action"
 import { ActivityFactory, ActivityTypeFactory, ChapterFactory, LevelFactory, ThemeFactory } from "#database/factories"
 import testUtils from "@adonisjs/core/services/test_utils"
 import { test } from "@japa/runner"

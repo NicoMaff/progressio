@@ -4,22 +4,28 @@
  */
 
 export const controllers = {
+  activities: {
+    ArchiveActivity: () => import('#src/activities/controllers/archive_activity_controller'),
+    CreateActivity: () => import('#src/activities/controllers/create_activity_controller'),
+    RestoreActivity: () => import('#src/activities/controllers/restore_activity_controller'),
+    UpdateActivity: () => import('#src/activities/controllers/update_activity_controller'),
+  },
+  chapters: {
+    ArchiveChapter: () => import('#src/chapters/controllers/archive_chapter_controller'),
+    CreateChapter: () => import('#src/chapters/controllers/create_chapter_controller'),
+    RestoreChapter: () => import('#src/chapters/controllers/restore_chapter_controller'),
+    UpdateChapter: () => import('#src/chapters/controllers/update_chapter_controller'),
+  },
   NewAccount: () => import('#src/controllers/new_account_controller'),
   Session: () => import('#src/controllers/session_controller'),
   teachingContent: {
-    ArchiveActivity: () => import('#src/teaching_content/controllers/archive_activity_controller'),
-    ArchiveChapter: () => import('#src/teaching_content/controllers/archive_chapter_controller'),
-    ArchiveTheme: () => import('#src/teaching_content/controllers/archive_theme_controller'),
-    CreateActivity: () => import('#src/teaching_content/controllers/create_activity_controller'),
-    CreateChapter: () => import('#src/teaching_content/controllers/create_chapter_controller'),
-    CreateTheme: () => import('#src/teaching_content/controllers/create_theme_controller'),
-    RestoreActivity: () => import('#src/teaching_content/controllers/restore_activity_controller'),
-    RestoreChapter: () => import('#src/teaching_content/controllers/restore_chapter_controller'),
-    RestoreTheme: () => import('#src/teaching_content/controllers/restore_theme_controller'),
     TeachingContent: () => import('#src/teaching_content/controllers/teaching_content_controller'),
-    ThemesPage: () => import('#src/teaching_content/controllers/themes_page_controller'),
-    UpdateActivity: () => import('#src/teaching_content/controllers/update_activity_controller'),
-    UpdateChapter: () => import('#src/teaching_content/controllers/update_chapter_controller'),
-    UpdateTheme: () => import('#src/teaching_content/controllers/update_theme_controller'),
+  },
+  themes: {
+    ArchiveTheme: () => import('#src/themes/controllers/archive_theme_controller'),
+    CreateTheme: () => import('#src/themes/controllers/create_theme_controller'),
+    RestoreTheme: () => import('#src/themes/controllers/restore_theme_controller'),
+    ThemesPage: () => import('#src/themes/controllers/themes_page_controller'),
+    UpdateTheme: () => import('#src/themes/controllers/update_theme_controller'),
   },
 }
