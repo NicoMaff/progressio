@@ -4,13 +4,13 @@ import type { HttpContext } from "@adonisjs/core/http"
 import { inject } from "@adonisjs/core"
 
 @inject()
-export default class ThemesPageController {
+export default class ListThemesController {
   constructor(private readonly listActiveThemes: ListActiveThemesAction) {}
 
   async render({ inertia, params }: HttpContext) {
     const { level, schoolYear, themes } = await this.listActiveThemes.execute(params.levelId)
 
-    return inertia.render("teaching_content/themes", {
+    return inertia.render("themes/index", {
       schoolYear: {
         id: schoolYear.id,
         label: schoolYear.label,

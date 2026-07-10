@@ -5,28 +5,25 @@ export interface ApiDefinition {
   home: typeof routes['home']
   teachingContent: {
     render: typeof routes['teaching_content.render']
-    themes: {
-      index: typeof routes['teaching_content.themes.index']
-      store: typeof routes['teaching_content.themes.store']
-      update: typeof routes['teaching_content.themes.update']
-      archive: typeof routes['teaching_content.themes.archive']
-      restore: typeof routes['teaching_content.themes.restore']
-      destroy: typeof routes['teaching_content.themes.destroy']
-    }
-    chapters: {
-      store: typeof routes['teaching_content.chapters.store']
-      update: typeof routes['teaching_content.chapters.update']
-      archive: typeof routes['teaching_content.chapters.archive']
-      restore: typeof routes['teaching_content.chapters.restore']
-      destroy: typeof routes['teaching_content.chapters.destroy']
-    }
-    activities: {
-      store: typeof routes['teaching_content.activities.store']
-      update: typeof routes['teaching_content.activities.update']
-      archive: typeof routes['teaching_content.activities.archive']
-      restore: typeof routes['teaching_content.activities.restore']
-      destroy: typeof routes['teaching_content.activities.destroy']
-    }
+  }
+  themes: {
+    list: typeof routes['themes.list']
+    store: typeof routes['themes.store']
+    update: typeof routes['themes.update']
+    archive: typeof routes['themes.archive']
+    restore: typeof routes['themes.restore']
+  }
+  chapters: {
+    store: typeof routes['chapters.store']
+    update: typeof routes['chapters.update']
+    archive: typeof routes['chapters.archive']
+    restore: typeof routes['chapters.restore']
+  }
+  activities: {
+    store: typeof routes['activities.store']
+    update: typeof routes['activities.update']
+    archive: typeof routes['activities.archive']
+    restore: typeof routes['activities.restore']
   }
   newAccount: {
     create: typeof routes['new_account.create']

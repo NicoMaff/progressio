@@ -18,101 +18,83 @@ const routes = {
     tokens: [{"old":"/teaching-content/levels/:levelId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId","type":1,"val":"levelId","end":""}],
     types: placeholder as Registry['teaching_content.render']['types'],
   },
-  'teaching_content.themes.index': {
+  'themes.list': {
     methods: ["GET","HEAD"],
-    pattern: '/teaching-content/levels/:levelId/themes',
-    tokens: [{"old":"/teaching-content/levels/:levelId/themes","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/themes","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/themes","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/themes","type":0,"val":"themes","end":""}],
-    types: placeholder as Registry['teaching_content.themes.index']['types'],
+    pattern: '/levels/:levelId/themes',
+    tokens: [{"old":"/levels/:levelId/themes","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes","type":0,"val":"themes","end":""}],
+    types: placeholder as Registry['themes.list']['types'],
   },
-  'teaching_content.themes.store': {
+  'themes.store': {
     methods: ["POST"],
-    pattern: '/teaching-content/levels/:levelId/themes',
-    tokens: [{"old":"/teaching-content/levels/:levelId/themes","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/themes","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/themes","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/themes","type":0,"val":"themes","end":""}],
-    types: placeholder as Registry['teaching_content.themes.store']['types'],
+    pattern: '/levels/:levelId/themes',
+    tokens: [{"old":"/levels/:levelId/themes","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes","type":0,"val":"themes","end":""}],
+    types: placeholder as Registry['themes.store']['types'],
   },
-  'teaching_content.themes.update': {
+  'themes.update': {
     methods: ["PUT"],
-    pattern: '/teaching-content/levels/:levelId/themes/:themeId',
-    tokens: [{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":0,"val":"themes","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":1,"val":"themeId","end":""}],
-    types: placeholder as Registry['teaching_content.themes.update']['types'],
+    pattern: '/levels/:levelId/themes/:themeId',
+    tokens: [{"old":"/levels/:levelId/themes/:themeId","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/:themeId","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/:themeId","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/:themeId","type":1,"val":"themeId","end":""}],
+    types: placeholder as Registry['themes.update']['types'],
   },
-  'teaching_content.themes.archive': {
+  'themes.archive': {
     methods: ["POST"],
-    pattern: '/teaching-content/levels/:levelId/themes/:themeId/archive',
-    tokens: [{"old":"/teaching-content/levels/:levelId/themes/:themeId/archive","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId/archive","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId/archive","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId/archive","type":0,"val":"themes","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId/archive","type":1,"val":"themeId","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId/archive","type":0,"val":"archive","end":""}],
-    types: placeholder as Registry['teaching_content.themes.archive']['types'],
+    pattern: '/levels/:levelId/themes/:themeId/archive',
+    tokens: [{"old":"/levels/:levelId/themes/:themeId/archive","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/:themeId/archive","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/:themeId/archive","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/:themeId/archive","type":1,"val":"themeId","end":""},{"old":"/levels/:levelId/themes/:themeId/archive","type":0,"val":"archive","end":""}],
+    types: placeholder as Registry['themes.archive']['types'],
   },
-  'teaching_content.themes.restore': {
+  'themes.restore': {
     methods: ["POST"],
-    pattern: '/teaching-content/levels/:levelId/themes/:themeId/restore',
-    tokens: [{"old":"/teaching-content/levels/:levelId/themes/:themeId/restore","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId/restore","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId/restore","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId/restore","type":0,"val":"themes","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId/restore","type":1,"val":"themeId","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId/restore","type":0,"val":"restore","end":""}],
-    types: placeholder as Registry['teaching_content.themes.restore']['types'],
+    pattern: '/levels/:levelId/themes/:themeId/restore',
+    tokens: [{"old":"/levels/:levelId/themes/:themeId/restore","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":1,"val":"themeId","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":0,"val":"restore","end":""}],
+    types: placeholder as Registry['themes.restore']['types'],
   },
-  'teaching_content.themes.destroy': {
-    methods: ["DELETE"],
-    pattern: '/teaching-content/levels/:levelId/themes/:themeId',
-    tokens: [{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":0,"val":"themes","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":1,"val":"themeId","end":""}],
-    types: placeholder as Registry['teaching_content.themes.destroy']['types'],
-  },
-  'teaching_content.chapters.store': {
+  'chapters.store': {
     methods: ["POST"],
-    pattern: '/teaching-content/levels/:levelId/chapters',
-    tokens: [{"old":"/teaching-content/levels/:levelId/chapters","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/chapters","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/chapters","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/chapters","type":0,"val":"chapters","end":""}],
-    types: placeholder as Registry['teaching_content.chapters.store']['types'],
+    pattern: '/levels/:levelId/chapters',
+    tokens: [{"old":"/levels/:levelId/chapters","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters","type":0,"val":"chapters","end":""}],
+    types: placeholder as Registry['chapters.store']['types'],
   },
-  'teaching_content.chapters.update': {
+  'chapters.update': {
     methods: ["PUT"],
-    pattern: '/teaching-content/levels/:levelId/chapters/:chapterId',
-    tokens: [{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":0,"val":"chapters","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":1,"val":"chapterId","end":""}],
-    types: placeholder as Registry['teaching_content.chapters.update']['types'],
+    pattern: '/levels/:levelId/chapters/:chapterId',
+    tokens: [{"old":"/levels/:levelId/chapters/:chapterId","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters/:chapterId","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters/:chapterId","type":0,"val":"chapters","end":""},{"old":"/levels/:levelId/chapters/:chapterId","type":1,"val":"chapterId","end":""}],
+    types: placeholder as Registry['chapters.update']['types'],
   },
-  'teaching_content.chapters.archive': {
+  'chapters.archive': {
     methods: ["POST"],
-    pattern: '/teaching-content/levels/:levelId/chapters/:chapterId/archive',
-    tokens: [{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/archive","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/archive","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/archive","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/archive","type":0,"val":"chapters","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/archive","type":1,"val":"chapterId","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/archive","type":0,"val":"archive","end":""}],
-    types: placeholder as Registry['teaching_content.chapters.archive']['types'],
+    pattern: '/levels/:levelId/chapters/:chapterId/archive',
+    tokens: [{"old":"/levels/:levelId/chapters/:chapterId/archive","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters/:chapterId/archive","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters/:chapterId/archive","type":0,"val":"chapters","end":""},{"old":"/levels/:levelId/chapters/:chapterId/archive","type":1,"val":"chapterId","end":""},{"old":"/levels/:levelId/chapters/:chapterId/archive","type":0,"val":"archive","end":""}],
+    types: placeholder as Registry['chapters.archive']['types'],
   },
-  'teaching_content.chapters.restore': {
+  'chapters.restore': {
     methods: ["POST"],
-    pattern: '/teaching-content/levels/:levelId/chapters/:chapterId/restore',
-    tokens: [{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/restore","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"chapters","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/restore","type":1,"val":"chapterId","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"restore","end":""}],
-    types: placeholder as Registry['teaching_content.chapters.restore']['types'],
+    pattern: '/levels/:levelId/chapters/:chapterId/restore',
+    tokens: [{"old":"/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"chapters","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":1,"val":"chapterId","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"restore","end":""}],
+    types: placeholder as Registry['chapters.restore']['types'],
   },
-  'teaching_content.chapters.destroy': {
-    methods: ["DELETE"],
-    pattern: '/teaching-content/levels/:levelId/chapters/:chapterId',
-    tokens: [{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":0,"val":"chapters","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":1,"val":"chapterId","end":""}],
-    types: placeholder as Registry['teaching_content.chapters.destroy']['types'],
-  },
-  'teaching_content.activities.store': {
+  'activities.store': {
     methods: ["POST"],
-    pattern: '/teaching-content/levels/:levelId/activities',
-    tokens: [{"old":"/teaching-content/levels/:levelId/activities","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/activities","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/activities","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/activities","type":0,"val":"activities","end":""}],
-    types: placeholder as Registry['teaching_content.activities.store']['types'],
+    pattern: '/levels/:levelId/activities',
+    tokens: [{"old":"/levels/:levelId/activities","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/activities","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/activities","type":0,"val":"activities","end":""}],
+    types: placeholder as Registry['activities.store']['types'],
   },
-  'teaching_content.activities.update': {
+  'activities.update': {
     methods: ["PUT"],
-    pattern: '/teaching-content/levels/:levelId/activities/:activityId',
-    tokens: [{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":0,"val":"activities","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":1,"val":"activityId","end":""}],
-    types: placeholder as Registry['teaching_content.activities.update']['types'],
+    pattern: '/levels/:levelId/activities/:activityId',
+    tokens: [{"old":"/levels/:levelId/activities/:activityId","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/activities/:activityId","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/activities/:activityId","type":0,"val":"activities","end":""},{"old":"/levels/:levelId/activities/:activityId","type":1,"val":"activityId","end":""}],
+    types: placeholder as Registry['activities.update']['types'],
   },
-  'teaching_content.activities.archive': {
+  'activities.archive': {
     methods: ["POST"],
-    pattern: '/teaching-content/levels/:levelId/activities/:activityId/archive',
-    tokens: [{"old":"/teaching-content/levels/:levelId/activities/:activityId/archive","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId/archive","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId/archive","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId/archive","type":0,"val":"activities","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId/archive","type":1,"val":"activityId","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId/archive","type":0,"val":"archive","end":""}],
-    types: placeholder as Registry['teaching_content.activities.archive']['types'],
+    pattern: '/levels/:levelId/activities/:activityId/archive',
+    tokens: [{"old":"/levels/:levelId/activities/:activityId/archive","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/activities/:activityId/archive","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/activities/:activityId/archive","type":0,"val":"activities","end":""},{"old":"/levels/:levelId/activities/:activityId/archive","type":1,"val":"activityId","end":""},{"old":"/levels/:levelId/activities/:activityId/archive","type":0,"val":"archive","end":""}],
+    types: placeholder as Registry['activities.archive']['types'],
   },
-  'teaching_content.activities.restore': {
+  'activities.restore': {
     methods: ["POST"],
-    pattern: '/teaching-content/levels/:levelId/activities/:activityId/restore',
-    tokens: [{"old":"/teaching-content/levels/:levelId/activities/:activityId/restore","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId/restore","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId/restore","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId/restore","type":0,"val":"activities","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId/restore","type":1,"val":"activityId","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId/restore","type":0,"val":"restore","end":""}],
-    types: placeholder as Registry['teaching_content.activities.restore']['types'],
-  },
-  'teaching_content.activities.destroy': {
-    methods: ["DELETE"],
-    pattern: '/teaching-content/levels/:levelId/activities/:activityId',
-    tokens: [{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":0,"val":"activities","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":1,"val":"activityId","end":""}],
-    types: placeholder as Registry['teaching_content.activities.destroy']['types'],
+    pattern: '/levels/:levelId/activities/:activityId/restore',
+    tokens: [{"old":"/levels/:levelId/activities/:activityId/restore","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":0,"val":"activities","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":1,"val":"activityId","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":0,"val":"restore","end":""}],
+    types: placeholder as Registry['activities.restore']['types'],
   },
   'new_account.create': {
     methods: ["GET","HEAD"],

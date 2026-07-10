@@ -23,7 +23,7 @@ type PageProps = InertiaProps<{
   themes: ThemePageTheme[]
 }>
 
-export default function Themes({ schoolYear, level, themes }: PageProps) {
+export default function ThemesIndex({ schoolYear, level, themes }: PageProps) {
   return (
     <section className="w-full p-9">
       <header className="mb-7 p-0">
@@ -38,7 +38,7 @@ export default function Themes({ schoolYear, level, themes }: PageProps) {
       <div className="grid grid-cols-1 items-start gap-7 lg:grid-cols-[minmax(280px,360px)_1fr]">
         <section className="rounded-2 border border-[var(--gray-3)] p-5">
           <h2 className="text-5 mb-4.5">Nouveau thème</h2>
-          <Form route="teaching_content.themes.store" routeParams={{ levelId: level.id }}>
+          <Form route="themes.store" routeParams={{ levelId: level.id }}>
             {({ errors, processing }) => (
               <>
                 <ThemeFields errors={errors} />
@@ -72,7 +72,7 @@ export default function Themes({ schoolYear, level, themes }: PageProps) {
 
                   <details className="mt-3.5">
                     <summary className="font-600 cursor-pointer text-[var(--gray-8)]">Modifier</summary>
-                    <Form route="teaching_content.themes.update" routeParams={{ levelId: level.id, themeId: theme.id }}>
+                    <Form route="themes.update" routeParams={{ levelId: level.id, themeId: theme.id }}>
                       {({ errors, processing }) => (
                         <>
                           <ThemeFields errors={errors} theme={theme} />
