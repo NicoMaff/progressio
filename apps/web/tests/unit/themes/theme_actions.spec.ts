@@ -9,7 +9,7 @@ import { test } from "@japa/runner"
 import { DateTime } from "luxon"
 import { randomUUID } from "node:crypto"
 
-test.group("teaching content theme actions", (group) => {
+test.group("themes actions", (group) => {
   group.setup(() => testUtils.db().migrate())
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 

@@ -24,8 +24,8 @@ export const controllers = {
   themes: {
     ArchiveTheme: () => import('#src/themes/controllers/archive_theme_controller'),
     CreateTheme: () => import('#src/themes/controllers/create_theme_controller'),
+    ListThemes: () => import('#src/themes/controllers/list_themes_controller'),
     RestoreTheme: () => import('#src/themes/controllers/restore_theme_controller'),
-    ThemesPage: () => import('#src/themes/controllers/themes_page_controller'),
     UpdateTheme: () => import('#src/themes/controllers/update_theme_controller'),
   },
 }
