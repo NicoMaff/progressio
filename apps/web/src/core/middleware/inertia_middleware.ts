@@ -15,9 +15,6 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      */
     const { session, auth } = ctx as Partial<HttpContext>
 
-    /**
-     * Fetching the first error from the flash messages
-     */
     const error = session?.flashMessages.get("error") as string
     const success = session?.flashMessages.get("success") as string
 

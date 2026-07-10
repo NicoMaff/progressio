@@ -19,18 +19,9 @@ export const controllers = {
   NewAccount: () => import('#src/controllers/new_account_controller'),
   Session: () => import('#src/controllers/session_controller'),
   teachingContent: {
-    ArchiveActivity: () => import('#src/teaching_content/controllers/archive_activity_controller'),
-    ArchiveChapter: () => import('#src/teaching_content/controllers/archive_chapter_controller'),
-    ArchiveTheme: () => import('#src/teaching_content/controllers/archive_theme_controller'),
-    CreateActivity: () => import('#src/teaching_content/controllers/create_activity_controller'),
-    CreateChapter: () => import('#src/teaching_content/controllers/create_chapter_controller'),
-    CreateTheme: () => import('#src/teaching_content/controllers/create_theme_controller'),
     DeleteActivity: () => import('#src/teaching_content/controllers/delete_activity_controller'),
     DeleteChapter: () => import('#src/teaching_content/controllers/delete_chapter_controller'),
     DeleteTheme: () => import('#src/teaching_content/controllers/delete_theme_controller'),
-    RestoreActivity: () => import('#src/teaching_content/controllers/restore_activity_controller'),
-    RestoreChapter: () => import('#src/teaching_content/controllers/restore_chapter_controller'),
-    RestoreTheme: () => import('#src/teaching_content/controllers/restore_theme_controller'),
     TeachingContent: () => import('#src/teaching_content/controllers/teaching_content_controller'),
   },
   themes: {
