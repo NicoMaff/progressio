@@ -6,12 +6,12 @@ import testUtils from "@adonisjs/core/services/test_utils"
 import { DateTime } from "luxon"
 
 function extractInertiaPage(html: string) {
-  const [, encodedPage] = html.match(/data-page="([^"]+)"/) ?? []
-  if (!encodedPage) {
+  const [, serializedPage] = html.match(/<script[^>]*data-page="[^"]+"[^>]*>([^<]+)<\/script>/) ?? []
+  if (!serializedPage) {
     throw new Error("Missing Inertia page payload")
   }
 
-  return JSON.parse(encodedPage.replaceAll("&quot;", '"').replaceAll("&amp;", "&"))
+  return JSON.parse(serializedPage)
 }
 
 test.group("Teaching content page", (group) => {

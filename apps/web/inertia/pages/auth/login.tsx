@@ -1,5 +1,10 @@
 import { Form } from "@adonisjs/inertia/react"
 
+type LoginFormErrors = {
+  email?: string
+  password?: string
+}
+
 export default function Login() {
   return (
     <div className="form-container">
@@ -10,33 +15,37 @@ export default function Login() {
 
       <div>
         <Form route="session.store">
-          {({ errors }) => (
-            <>
-              <div>
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  autoComplete="username"
-                  data-invalid={errors.email ? "true" : undefined}
-                />
-                {errors.email && <div>{errors.email}</div>}
-              </div>
+          {({ errors }) => {
+            const formErrors = errors as LoginFormErrors
 
-              <div>
-                <label htmlFor="password">Password</label>
-                <input type="password" name="password" id="password" autoComplete="current-password" />
-                {errors.password ? <span>{errors.password}</span> : ""}
-              </div>
+            return (
+              <>
+                <div>
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    autoComplete="username"
+                    data-invalid={formErrors.email ? "true" : undefined}
+                  />
+                  {formErrors.email && <div>{formErrors.email}</div>}
+                </div>
 
-              <div>
-                <button type="submit" className="button">
-                  Login
-                </button>
-              </div>
-            </>
-          )}
+                <div>
+                  <label htmlFor="password">Password</label>
+                  <input type="password" name="password" id="password" autoComplete="current-password" />
+                  {formErrors.password ? <span>{formErrors.password}</span> : ""}
+                </div>
+
+                <div>
+                  <button type="submit" className="button">
+                    Login
+                  </button>
+                </div>
+              </>
+            )
+          }}
         </Form>
       </div>
     </div>

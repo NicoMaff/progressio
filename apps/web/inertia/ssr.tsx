@@ -1,22 +1,27 @@
 import { client } from "~/client"
-import { type ReactElement } from "react"
 import Layout from "~/layouts/default"
 import { type Data } from "@generated/data"
 import ReactDOMServer from "react-dom/server"
 import { createInertiaApp } from "@inertiajs/react"
+import { type Page } from "@inertiajs/core"
 import { TuyauProvider } from "@adonisjs/inertia/react"
-import { resolvePageComponent } from "@adonisjs/inertia/helpers"
+import { type ComponentType, type ReactElement } from "react"
 
-export default function render(page: any) {
+type InertiaPage = ComponentType & {
+  layout?: (page: ReactElement<Data.SharedProps>) => ReactElement
+}
+
+export default function render(initialPage: Page<Data.SharedProps>) {
   return createInertiaApp({
-    page,
+    page: initialPage,
     render: ReactDOMServer.renderToString,
     resolve: (name) => {
-      return resolvePageComponent(
-        `./pages/${name}.tsx`,
-        import.meta.glob("./pages/**/*.tsx", { eager: true }),
-        (resolvedPage: ReactElement<Data.SharedProps>) => <Layout children={resolvedPage} />
-      )
+      const pages = import.meta.glob<{ default: InertiaPage }>("./pages/**/*.tsx", { eager: true })
+      const resolvedPage = pages[`./pages/${name}.tsx`]!
+
+      resolvedPage.default.layout = resolvedPage.default.layout || ((pageElement) => <Layout>{pageElement}</Layout>)
+
+      return resolvedPage
     },
     setup: ({ App, props }) => {
       return (

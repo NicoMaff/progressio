@@ -6,12 +6,12 @@ import { test } from "@japa/runner"
 import { DateTime } from "luxon"
 
 function extractInertiaPage(html: string) {
-  const [, encodedPage] = html.match(/data-page="([^"]+)"/) ?? []
-  if (!encodedPage) {
+  const [, serializedPage] = html.match(/<script[^>]*data-page="[^"]+"[^>]*>([^<]+)<\/script>/) ?? []
+  if (!serializedPage) {
     throw new Error("Missing Inertia page payload")
   }
 
-  return JSON.parse(encodedPage.replaceAll("&quot;", '"').replaceAll("&amp;", "&"))
+  return JSON.parse(serializedPage)
 }
 
 test.group("Themes page", (group) => {

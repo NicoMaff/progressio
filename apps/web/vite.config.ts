@@ -1,4 +1,3 @@
-import inertia from "@adonisjs/inertia/vite"
 import adonisjs from "@adonisjs/vite/client"
 import react from "@vitejs/plugin-react"
 import UnoCSS from "unocss/vite"
@@ -8,8 +7,11 @@ export default defineConfig({
   plugins: [
     UnoCSS(),
     react(),
-    inertia({ ssr: { enabled: false, entrypoint: "inertia/ssr.tsx" } }),
-    adonisjs({ entrypoints: ["inertia/app.tsx"], reload: ["resources/views/**/*.edge"] }),
+    adonisjs({
+      entrypoints: ["inertia/app.tsx"],
+      serverEntrypoints: ["inertia/ssr.tsx"],
+      reload: ["resources/views/**/*.edge"],
+    }),
   ],
 
   /**
