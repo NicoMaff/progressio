@@ -9,8 +9,16 @@ export type ScannedRoutes = {
     'teaching_content.themes.index': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'teaching_content.themes.store': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'teaching_content.themes.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
+    'teaching_content.themes.archive': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
+    'teaching_content.themes.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'teaching_content.chapters.store': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'teaching_content.chapters.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
+    'teaching_content.chapters.archive': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
+    'teaching_content.chapters.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
+    'teaching_content.activities.store': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'teaching_content.activities.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
+    'teaching_content.activities.archive': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
+    'teaching_content.activities.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
@@ -33,7 +41,14 @@ export type ScannedRoutes = {
   }
   POST: {
     'teaching_content.themes.store': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'teaching_content.themes.archive': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
+    'teaching_content.themes.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'teaching_content.chapters.store': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'teaching_content.chapters.archive': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
+    'teaching_content.chapters.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
+    'teaching_content.activities.store': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'teaching_content.activities.archive': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
+    'teaching_content.activities.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
@@ -41,6 +56,7 @@ export type ScannedRoutes = {
   PUT: {
     'teaching_content.themes.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'teaching_content.chapters.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
+    'teaching_content.activities.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

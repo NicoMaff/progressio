@@ -1,10 +1,10 @@
-import ListActiveThemesAction from "../teaching_content/actions/list_active_themes_action.js"
-import ThemeTransformer from "../teaching_content/transformers/theme_transformer.js"
+import ListActiveThemesAction from "#teaching_content/actions/list_active_themes_action"
+import ThemeTransformer from "#teaching_content/transformers/theme_transformer"
 import type { HttpContext } from "@adonisjs/core/http"
 import { inject } from "@adonisjs/core"
 
 @inject()
-export default class TeachingContentThemesPageController {
+export default class ThemesPageController {
   constructor(private readonly listActiveThemes: ListActiveThemesAction) {}
 
   async render({ inertia, params }: HttpContext) {

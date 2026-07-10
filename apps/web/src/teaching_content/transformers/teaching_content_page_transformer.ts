@@ -4,6 +4,7 @@ import type Chapter from "#models/chapter"
 import type Level from "#models/level"
 import type SchoolYear from "#models/school_year"
 import type Theme from "#models/theme"
+import type { TeachingContentArchiveFilter } from "#teaching_content/actions/render_teaching_content_page_action"
 import TeachingContentPageActivityTransformer from "#teaching_content/transformers/teaching_content_page_activity_transformer"
 import TeachingContentPageActivityTypeTransformer from "#teaching_content/transformers/teaching_content_page_activity_type_transformer"
 import TeachingContentPageChapterTransformer from "#teaching_content/transformers/teaching_content_page_chapter_transformer"
@@ -16,6 +17,7 @@ export default class TeachingContentPageTransformer extends BaseTransformer<Leve
   constructor(
     resource: Level,
     private readonly schoolYear: SchoolYear,
+    private readonly archiveFilter: TeachingContentArchiveFilter,
     private readonly themes: Theme[],
     private readonly chapters: Chapter[],
     private readonly activityTypes: ActivityType[],
@@ -31,6 +33,7 @@ export default class TeachingContentPageTransformer extends BaseTransformer<Leve
 
   toObject() {
     return {
+      archiveFilter: this.archiveFilter,
       level: TeachingContentPageLevelTransformer.transform(this.resource),
       schoolYear: TeachingContentPageSchoolYearTransformer.transform(this.schoolYear),
       themes: TeachingContentPageThemeTransformer.transform(this.themes, this.chapterCountsByThemeId),

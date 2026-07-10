@@ -1,8 +1,10 @@
-import { Form } from "@adonisjs/inertia/react"
+import { Form, Link } from "@adonisjs/inertia/react"
 import { type Data } from "@generated/data"
+import { type ReactNode } from "react"
 import { type InertiaProps } from "~/types"
 
 type TeachingContentPageData = Data.TeachingContent.TeachingContentPage
+type TeachingContentArchiveFilter = "active" | "archived" | "all"
 type TeachingContentPageProps = InertiaProps<TeachingContentPageData>
 type TeachingContentPageTheme = TeachingContentPageData["themes"][number]
 type TeachingContentPageChapter = TeachingContentPageData["chapters"][number]
@@ -16,7 +18,13 @@ export default function TeachingContentShow({
   chapters,
   activityTypes,
   activities,
+  archiveFilter,
 }: TeachingContentPageProps) {
+  const activeThemes = themes.filter((theme) => !theme.archivedAt)
+  const activeChapters = chapters.filter((chapter) => !chapter.archivedAt)
+  const archiveFilterLabel =
+    archiveFilter === "active" ? "actifs" : archiveFilter === "archived" ? "archivés" : "affichés"
+
   return (
     <section className="flex flex-1 flex-col">
       <header className="border-border flex items-start justify-between gap-6 border-b px-12 py-10">
@@ -31,46 +39,64 @@ export default function TeachingContentShow({
         </span>
       </header>
 
-      <div className="grid grid-cols-1 items-start gap-8 px-12 py-10 xl:grid-cols-[minmax(300px,380px)_1fr]">
-        <div className="grid gap-6">
-          <section className="border-border rounded-md border p-5">
-            <h2 className="mb-5 text-xl font-semibold">Nouvelle activité</h2>
-            <Form action={{ url: `/teaching-content/levels/${level.id}/activities`, method: "post" }}>
-              {({ errors, processing }) => (
-                <>
-                  <ActivityFields errors={errors} chapters={chapters} activityTypes={activityTypes} />
-                  <button type="submit" disabled={processing}>
-                    Créer l’activité
-                  </button>
-                </>
-              )}
-            </Form>
-          </section>
+      <nav className="border-border flex gap-2 border-b px-12 py-4" aria-label="Filtrer les contenus">
+        <ArchiveFilterLink levelId={level.id} filter="active" currentFilter={archiveFilter}>
+          Actifs
+        </ArchiveFilterLink>
+        <ArchiveFilterLink levelId={level.id} filter="archived" currentFilter={archiveFilter}>
+          Archivés
+        </ArchiveFilterLink>
+        <ArchiveFilterLink levelId={level.id} filter="all" currentFilter={archiveFilter}>
+          Tous
+        </ArchiveFilterLink>
+      </nav>
 
-          <section className="border-border rounded-md border p-5">
-            <h2 className="mb-5 text-xl font-semibold">Nouveau chapitre</h2>
-            <Form route="teaching_content.chapters.store" routeParams={{ levelId: level.id }}>
-              {({ errors, processing }) => (
-                <>
-                  <ChapterFields errors={errors} themes={themes} />
-                  <button type="submit" disabled={processing}>
-                    Créer le chapitre
-                  </button>
-                </>
-              )}
-            </Form>
-          </section>
-        </div>
+      <div
+        className={`grid grid-cols-1 items-start gap-8 px-12 py-10 ${archiveFilter === "archived" ? "" : "xl:grid-cols-[minmax(300px,380px)_1fr]"}`}
+      >
+        {archiveFilter !== "archived" && (
+          <div className="grid gap-6">
+            <section className="border-border rounded-md border p-5">
+              <h2 className="mb-5 text-xl font-semibold">Nouvelle activité</h2>
+              <Form action={{ url: `/teaching-content/levels/${level.id}/activities`, method: "post" }}>
+                {({ errors, processing }) => (
+                  <>
+                    <ActivityFields errors={errors} chapters={activeChapters} activityTypes={activityTypes} />
+                    <button type="submit" disabled={processing}>
+                      Créer l’activité
+                    </button>
+                  </>
+                )}
+              </Form>
+            </section>
+
+            <section className="border-border rounded-md border p-5">
+              <h2 className="mb-5 text-xl font-semibold">Nouveau chapitre</h2>
+              <Form route="teaching_content.chapters.store" routeParams={{ levelId: level.id }}>
+                {({ errors, processing }) => (
+                  <>
+                    <ChapterFields errors={errors} themes={activeThemes} />
+                    <button type="submit" disabled={processing}>
+                      Créer le chapitre
+                    </button>
+                  </>
+                )}
+              </Form>
+            </section>
+          </div>
+        )}
 
         <div className="grid gap-8">
           <section>
             <div className="mb-4 flex items-end justify-between gap-4">
-              <h2 className="text-xl font-semibold">Activités actives</h2>
-              <span className="text-muted-foreground text-sm font-semibold">{activities.length} actives</span>
+              <h2 className="text-xl font-semibold">Activités</h2>
+              <span className="text-muted-foreground text-sm font-semibold">
+                {activities.length} contenus {archiveFilterLabel}
+              </span>
             </div>
 
             {activities.length === 0 ? (
-              <p className="text-muted-foreground">Aucune activité active pour ce niveau.</p>
+              <p className="text-muted-foreground">Aucune activité pour ce filtre.</p>
             ) : (
               <div className="grid gap-3">
                 {activities.map((activity) => (
@@ -97,29 +123,38 @@ export default function TeachingContentShow({
                       </div>
                     </div>
 
-                    <details className="mt-4">
-                      <summary className="cursor-pointer font-semibold">Modifier</summary>
-                      <Form
-                        action={{
-                          url: `/teaching-content/levels/${level.id}/activities/${activity.id}`,
-                          method: "put",
-                        }}
-                      >
-                        {({ errors, processing }) => (
-                          <>
-                            <ActivityFields
-                              errors={errors}
-                              chapters={chapters}
-                              activityTypes={activityTypes}
-                              activity={activity}
-                            />
-                            <button type="submit" disabled={processing}>
-                              Enregistrer
-                            </button>
-                          </>
-                        )}
-                      </Form>
-                    </details>
+                    <ArchiveRestoreForm
+                      levelId={level.id}
+                      contentType="activities"
+                      contentId={activity.id}
+                      archived={Boolean(activity.archivedAt)}
+                    />
+
+                    {!activity.archivedAt && (
+                      <details className="mt-4">
+                        <summary className="cursor-pointer font-semibold">Modifier</summary>
+                        <Form
+                          action={{
+                            url: `/teaching-content/levels/${level.id}/activities/${activity.id}`,
+                            method: "put",
+                          }}
+                        >
+                          {({ errors, processing }) => (
+                            <>
+                              <ActivityFields
+                                errors={errors}
+                                chapters={activeChapters}
+                                activityTypes={activityTypes}
+                                activity={activity}
+                              />
+                              <button type="submit" disabled={processing}>
+                                Enregistrer
+                              </button>
+                            </>
+                          )}
+                        </Form>
+                      </details>
+                    )}
                   </article>
                 ))}
               </div>
@@ -128,12 +163,14 @@ export default function TeachingContentShow({
 
           <section>
             <div className="mb-4 flex items-end justify-between gap-4">
-              <h2 className="text-xl font-semibold">Chapitres actifs</h2>
-              <span className="text-muted-foreground text-sm font-semibold">{chapters.length} actifs</span>
+              <h2 className="text-xl font-semibold">Chapitres</h2>
+              <span className="text-muted-foreground text-sm font-semibold">
+                {chapters.length} contenus {archiveFilterLabel}
+              </span>
             </div>
 
             {chapters.length === 0 ? (
-              <p className="text-muted-foreground">Aucun chapitre actif pour ce niveau.</p>
+              <p className="text-muted-foreground">Aucun chapitre pour ce filtre.</p>
             ) : (
               <div className="grid gap-3">
                 {chapters.map((chapter) => (
@@ -156,22 +193,31 @@ export default function TeachingContentShow({
                       </div>
                     </div>
 
-                    <details className="mt-4">
-                      <summary className="cursor-pointer font-semibold">Modifier</summary>
-                      <Form
-                        route="teaching_content.chapters.update"
-                        routeParams={{ levelId: level.id, chapterId: chapter.id }}
-                      >
-                        {({ errors, processing }) => (
-                          <>
-                            <ChapterFields errors={errors} themes={themes} chapter={chapter} />
-                            <button type="submit" disabled={processing}>
-                              Enregistrer
-                            </button>
-                          </>
-                        )}
-                      </Form>
-                    </details>
+                    <ArchiveRestoreForm
+                      levelId={level.id}
+                      contentType="chapters"
+                      contentId={chapter.id}
+                      archived={Boolean(chapter.archivedAt)}
+                    />
+
+                    {!chapter.archivedAt && (
+                      <details className="mt-4">
+                        <summary className="cursor-pointer font-semibold">Modifier</summary>
+                        <Form
+                          route="teaching_content.chapters.update"
+                          routeParams={{ levelId: level.id, chapterId: chapter.id }}
+                        >
+                          {({ errors, processing }) => (
+                            <>
+                              <ChapterFields errors={errors} themes={activeThemes} chapter={chapter} />
+                              <button type="submit" disabled={processing}>
+                                Enregistrer
+                              </button>
+                            </>
+                          )}
+                        </Form>
+                      </details>
+                    )}
                   </article>
                 ))}
               </div>
@@ -180,12 +226,14 @@ export default function TeachingContentShow({
 
           <section>
             <div className="mb-4 flex items-end justify-between gap-4">
-              <h2 className="text-xl font-semibold">Thèmes actifs</h2>
-              <span className="text-muted-foreground text-sm font-semibold">{themes.length} actifs</span>
+              <h2 className="text-xl font-semibold">Thèmes</h2>
+              <span className="text-muted-foreground text-sm font-semibold">
+                {themes.length} contenus {archiveFilterLabel}
+              </span>
             </div>
 
             {themes.length === 0 ? (
-              <p className="text-muted-foreground">Aucun thème actif pour ce niveau.</p>
+              <p className="text-muted-foreground">Aucun thème pour ce filtre.</p>
             ) : (
               <div className="grid gap-3 md:grid-cols-2">
                 {themes.map((theme) => (
@@ -203,6 +251,12 @@ export default function TeachingContentShow({
                         </p>
                       </div>
                     </div>
+                    <ArchiveRestoreForm
+                      levelId={level.id}
+                      contentType="themes"
+                      contentId={theme.id}
+                      archived={Boolean(theme.archivedAt)}
+                    />
                   </article>
                 ))}
               </div>
@@ -211,6 +265,77 @@ export default function TeachingContentShow({
         </div>
       </div>
     </section>
+  )
+}
+
+function ArchiveFilterLink({
+  levelId,
+  filter,
+  currentFilter,
+  children,
+}: {
+  levelId: string
+  filter: TeachingContentArchiveFilter
+  currentFilter: TeachingContentArchiveFilter
+  children: ReactNode
+}) {
+  return (
+    <Link
+      href={`/teaching-content/levels/${levelId}?archiveFilter=${filter}`}
+      aria-current={filter === currentFilter ? "page" : undefined}
+      className="border-border rounded-md border px-3 py-1.5 text-sm font-semibold"
+    >
+      {children}
+    </Link>
+  )
+}
+
+function ArchiveRestoreForm({
+  levelId,
+  contentType,
+  contentId,
+  archived,
+}: {
+  levelId: string
+  contentType: "themes" | "chapters" | "activities"
+  contentId: string
+  archived: boolean
+}) {
+  const action = archived ? "restore" : "archive"
+  const renderButton = ({ processing }: { processing: boolean }) => (
+    <button type="submit" disabled={processing}>
+      {archived ? "Restaurer" : "Archiver"}
+    </button>
+  )
+
+  if (contentType === "themes") {
+    return (
+      <Form route={`teaching_content.themes.${action}`} routeParams={{ levelId, themeId: contentId }} className="mt-4">
+        {renderButton}
+      </Form>
+    )
+  }
+
+  if (contentType === "chapters") {
+    return (
+      <Form
+        route={`teaching_content.chapters.${action}`}
+        routeParams={{ levelId, chapterId: contentId }}
+        className="mt-4"
+      >
+        {renderButton}
+      </Form>
+    )
+  }
+
+  return (
+    <Form
+      route={`teaching_content.activities.${action}`}
+      routeParams={{ levelId, activityId: contentId }}
+      className="mt-4"
+    >
+      {renderButton}
+    </Form>
   )
 }
 

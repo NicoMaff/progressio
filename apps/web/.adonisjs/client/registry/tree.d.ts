@@ -9,10 +9,20 @@ export interface ApiDefinition {
       index: typeof routes['teaching_content.themes.index']
       store: typeof routes['teaching_content.themes.store']
       update: typeof routes['teaching_content.themes.update']
+      archive: typeof routes['teaching_content.themes.archive']
+      restore: typeof routes['teaching_content.themes.restore']
     }
     chapters: {
       store: typeof routes['teaching_content.chapters.store']
       update: typeof routes['teaching_content.chapters.update']
+      archive: typeof routes['teaching_content.chapters.archive']
+      restore: typeof routes['teaching_content.chapters.restore']
+    }
+    activities: {
+      store: typeof routes['teaching_content.activities.store']
+      update: typeof routes['teaching_content.activities.update']
+      archive: typeof routes['teaching_content.activities.archive']
+      restore: typeof routes['teaching_content.activities.restore']
     }
   }
   newAccount: {

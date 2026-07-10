@@ -1,3 +1,5 @@
+import TeachingContentOperationError from "#teaching_content/exceptions/operation_error"
+
 export const DEFAULT_THEME_COLOR = "#6B7280"
 export const HEX_COLOR_PATTERN = /^#[0-9A-Fa-f]{6}$/
 export const THEME_NAME_MAX_LENGTH = 120
@@ -18,7 +20,7 @@ export type NormalizedThemeInput = {
   noteMarkdown: string | null
 }
 
-export class ThemeShortCodeAlreadyExistsError extends Error {
+export class ThemeShortCodeAlreadyExistsError extends TeachingContentOperationError {
   constructor() {
     super("Un thème actif utilise déjà ce code court pour ce niveau.")
     this.name = "ThemeShortCodeAlreadyExistsError"

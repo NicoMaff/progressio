@@ -1,3 +1,5 @@
+import TeachingContentOperationError from "#teaching_content/exceptions/operation_error"
+
 export const CHAPTER_NAME_MAX_LENGTH = 120
 export const CHAPTER_SHORT_CODE_MAX_LENGTH = 24
 export const CHAPTER_NOTE_MAX_LENGTH = 5000
@@ -17,21 +19,21 @@ export type NormalizedChapterInput = {
   noteMarkdown: string | null
 }
 
-export class ChapterShortCodeAlreadyExistsError extends Error {
+export class ChapterShortCodeAlreadyExistsError extends TeachingContentOperationError {
   constructor() {
     super("Un chapitre actif utilise déjà ce code court pour ce niveau.")
     this.name = "ChapterShortCodeAlreadyExistsError"
   }
 }
 
-export class ChapterShortCodeFormatError extends Error {
+export class ChapterShortCodeFormatError extends TeachingContentOperationError {
   constructor() {
     super("Le code court du chapitre doit contenir uniquement des lettres, chiffres et tirets.")
     this.name = "ChapterShortCodeFormatError"
   }
 }
 
-export class ChapterThemeLevelMismatchError extends Error {
+export class ChapterThemeLevelMismatchError extends TeachingContentOperationError {
   constructor() {
     super("Le thème choisi doit appartenir au même niveau que le chapitre.")
     this.name = "ChapterThemeLevelMismatchError"

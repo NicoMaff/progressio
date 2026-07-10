@@ -13,14 +13,6 @@ import router from "@adonisjs/core/services/router"
 
 const NewAccountController = () => import("#controllers/new_account_controller")
 const SessionController = () => import("#controllers/session_controller")
-const TeachingContentThemesPageController = () => import("#controllers/teaching_content_themes_page_controller")
-const TeachingContentCreateThemeController = () => import("#controllers/teaching_content_create_theme_controller")
-const TeachingContentUpdateThemeController = () => import("#controllers/teaching_content_update_theme_controller")
-const TeachingContentCreateChapterController = () => import("#controllers/teaching_content_create_chapter_controller")
-const TeachingContentUpdateChapterController = () => import("#controllers/teaching_content_update_chapter_controller")
-const TeachingContentCreateActivityController = () => import("#controllers/teaching_content_create_activity_controller")
-const TeachingContentUpdateActivityController = () => import("#controllers/teaching_content_update_activity_controller")
-
 router.on("/").renderInertia("home", {}).as("home")
 
 router
@@ -29,19 +21,39 @@ router
 
 router
   .group(() => {
-    router.get("levels/:levelId/themes", [TeachingContentThemesPageController, "render"]).as("themes.index")
-    router.post("levels/:levelId/themes", [TeachingContentCreateThemeController, "execute"]).as("themes.store")
-    router.put("levels/:levelId/themes/:themeId", [TeachingContentUpdateThemeController, "execute"]).as("themes.update")
-    router.post("levels/:levelId/chapters", [TeachingContentCreateChapterController, "execute"]).as("chapters.store")
+    router.get("levels/:levelId/themes", [controllers.teachingContent.ThemesPage, "render"]).as("themes.index")
+    router.post("levels/:levelId/themes", [controllers.teachingContent.CreateTheme, "execute"]).as("themes.store")
     router
-      .put("levels/:levelId/chapters/:chapterId", [TeachingContentUpdateChapterController, "execute"])
+      .put("levels/:levelId/themes/:themeId", [controllers.teachingContent.UpdateTheme, "execute"])
+      .as("themes.update")
+    router
+      .post("levels/:levelId/themes/:themeId/archive", [controllers.teachingContent.ArchiveTheme, "execute"])
+      .as("themes.archive")
+    router
+      .post("levels/:levelId/themes/:themeId/restore", [controllers.teachingContent.RestoreTheme, "execute"])
+      .as("themes.restore")
+    router.post("levels/:levelId/chapters", [controllers.teachingContent.CreateChapter, "execute"]).as("chapters.store")
+    router
+      .put("levels/:levelId/chapters/:chapterId", [controllers.teachingContent.UpdateChapter, "execute"])
       .as("chapters.update")
     router
-      .post("levels/:levelId/activities", [TeachingContentCreateActivityController, "execute"])
+      .post("levels/:levelId/chapters/:chapterId/archive", [controllers.teachingContent.ArchiveChapter, "execute"])
+      .as("chapters.archive")
+    router
+      .post("levels/:levelId/chapters/:chapterId/restore", [controllers.teachingContent.RestoreChapter, "execute"])
+      .as("chapters.restore")
+    router
+      .post("levels/:levelId/activities", [controllers.teachingContent.CreateActivity, "execute"])
       .as("activities.store")
     router
-      .put("levels/:levelId/activities/:activityId", [TeachingContentUpdateActivityController, "execute"])
+      .put("levels/:levelId/activities/:activityId", [controllers.teachingContent.UpdateActivity, "execute"])
       .as("activities.update")
+    router
+      .post("levels/:levelId/activities/:activityId/archive", [controllers.teachingContent.ArchiveActivity, "execute"])
+      .as("activities.archive")
+    router
+      .post("levels/:levelId/activities/:activityId/restore", [controllers.teachingContent.RestoreActivity, "execute"])
+      .as("activities.restore")
   })
   .prefix("teaching-content")
   .as("teaching_content")

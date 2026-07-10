@@ -67,6 +67,7 @@ test.group("Teaching content page", (group) => {
     assert.containsSubset(inertiaPage, {
       component: "teaching_content/show",
       props: {
+        archiveFilter: "active",
         level: {
           id: level.id,
           name: "Première générale",
@@ -135,5 +136,68 @@ test.group("Teaching content page", (group) => {
         ],
       },
     })
+  })
+
+  test("renders archived content with its parent projections", async ({ assert, client }) => {
+    const schoolYear = await SchoolYear.create({
+      label: "2026-2027",
+      subject: "Mathématiques",
+      startDate: DateTime.fromISO("2026-09-01"),
+      endDate: DateTime.fromISO("2027-07-05"),
+      firstTeachingDay: DateTime.fromISO("2026-09-02"),
+      teachingHourDurationMinutes: 55,
+    })
+    const level = await Level.create({ schoolYearId: schoolYear.id, name: "Seconde", shortCode: "2DE" })
+    const theme = await ThemeFactory.merge({ levelId: level.id }).create()
+    const chapter = await ChapterFactory.merge({
+      levelId: level.id,
+      themeId: theme.id,
+      archivedAt: DateTime.utc(),
+    }).create()
+    const activityType = await ActivityTypeFactory.merge({ schoolYearId: schoolYear.id }).create()
+    const activity = await ActivityFactory.merge({
+      levelId: level.id,
+      chapterId: chapter.id,
+      activityTypeId: activityType.id,
+      archivedAt: DateTime.utc(),
+    }).create()
+
+    const response = await client.get(`/teaching-content/levels/${level.id}?archiveFilter=archived`)
+    const inertiaPage = extractInertiaPage(response.text())
+
+    response.assertStatus(200)
+    assert.equal(inertiaPage.props.archiveFilter, "archived")
+    assert.deepEqual(inertiaPage.props.themes, [])
+    assert.containsSubset(inertiaPage.props.chapters, [{ id: chapter.id, theme: { id: theme.id } }])
+    assert.containsSubset(inertiaPage.props.activities, [{ id: activity.id, chapter: { id: chapter.id } }])
+    assert.isNotNull(inertiaPage.props.chapters[0].archivedAt)
+    assert.isNotNull(inertiaPage.props.activities[0].archivedAt)
+  })
+
+  test("redirects back when restoring a chapter with an archived theme", async ({ assert, client }) => {
+    const schoolYear = await SchoolYear.create({
+      label: "2026-2027",
+      subject: "Mathématiques",
+      startDate: DateTime.fromISO("2026-09-01"),
+      endDate: DateTime.fromISO("2027-07-05"),
+      firstTeachingDay: DateTime.fromISO("2026-09-02"),
+      teachingHourDurationMinutes: 55,
+    })
+    const level = await Level.create({ schoolYearId: schoolYear.id, name: "Seconde", shortCode: "2DE" })
+    const theme = await ThemeFactory.merge({ levelId: level.id, archivedAt: DateTime.utc() }).create()
+    const chapter = await ChapterFactory.merge({
+      levelId: level.id,
+      themeId: theme.id,
+      archivedAt: DateTime.utc(),
+    }).create()
+    const basePageUrl = `/teaching-content/levels/${level.id}`
+
+    const restoreResponse = await client
+      .post(`/teaching-content/levels/${level.id}/chapters/${chapter.id}/restore`)
+      .header("referer", basePageUrl)
+    restoreResponse.assertRedirectsTo(basePageUrl)
+
+    await chapter.refresh()
+    assert.isNotNull(chapter.archivedAt)
   })
 })
