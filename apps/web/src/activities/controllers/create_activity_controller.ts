@@ -1,5 +1,5 @@
-import CreateActivityAction from "#teaching_content/actions/create_activity_action"
-import { createActivityValidator } from "#teaching_content/validators/activity_validator"
+import CreateActivityAction from "#activities/actions/create_activity_action"
+import { createActivityValidator } from "#activities/validators/activity_validator"
 import type { HttpContext } from "@adonisjs/core/http"
 import { inject } from "@adonisjs/core"
 

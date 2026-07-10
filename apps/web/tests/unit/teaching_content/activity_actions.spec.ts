@@ -1,10 +1,10 @@
-import CreateActivityAction from "#teaching_content/actions/create_activity_action"
-import UpdateActivityAction from "#teaching_content/actions/update_activity_action"
+import CreateActivityAction from "#activities/actions/create_activity_action"
+import UpdateActivityAction from "#activities/actions/update_activity_action"
 import {
   ActivityChapterLevelMismatchError,
   ActivityEstimatedDurationOutOfRangeError,
   ActivityTypeSchoolYearMismatchError,
-} from "#teaching_content/actions/activity_input"
+} from "#activities/actions/activity_input"
 import { ActivityFactory, ActivityTypeFactory, ChapterFactory, LevelFactory } from "#database/factories"
 import testUtils from "@adonisjs/core/services/test_utils"
 import { test } from "@japa/runner"

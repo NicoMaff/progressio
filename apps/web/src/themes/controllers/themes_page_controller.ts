@@ -1,5 +1,5 @@
-import ListActiveThemesAction from "#teaching_content/actions/list_active_themes_action"
-import ThemeTransformer from "#teaching_content/transformers/theme_transformer"
+import ListActiveThemesAction from "#themes/actions/list_active_themes_action"
+import ThemeTransformer from "#themes/transformers/theme_transformer"
 import type { HttpContext } from "@adonisjs/core/http"
 import { inject } from "@adonisjs/core"
 

@@ -1,4 +1,4 @@
-import ArchiveChapterAction from "#teaching_content/actions/archive_chapter_action"
+import ArchiveChapterAction from "#chapters/actions/archive_chapter_action"
 import { inject } from "@adonisjs/core"
 import type { HttpContext } from "@adonisjs/core/http"
 

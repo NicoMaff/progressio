@@ -1,4 +1,4 @@
-import ArchiveThemeAction from "#teaching_content/actions/archive_theme_action"
+import ArchiveThemeAction from "#themes/actions/archive_theme_action"
 import { inject } from "@adonisjs/core"
 import type { HttpContext } from "@adonisjs/core/http"
 

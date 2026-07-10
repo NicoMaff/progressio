@@ -1,4 +1,4 @@
-import RestoreThemeAction from "#teaching_content/actions/restore_theme_action"
+import RestoreThemeAction from "#themes/actions/restore_theme_action"
 import { inject } from "@adonisjs/core"
 import type { HttpContext } from "@adonisjs/core/http"
 

@@ -1,4 +1,4 @@
-import RestoreActivityAction from "#teaching_content/actions/restore_activity_action"
+import RestoreActivityAction from "#activities/actions/restore_activity_action"
 import { inject } from "@adonisjs/core"
 import type { HttpContext } from "@adonisjs/core/http"
 
