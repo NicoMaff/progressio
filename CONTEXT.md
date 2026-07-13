@@ -80,6 +80,22 @@ _Avoid_: Class
 A concrete group of students for a school year, attached to a level. A class has its own planned and actual progression.
 _Avoid_: Level, group
 
+**Class Progress Summary**:
+A computed overview of a class's planned and actual progression during the school year.
+_Avoid_: Level progress, stored progress
+
+**Class Pacing**:
+A computed overview of the confirmed outcomes of a class's planned sessions due as of a given date. Future planned work is excluded, and the overview preserves outcome categories instead of forcing them into a single percentage.
+_Avoid_: Annual completion, total-year progress
+
+**Progression Follow-Up**:
+A separate count of past planned sessions that lack a confirmed outcome or require an outcome review. It indicates incomplete tracking, not pedagogical delay.
+_Avoid_: Progress delay, completion rate
+
+**Level Progress Summary**:
+A visual grouping of the progress summaries of the classes attached to a level. It may include computed aggregate indicators and provides access to each class's progression detail, but it is not an independent progression.
+_Avoid_: Level progression, shared class progression
+
 **School Year**:
 The dated yearly scope of a Progressio work file. A work file contains exactly one school year, and that school year contains the subject, classes, teaching content, planned progression, and actual progression for that year.
 _Avoid_: Academic year, archive
@@ -201,8 +217,16 @@ A free-form note written in Markdown and stored directly on the relevant object.
 _Avoid_: Resource, attachment
 
 **Progression View**:
-A view that compares planned progression and actual progression across the school year.
+A class-level view that compares planned progression and actual progression. It opens on the current period and offers access to the school-year view.
 _Avoid_: Calendar, timeline
+
+**Progression Chronology**:
+A planned-session-centered reading of a class's progression. Actual sessions linked to a planned session appear with it, while unplanned actual sessions appear as separate entries.
+_Avoid_: Separate planned and actual timelines
+
+**Current Progression Window**:
+The period containing the current date in a progression view. When no user-defined period contains that date, it is the current calendar month.
+_Avoid_: Fixed school-year window
 
 **Session Order**:
 The position of a planned or actual session within a class progression. Session order can include manual ordering choices. When a session is added, moved, rescheduled, completed, or deleted, the UI should offer to recalculate following session orders instead of silently changing them. Recalculation only affects following sessions for the same class and the same progression kind; planned and actual progressions are not recalculated together. Recalculation proposals are transient UI decisions, and only the resulting order values are persisted.
