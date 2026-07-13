@@ -9,15 +9,19 @@
     "./atoms": "./src/components/atoms/index.ts",
     "./components": "./src/components/index.ts",
     "./molecules": "./src/components/molecules/index.ts",
+    "./organisms": "./src/components/organisms/index.ts",
     "./components/atoms": "./src/components/atoms/index.ts",
     "./components/*": "./src/components/*.tsx",
     "./atoms/*": "./src/components/atoms/*.tsx",
     "./components/atoms/*": "./src/components/atoms/*.tsx",
     "./components/molecules": "./src/components/molecules/index.ts",
     "./components/molecules/*": "./src/components/molecules/*.tsx",
+    "./components/organisms": "./src/components/organisms/index.ts",
+    "./components/organisms/*": "./src/components/organisms/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
     "./lib/*": "./src/lib/*.ts",
     "./molecules/*": "./src/components/molecules/*.tsx",
+    "./organisms/*": "./src/components/organisms/*.tsx",
     "./styles.css": "./src/styles.css"
   },
   "imports": {
@@ -26,6 +30,7 @@
     "#hooks/*": "./src/hooks/*.ts",
     "#lib/*": "./src/lib/*.ts",
     "#molecules/*": "./src/components/molecules/*.tsx",
+    "#organisms/*": "./src/components/organisms/*.tsx",
     "#ui/*": "./src/components/atoms/*.tsx"
   },
   "scripts": {
