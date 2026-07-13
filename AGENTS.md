@@ -65,6 +65,20 @@ Use the smallest useful set of skills from `.agents/skills/`; combine focused sk
 - Storybook belongs to `packages/ui/.storybook` and must not require AdonisJS, Inertia, database access, or app routes.
 - Use French product copy by default. Do not add i18n initially.
 
+## Agent skills
+
+### Issue tracker
+
+Issues and PRDs are tracked in this repository's GitHub Issues. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The standard five-role triage label vocabulary is used. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+This repository uses a single domain context: root `CONTEXT.md` and `docs/adr/`. See `docs/agents/domain.md`.
+
 ## Global Conventions
 
 - Apply `security-sensitive-files-policy` for sensitive files, secrets, credentials, environment files, certificates, keys, and tokens.
