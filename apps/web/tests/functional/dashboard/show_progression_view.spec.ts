@@ -189,6 +189,27 @@ test.group("Progression view", (group) => {
       outcome: null,
       outcomeReviewRequired: false,
     })
+    const linkedActualSession = await ActualSession.create({
+      classId: teachingClass.id,
+      plannedSessionId: plannedSession.id,
+      title: "Approfondissement annuel",
+      sessionDate: today.minus({ months: 2 }),
+      startTime: "08:00",
+      durationMinutes: 55,
+      sessionOrder: 1,
+      state: "completed",
+      completedAt: DateTime.utc(),
+    })
+    const unplannedActualSession = await ActualSession.create({
+      classId: teachingClass.id,
+      title: "Séance de consolidation",
+      sessionDate: today.minus({ months: 1 }),
+      startTime: "10:00",
+      durationMinutes: 30,
+      sessionOrder: 2,
+      state: "completed",
+      completedAt: DateTime.utc(),
+    })
 
     const response = await client.get(`/planning/classes/${teachingClass.id}/progression?window=annual`)
     response.assertStatus(200)
@@ -200,9 +221,33 @@ test.group("Progression view", (group) => {
       startDate: schoolYear.startDate.toISODate(),
       endDate: schoolYear.endDate.toISODate(),
     })
-    assert.deepEqual(
-      page.props.progressionView.chronology.map((entry: { id: string }) => entry.id),
-      [plannedSession.id]
-    )
+    assert.deepEqual(page.props.progressionView.chronology, [
+      {
+        id: plannedSession.id,
+        kind: "planned",
+        date: today.minus({ months: 3 }).toISODate(),
+        dateLabel: today.minus({ months: 3 }).setLocale("fr").toFormat("d LLLL yyyy"),
+        detail: "55 min",
+        title: "Séance annuelle",
+        outcomeLabel: null,
+        outcomeTone: "neutral",
+        actualSessions: [
+          {
+            id: linkedActualSession.id,
+            dateLabel: today.minus({ months: 2 }).setLocale("fr").toFormat("d LLLL yyyy"),
+            detail: "55 min",
+            title: "Approfondissement annuel",
+          },
+        ],
+      },
+      {
+        id: unplannedActualSession.id,
+        kind: "unplannedActual",
+        date: today.minus({ months: 1 }).toISODate(),
+        dateLabel: today.minus({ months: 1 }).setLocale("fr").toFormat("d LLLL yyyy"),
+        detail: "30 min",
+        title: "Séance de consolidation",
+      },
+    ])
   })
 })
