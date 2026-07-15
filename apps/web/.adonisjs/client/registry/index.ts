@@ -18,6 +18,12 @@ const routes = {
     tokens: [{"old":"/dashboard/levels/:levelId","type":0,"val":"dashboard","end":""},{"old":"/dashboard/levels/:levelId","type":0,"val":"levels","end":""},{"old":"/dashboard/levels/:levelId","type":1,"val":"levelId","end":""}],
     types: placeholder as Registry['dashboard.level_progress_summary']['types'],
   },
+  'planning.progression_view': {
+    methods: ["GET","HEAD"],
+    pattern: '/planning/classes/:classId/progression',
+    tokens: [{"old":"/planning/classes/:classId/progression","type":0,"val":"planning","end":""},{"old":"/planning/classes/:classId/progression","type":0,"val":"classes","end":""},{"old":"/planning/classes/:classId/progression","type":1,"val":"classId","end":""},{"old":"/planning/classes/:classId/progression","type":0,"val":"progression","end":""}],
+    types: placeholder as Registry['planning.progression_view']['types'],
+  },
   'teaching_content.render': {
     methods: ["GET","HEAD"],
     pattern: '/teaching-content/levels/:levelId',
@@ -54,6 +60,12 @@ const routes = {
     tokens: [{"old":"/levels/:levelId/themes/:themeId/restore","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":1,"val":"themeId","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":0,"val":"restore","end":""}],
     types: placeholder as Registry['themes.restore']['types'],
   },
+  'themes.destroy': {
+    methods: ["DELETE"],
+    pattern: '/levels/:levelId/themes/:themeId',
+    tokens: [{"old":"/levels/:levelId/themes/:themeId","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/:themeId","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/:themeId","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/:themeId","type":1,"val":"themeId","end":""}],
+    types: placeholder as Registry['themes.destroy']['types'],
+  },
   'chapters.store': {
     methods: ["POST"],
     pattern: '/levels/:levelId/chapters',
@@ -78,6 +90,12 @@ const routes = {
     tokens: [{"old":"/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"chapters","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":1,"val":"chapterId","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"restore","end":""}],
     types: placeholder as Registry['chapters.restore']['types'],
   },
+  'chapters.destroy': {
+    methods: ["DELETE"],
+    pattern: '/levels/:levelId/chapters/:chapterId',
+    tokens: [{"old":"/levels/:levelId/chapters/:chapterId","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters/:chapterId","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters/:chapterId","type":0,"val":"chapters","end":""},{"old":"/levels/:levelId/chapters/:chapterId","type":1,"val":"chapterId","end":""}],
+    types: placeholder as Registry['chapters.destroy']['types'],
+  },
   'activities.store': {
     methods: ["POST"],
     pattern: '/levels/:levelId/activities',
@@ -101,6 +119,12 @@ const routes = {
     pattern: '/levels/:levelId/activities/:activityId/restore',
     tokens: [{"old":"/levels/:levelId/activities/:activityId/restore","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":0,"val":"activities","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":1,"val":"activityId","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":0,"val":"restore","end":""}],
     types: placeholder as Registry['activities.restore']['types'],
+  },
+  'activities.destroy': {
+    methods: ["DELETE"],
+    pattern: '/levels/:levelId/activities/:activityId',
+    tokens: [{"old":"/levels/:levelId/activities/:activityId","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/activities/:activityId","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/activities/:activityId","type":0,"val":"activities","end":""},{"old":"/levels/:levelId/activities/:activityId","type":1,"val":"activityId","end":""}],
+    types: placeholder as Registry['activities.destroy']['types'],
   },
   'new_account.create': {
     methods: ["GET","HEAD"],
