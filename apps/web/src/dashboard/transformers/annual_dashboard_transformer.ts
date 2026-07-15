@@ -1,4 +1,4 @@
-import type { AnnualDashboard } from "#dashboard/actions/render_annual_dashboard_action"
+import type { AnnualDashboard } from "#dashboard/actions/show_annual_dashboard_action"
 import { BaseTransformer } from "@adonisjs/core/transformers"
 
 export default class AnnualDashboardTransformer extends BaseTransformer<AnnualDashboard> {

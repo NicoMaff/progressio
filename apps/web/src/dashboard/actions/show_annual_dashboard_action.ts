@@ -31,7 +31,7 @@ export type AnnualDashboard = {
   levels: LevelProgressSummary[]
 }
 
-export default class RenderAnnualDashboardAction {
+export default class ShowAnnualDashboardAction {
   async execute(asOf = DateTime.local().startOf("day")): Promise<AnnualDashboard> {
     const schoolYear = await SchoolYear.query().firstOrFail()
     const [levels, classes] = await Promise.all([

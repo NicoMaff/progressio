@@ -16,7 +16,7 @@ test.group("Annual dashboard", (group) => {
   group.setup(() => testUtils.db().migrate())
   group.each.setup(async () => testUtils.db().wrapInGlobalTransaction())
 
-  test("exposes mixed class pacing and follow-up summaries without counting future sessions", async ({
+  test("shows mixed class pacing and follow-up summaries without counting future sessions", async ({
     assert,
     client,
   }) => {
