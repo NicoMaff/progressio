@@ -18,6 +18,9 @@ export const controllers = {
   },
   NewAccount: () => import('#src/controllers/new_account_controller'),
   Session: () => import('#src/controllers/session_controller'),
+  dashboard: {
+    ShowAnnualDashboard: () => import('#src/dashboard/controllers/show_annual_dashboard_controller'),
+  },
   teachingContent: {
     DeleteActivity: () => import('#src/teaching_content/controllers/delete_activity_controller'),
     DeleteChapter: () => import('#src/teaching_content/controllers/delete_chapter_controller'),

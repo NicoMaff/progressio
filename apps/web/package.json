@@ -35,6 +35,7 @@
     "#chapters/*": "./src/chapters/*.js",
     "#teaching_content/*": "./src/teaching_content/*.js",
     "#themes/*": "./src/themes/*.js",
+    "#dashboard/*": "./src/dashboard/*.js",
     "#validators/*": "./src/validators/*.js",
     "#providers/*": "./src/core/providers/*.js",
     "#policies/*": "./src/core/policies/*.js",

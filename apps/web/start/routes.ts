@@ -13,7 +13,7 @@ import router from "@adonisjs/core/services/router"
 
 const NewAccountController = () => import("#controllers/new_account_controller")
 const SessionController = () => import("#controllers/session_controller")
-router.on("/").renderInertia("home", {}).as("home")
+router.get("/", [controllers.dashboard.ShowAnnualDashboard, "render"]).as("home")
 
 router
   .get("/teaching-content/levels/:levelId", [controllers.teachingContent.TeachingContent, "render"])
