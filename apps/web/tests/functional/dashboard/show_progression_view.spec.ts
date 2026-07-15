@@ -121,7 +121,6 @@ test.group("Progression view", (group) => {
         actualSessions: [
           {
             id: linkedActualSession.id,
-            date: today.plus({ days: 1 }).toISODate(),
             dateLabel: today.plus({ days: 1 }).setLocale("fr").toFormat("d LLLL yyyy"),
             detail: "55 min",
             title: "Exercices guidés",
