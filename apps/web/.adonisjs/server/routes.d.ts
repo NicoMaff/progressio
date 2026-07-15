@@ -5,6 +5,7 @@ type ParamValue = string | number | bigint | boolean
 export type ScannedRoutes = {
   ALL: {
     'home': { paramsTuple?: []; params?: {} }
+    'dashboard.level_progress_summary': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.store': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
@@ -27,6 +28,7 @@ export type ScannedRoutes = {
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
+    'dashboard.level_progress_summary': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
@@ -34,6 +36,7 @@ export type ScannedRoutes = {
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
+    'dashboard.level_progress_summary': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }

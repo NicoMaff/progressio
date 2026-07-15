@@ -15,8 +15,20 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: unknown
-      errorResponse: unknown
+      response: ExtractResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_annual_dashboard_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_annual_dashboard_controller').default['render']>>>
+    }
+  }
+  'dashboard.level_progress_summary': {
+    methods: ["GET","HEAD"]
+    pattern: '/dashboard/levels/:levelId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_level_progress_summary_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_level_progress_summary_controller').default['render']>>>
     }
   }
   'teaching_content.render': {

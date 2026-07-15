@@ -12,6 +12,12 @@ const routes = {
     tokens: [{"old":"/","type":0,"val":"/","end":""}],
     types: placeholder as Registry['home']['types'],
   },
+  'dashboard.level_progress_summary': {
+    methods: ["GET","HEAD"],
+    pattern: '/dashboard/levels/:levelId',
+    tokens: [{"old":"/dashboard/levels/:levelId","type":0,"val":"dashboard","end":""},{"old":"/dashboard/levels/:levelId","type":0,"val":"levels","end":""},{"old":"/dashboard/levels/:levelId","type":1,"val":"levelId","end":""}],
+    types: placeholder as Registry['dashboard.level_progress_summary']['types'],
+  },
   'teaching_content.render': {
     methods: ["GET","HEAD"],
     pattern: '/teaching-content/levels/:levelId',

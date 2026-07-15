@@ -3,6 +3,9 @@ import type { routes } from './index.ts'
 
 export interface ApiDefinition {
   home: typeof routes['home']
+  dashboard: {
+    levelProgressSummary: typeof routes['dashboard.level_progress_summary']
+  }
   teachingContent: {
     render: typeof routes['teaching_content.render']
   }
