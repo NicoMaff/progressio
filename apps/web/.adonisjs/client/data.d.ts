@@ -9,6 +9,8 @@ import type { InferSharedProps } from '@adonisjs/inertia/types'
 import type ActivitiesTeachingContentPageActivityTransformer from '#src/activities/transformers/teaching_content_page_activity_transformer'
 import type ChaptersTeachingContentPageChapterTransformer from '#src/chapters/transformers/teaching_content_page_chapter_transformer'
 import type DashboardAnnualDashboardTransformer from '#src/dashboard/transformers/annual_dashboard_transformer'
+import type DashboardClassProgressSummaryPayloadTransformer from '#src/dashboard/transformers/class_progress_summary_payload'
+import type DashboardLevelProgressSummaryTransformer from '#src/dashboard/transformers/level_progress_summary_transformer'
 import type TeachingContentTeachingContentPageActivityTypeTransformer from '#src/teaching_content/transformers/teaching_content_page_activity_type_transformer'
 import type TeachingContentTeachingContentPageLevelTransformer from '#src/teaching_content/transformers/teaching_content_page_level_transformer'
 import type TeachingContentTeachingContentPageSchoolYearTransformer from '#src/teaching_content/transformers/teaching_content_page_school_year_transformer'
@@ -35,6 +37,14 @@ export namespace Data {
     export type AnnualDashboard = InferData<DashboardAnnualDashboardTransformer>
     export namespace AnnualDashboard {
       export type Variants = InferVariants<DashboardAnnualDashboardTransformer>
+    }
+    export type ClassProgressSummaryPayload = InferData<DashboardClassProgressSummaryPayloadTransformer>
+    export namespace ClassProgressSummaryPayload {
+      export type Variants = InferVariants<DashboardClassProgressSummaryPayloadTransformer>
+    }
+    export type LevelProgressSummary = InferData<DashboardLevelProgressSummaryTransformer>
+    export namespace LevelProgressSummary {
+      export type Variants = InferVariants<DashboardLevelProgressSummaryTransformer>
     }
   }
   export namespace TeachingContent {
