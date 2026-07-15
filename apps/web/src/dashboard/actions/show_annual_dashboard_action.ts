@@ -2,7 +2,7 @@ import type TeachingClass from "#models/class"
 import type Level from "#models/level"
 import type PlannedSession from "#models/planned_session"
 import type SchoolYear from "#models/school_year"
-import { DateTime } from "luxon"
+import type { DateTime } from "luxon"
 
 export const plannedSessionOutcomes = ["realized", "partial", "shifted", "cancelled", "to_catch_up"] as const
 export type PlannedSessionOutcome = (typeof plannedSessionOutcomes)[number]
