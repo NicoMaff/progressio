@@ -21,6 +21,7 @@ export const controllers = {
   dashboard: {
     ShowAnnualDashboard: () => import('#src/dashboard/controllers/show_annual_dashboard_controller'),
     ShowLevelProgressSummary: () => import('#src/dashboard/controllers/show_level_progress_summary_controller'),
+    ShowProgressionView: () => import('#src/dashboard/controllers/show_progression_view_controller'),
   },
   teachingContent: {
     DeleteActivity: () => import('#src/teaching_content/controllers/delete_activity_controller'),

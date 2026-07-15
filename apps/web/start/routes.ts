@@ -19,6 +19,10 @@ router
   .as("dashboard.level_progress_summary")
 
 router
+  .get("/planning/classes/:classId/progression", [controllers.dashboard.ShowProgressionView, "render"])
+  .as("planning.progression_view")
+
+router
   .get("/teaching-content/levels/:levelId", [controllers.teachingContent.TeachingContent, "render"])
   .as("teaching_content.render")
 
