@@ -4,10 +4,14 @@ import PlannedSession from "#models/planned_session"
 import SchoolYear from "#models/school_year"
 import Level from "#models/level"
 import AnnualDashboardTransformer from "#dashboard/transformers/annual_dashboard_transformer"
+import { inject } from "@adonisjs/core"
 import type { HttpContext } from "@adonisjs/core/http"
 import { DateTime } from "luxon"
 
+@inject()
 export default class ShowAnnualDashboardController {
+  constructor(private showAnnualDashboard: ShowAnnualDashboardAction) {}
+
   async render({ inertia }: HttpContext) {
     const schoolYear = await SchoolYear.query().firstOrFail()
     const [levels, classes] = await Promise.all([
@@ -20,7 +24,7 @@ export default class ShowAnnualDashboardController {
           classes.map((teachingClass) => teachingClass.id)
         )
       : []
-    const dashboard = new ShowAnnualDashboardAction().execute({
+    const dashboard = this.showAnnualDashboard.execute({
       schoolYear,
       levels,
       classes,
