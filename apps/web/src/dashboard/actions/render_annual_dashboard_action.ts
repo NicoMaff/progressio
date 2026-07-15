@@ -99,9 +99,12 @@ export default class RenderAnnualDashboardAction {
     let reviewRequiredCount = 0
 
     for (const session of dueSessions) {
-      if (session.outcome === null) missingOutcomeCount++
-      else outcomeCounts[session.outcome as PlannedSessionOutcome]++
-      if (session.outcomeReviewRequired) reviewRequiredCount++
+      if (session.outcome === null) {
+        missingOutcomeCount++
+      } else {
+        outcomeCounts[session.outcome as PlannedSessionOutcome]++
+        if (session.outcomeReviewRequired) reviewRequiredCount++
+      }
     }
 
     return {

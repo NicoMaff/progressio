@@ -93,7 +93,7 @@ test.group("Annual dashboard", (group) => {
       durationMinutes: 55,
       sessionOrder: 4,
       outcome: null,
-      outcomeReviewRequired: false,
+      outcomeReviewRequired: true,
     })
     await PlannedSession.create({
       classId: notDueClass.id,
