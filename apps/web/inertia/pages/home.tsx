@@ -1,4 +1,5 @@
 import { Link } from "@adonisjs/inertia/react"
+import { type Data } from "@generated/data"
 import {
   ClassPacingIndicator,
   ClassSummaryRow,
@@ -8,23 +9,8 @@ import {
 } from "@progressio/ui"
 import { type InertiaProps } from "~/types"
 
-type ClassSummary = {
-  id: string
-  name: string
-  shortCode: string
-  pacingState: "tracked" | "notPlanned" | "nothingDue"
-  dueSessionCount: number
-  outcomeCounts: { cancelled: number; partial: number; realized: number; shifted: number; toCatchUp: number }
-  missingOutcomeCount: number
-  reviewRequiredCount: number
-}
-
 type PageProps = InertiaProps<{
-  dashboard: {
-    schoolYear: { id: string; label: string; subject: string }
-    summary: { levelCount: number; classCount: number; dueSessionCount: number; followUpCount: number }
-    levels: { id: string; name: string; shortCode: string; classes: ClassSummary[] }[]
-  }
+  dashboard: Data.Dashboard.AnnualDashboard
 }>
 
 export default function Home({ dashboard }: PageProps) {
