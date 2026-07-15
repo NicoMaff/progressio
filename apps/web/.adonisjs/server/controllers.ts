@@ -20,6 +20,7 @@ export const controllers = {
   Session: () => import('#src/controllers/session_controller'),
   dashboard: {
     ShowAnnualDashboard: () => import('#src/dashboard/controllers/show_annual_dashboard_controller'),
+    ShowLevelProgressSummary: () => import('#src/dashboard/controllers/show_level_progress_summary_controller'),
   },
   teachingContent: {
     DeleteActivity: () => import('#src/teaching_content/controllers/delete_activity_controller'),

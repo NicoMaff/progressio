@@ -14,6 +14,9 @@ import router from "@adonisjs/core/services/router"
 const NewAccountController = () => import("#controllers/new_account_controller")
 const SessionController = () => import("#controllers/session_controller")
 router.get("/", [controllers.dashboard.ShowAnnualDashboard, "render"]).as("home")
+router
+  .get("/dashboard/levels/:levelId", [controllers.dashboard.ShowLevelProgressSummary, "render"])
+  .as("dashboard.level_progress_summary")
 
 router
   .get("/teaching-content/levels/:levelId", [controllers.teachingContent.TeachingContent, "render"])

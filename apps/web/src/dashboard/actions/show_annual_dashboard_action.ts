@@ -1,7 +1,7 @@
-import TeachingClass from "#models/class"
-import Level from "#models/level"
-import PlannedSession from "#models/planned_session"
-import SchoolYear from "#models/school_year"
+import type TeachingClass from "#models/class"
+import type Level from "#models/level"
+import type PlannedSession from "#models/planned_session"
+import type SchoolYear from "#models/school_year"
 import { DateTime } from "luxon"
 
 export const plannedSessionOutcomes = ["realized", "partial", "shifted", "cancelled", "to_catch_up"] as const
@@ -31,19 +31,16 @@ export type AnnualDashboard = {
   levels: LevelProgressSummary[]
 }
 
+export type ShowAnnualDashboardInput = {
+  schoolYear: SchoolYear
+  levels: Level[]
+  classes: TeachingClass[]
+  plannedSessions: PlannedSession[]
+  asOf: DateTime
+}
+
 export default class ShowAnnualDashboardAction {
-  async execute(asOf = DateTime.local().startOf("day")): Promise<AnnualDashboard> {
-    const schoolYear = await SchoolYear.query().firstOrFail()
-    const [levels, classes] = await Promise.all([
-      Level.query().where("school_year_id", schoolYear.id).orderBy("short_code").orderBy("name"),
-      TeachingClass.query().where("school_year_id", schoolYear.id).orderBy("short_code").orderBy("name"),
-    ])
-    const plannedSessions = classes.length
-      ? await PlannedSession.query().whereIn(
-          "class_id",
-          classes.map((teachingClass) => teachingClass.id)
-        )
-      : []
+  execute({ schoolYear, levels, classes, plannedSessions, asOf }: ShowAnnualDashboardInput): AnnualDashboard {
     const sessionsByClassId = this.groupSessionsByClassId(plannedSessions)
     const classesByLevelId = new Map<string, TeachingClass[]>()
 

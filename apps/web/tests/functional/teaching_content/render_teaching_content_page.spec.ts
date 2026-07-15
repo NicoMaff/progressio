@@ -249,7 +249,7 @@ test.group("Teaching content page", (group) => {
     const basePageUrl = `/teaching-content/levels/${level.id}`
 
     const createResponse = await client
-      .post(`/teaching-content/levels/${level.id}/themes`)
+      .post(`/levels/${level.id}/themes`)
       .header("referer", basePageUrl)
       .form({ name: "Analyse", shortCode: "ANA" })
     createResponse.assertRedirectsTo(basePageUrl)

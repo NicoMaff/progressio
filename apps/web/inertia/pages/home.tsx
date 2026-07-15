@@ -50,9 +50,17 @@ export default function Home({ dashboard }: PageProps) {
                   {level.name}
                 </h2>
               </div>
-              <span className="text-sm text-neutral-500">
-                {level.classes.length} {level.classes.length > 1 ? "classes" : "classe"}
-              </span>
+              <div className="flex items-baseline gap-4">
+                <span className="text-sm text-neutral-500">
+                  {level.classes.length} {level.classes.length > 1 ? "classes" : "classe"}
+                </span>
+                <Link
+                  className="font-600 text-sm text-sky-700 hover:text-sky-900 hover:underline"
+                  href={`/dashboard/levels/${level.id}`}
+                >
+                  Voir le niveau <span aria-hidden="true">→</span>
+                </Link>
+              </div>
             </header>
 
             {level.classes.length === 0 ? (
