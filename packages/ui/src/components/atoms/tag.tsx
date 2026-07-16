@@ -2,14 +2,19 @@ import { cva, type VariantProps } from "class-variance-authority"
 import type { HTMLAttributes, ReactNode } from "react"
 import { cn } from "#lib/utils"
 
-export const tagVariants = cva("font-500 inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs", {
+export const badgeVariants = cva("font-600 inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs", {
   variants: {
     tone: {
-      neutral: "border-neutral-200 bg-neutral-100 text-neutral-700",
-      blue: "border-sky-200 bg-sky-50 text-sky-700",
-      green: "border-emerald-200 bg-emerald-50 text-emerald-700",
-      amber: "border-amber-200 bg-amber-50 text-amber-800",
-      red: "border-red-200 bg-red-50 text-red-700",
+      neutral: "border-border bg-muted text-muted-foreground",
+      primary: "border-primary/30 bg-accent text-accent-foreground",
+      completed: "border-completed/30 bg-completed-muted text-completed",
+      inProgress: "border-in-progress/30 bg-in-progress-muted text-in-progress",
+      alert: "border-alert/30 bg-alert-muted text-alert",
+      interruption: "border-interruption/30 bg-interruption-muted text-interruption",
+      blue: "border-primary/30 bg-accent text-accent-foreground",
+      green: "border-completed/30 bg-completed-muted text-completed",
+      amber: "border-in-progress/30 bg-in-progress-muted text-in-progress",
+      red: "border-alert/30 bg-alert-muted text-alert",
     },
   },
   defaultVariants: {
@@ -17,17 +22,28 @@ export const tagVariants = cva("font-500 inline-flex items-center gap-1 rounded-
   },
 })
 
-export type TagProps = HTMLAttributes<HTMLSpanElement> &
-  VariantProps<typeof tagVariants> & {
+/** @deprecated Use `badgeVariants` instead. */
+export const tagVariants = badgeVariants
+
+export type BadgeProps = HTMLAttributes<HTMLSpanElement> &
+  VariantProps<typeof badgeVariants> & {
     children: ReactNode
   }
 
-export function Tag({ children, className, tone, ...props }: TagProps) {
-  const classes = cn(tagVariants({ tone }), className)
+export function Badge({ children, className, tone, ...props }: BadgeProps) {
+  const classes = cn(badgeVariants({ tone }), className)
 
   return (
     <span className={classes} {...props}>
       {children}
     </span>
   )
+}
+
+/** @deprecated Use `BadgeProps` instead. */
+export type TagProps = BadgeProps
+
+/** @deprecated Use `Badge` instead. */
+export function Tag(props: TagProps) {
+  return <Badge {...props} />
 }

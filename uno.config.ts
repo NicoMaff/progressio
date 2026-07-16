@@ -1,4 +1,4 @@
-import { defineConfig, presetWebFonts, presetWind4, transformerDirectives, transformerVariantGroup } from "unocss"
+import { defineConfig, presetWind4, transformerDirectives, transformerVariantGroup } from "unocss"
 import presetIcons from "@unocss/preset-icons/browser"
 
 const contentFilesystem = [
@@ -25,22 +25,6 @@ export default defineConfig({
       },
       scale: 1.5,
       unit: "rem",
-    }),
-    presetWebFonts({
-      //   provider: "bunny",
-      //   fonts: {
-      //     // font name in project
-      //     gantari: {
-      //       // real font name
-      //       name: "Gantari",
-      //       weights: ["200", "300", "400", "500", "600", "700", "800", "900"],
-      //     },
-      //   },
-      // }),
-      // // Set the unit and the default size of icons, if import them from a provider (icones.js.org)
-      // presetIcons({
-      //   unit: "rem",
-      //   scale: 1.5,
     }),
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
@@ -79,6 +63,31 @@ export default defineConfig({
       border: "hsl(var(--border))",
       input: "hsl(var(--input))",
       ring: "hsl(var(--ring))",
+      completed: {
+        DEFAULT: "hsl(var(--completed))",
+        foreground: "hsl(var(--completed-foreground))",
+        muted: "hsl(var(--completed-muted))",
+      },
+      "in-progress": {
+        DEFAULT: "hsl(var(--in-progress))",
+        foreground: "hsl(var(--in-progress-foreground))",
+        muted: "hsl(var(--in-progress-muted))",
+      },
+      alert: {
+        DEFAULT: "hsl(var(--alert))",
+        foreground: "hsl(var(--alert-foreground))",
+        muted: "hsl(var(--alert-muted))",
+      },
+      interruption: {
+        DEFAULT: "hsl(var(--interruption))",
+        foreground: "hsl(var(--interruption-foreground))",
+        muted: "hsl(var(--interruption-muted))",
+      },
+    },
+    fontFamily: {
+      sans: '"Public Sans", system-ui, sans-serif',
+      display: '"Newsreader", Georgia, serif',
+      annotation: '"Caveat", cursive',
     },
   },
   variants: [

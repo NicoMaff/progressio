@@ -11,19 +11,16 @@ export type EmptyStateProps = Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
 export function EmptyState({ action, className, description, icon, title, ...props }: EmptyStateProps) {
   return (
     <div
-      className={cn(
-        "rounded-lg border border-dashed border-neutral-300 bg-neutral-50 px-6 py-8 text-center",
-        className
-      )}
+      className={cn("border-border bg-muted/50 rounded-lg border border-dashed px-6 py-8 text-center", className)}
       {...props}
     >
       {icon ? (
-        <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-neutral-500 shadow-sm">
+        <div className="bg-card text-muted-foreground mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full shadow-sm">
           {icon}
         </div>
       ) : null}
-      <h3 className="font-700 text-base text-neutral-900">{title}</h3>
-      <p className="mx-auto mt-1 max-w-md text-sm text-neutral-600">{description}</p>
+      <h3 className="font-display font-600 text-foreground text-xl">{title}</h3>
+      <p className="text-muted-foreground mx-auto mt-1 max-w-md text-sm">{description}</p>
       {action ? <div className="mt-4 flex justify-center">{action}</div> : null}
     </div>
   )

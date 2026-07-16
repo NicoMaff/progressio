@@ -26,3 +26,12 @@ export const Disabled: Story = {
     disabled: true,
   },
 }
+
+export const WithLongLabel: Story = {
+  render: () => (
+    <label className="text-foreground flex max-w-lg cursor-pointer items-start gap-3 text-sm">
+      <Checkbox className="mt-0.5 shrink-0" />
+      <span>Confirmer que le bilan de cette séance reflète bien la progression réellement constatée en classe.</span>
+    </label>
+  ),
+}
