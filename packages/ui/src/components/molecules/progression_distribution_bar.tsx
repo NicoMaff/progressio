@@ -10,11 +10,11 @@ export type ProgressionDistributionSegment = {
 }
 
 const DISTRIBUTION_TONE_CLASS_NAMES: Record<ProgressionDistributionTone, string> = {
-  realized: "bg-emerald-500",
-  partial: "bg-amber-400",
-  shifted: "bg-sky-500",
-  cancelled: "bg-neutral-400",
-  toCatchUp: "bg-red-500",
+  realized: "bg-completed",
+  partial: "bg-in-progress",
+  shifted: "bg-primary",
+  cancelled: "bg-muted-foreground",
+  toCatchUp: "bg-alert",
 }
 
 export type ProgressionDistributionBarProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
@@ -36,7 +36,7 @@ export function ProgressionDistributionBar({
     <div className={cn("space-y-2", className)} {...props}>
       <div
         aria-label={`${accessibleLabel}${summary ? ` — ${summary}` : " — aucune donnée"}`}
-        className="flex h-2.5 overflow-hidden rounded-full bg-neutral-100"
+        className="bg-muted flex h-2.5 overflow-hidden rounded-full"
         role="img"
       >
         {total > 0
@@ -53,11 +53,11 @@ export function ProgressionDistributionBar({
         {segments.map((segment) => (
           <li
             key={`${segment.tone}-${segment.label}`}
-            className="inline-flex items-center gap-1.5 text-xs text-neutral-600"
+            className="text-muted-foreground inline-flex items-center gap-1.5 text-xs"
           >
             <span className={cn("h-2 w-2 rounded-full", DISTRIBUTION_TONE_CLASS_NAMES[segment.tone])} />
             <span>{segment.label}</span>
-            <span className="font-600 text-neutral-900">{segment.value}</span>
+            <span className="font-600 text-foreground">{segment.value}</span>
           </li>
         ))}
       </ul>

@@ -9,7 +9,7 @@ export function Breadcrumb({ className, ...props }: BreadcrumbProps) {
 }
 
 export function BreadcrumbList({ className, ...props }: HTMLAttributes<HTMLOListElement>) {
-  return <ol className={cn("flex flex-wrap items-center gap-2 text-neutral-500", className)} {...props} />
+  return <ol className={cn("text-muted-foreground flex flex-wrap items-center gap-2", className)} {...props} />
 }
 
 export function BreadcrumbItem({ className, ...props }: HTMLAttributes<HTMLLIElement>) {
@@ -24,12 +24,15 @@ export function BreadcrumbLink({ asChild = false, className, ...props }: Breadcr
   const Component = asChild ? Slot : "a"
 
   return (
-    <Component className={cn("font-500 text-neutral-600 hover:text-sky-700 hover:underline", className)} {...props} />
+    <Component
+      className={cn("font-500 text-muted-foreground hover:text-primary hover:underline", className)}
+      {...props}
+    />
   )
 }
 
 export function BreadcrumbPage({ className, ...props }: HTMLAttributes<HTMLSpanElement>) {
-  return <span aria-current="page" className={cn("font-600 text-neutral-950", className)} {...props} />
+  return <span aria-current="page" className={cn("font-600 text-foreground", className)} {...props} />
 }
 
 export type BreadcrumbSeparatorProps = HTMLAttributes<HTMLSpanElement> & {
@@ -38,7 +41,7 @@ export type BreadcrumbSeparatorProps = HTMLAttributes<HTMLSpanElement> & {
 
 export function BreadcrumbSeparator({ children = "/", className, ...props }: BreadcrumbSeparatorProps) {
   return (
-    <span aria-hidden="true" className={cn("text-neutral-300", className)} role="presentation" {...props}>
+    <span aria-hidden="true" className={cn("text-border", className)} role="presentation" {...props}>
       {children}
     </span>
   )

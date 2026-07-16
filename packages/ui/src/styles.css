@@ -1,26 +1,47 @@
+@import "@fontsource/public-sans/latin-400.css";
+@import "@fontsource/public-sans/latin-500.css";
+@import "@fontsource/public-sans/latin-600.css";
+@import "@fontsource/public-sans/latin-700.css";
+@import "@fontsource/newsreader/latin-500.css";
+@import "@fontsource/newsreader/latin-600.css";
+@import "@fontsource/caveat/latin-500.css";
+
 :root {
-  --background: 0 0% 98.5%;
-  --foreground: 0 0% 14.5%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 14.5%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 14.5%;
-  --primary: 217 100% 56%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 0 0% 97%;
-  --secondary-foreground: 0 0% 14.5%;
-  --muted: 0 0% 97%;
-  --muted-foreground: 0 0% 43.9%;
-  --accent: 204 94% 94%;
-  --accent-foreground: 217 73% 31%;
-  --destructive: 356 84% 57%;
-  --destructive-foreground: 0 0% 100%;
-  --border: 0 0% 87%;
-  --input: 0 0% 87%;
-  --ring: 207 90% 54%;
-  color: oklch(26.9% 0 0);
-  background: oklch(98.5% 0 0);
-  font-family: system-ui, sans-serif;
+  --background: 42 43% 96%;
+  --foreground: 201 34% 14%;
+  --card: 45 60% 99%;
+  --card-foreground: 201 34% 14%;
+  --popover: 45 60% 99%;
+  --popover-foreground: 201 34% 14%;
+  --primary: 184 66% 27%;
+  --primary-foreground: 45 60% 99%;
+  --secondary: 39 30% 92%;
+  --secondary-foreground: 201 34% 18%;
+  --muted: 40 25% 91%;
+  --muted-foreground: 199 14% 38%;
+  --accent: 181 35% 88%;
+  --accent-foreground: 184 66% 22%;
+  --destructive: 12 57% 39%;
+  --destructive-foreground: 45 60% 99%;
+  --border: 37 24% 77%;
+  --input: 37 24% 70%;
+  --ring: 184 66% 27%;
+  --completed: 101 24% 32%;
+  --completed-foreground: 45 60% 99%;
+  --completed-muted: 95 29% 90%;
+  --in-progress: 40 70% 31%;
+  --in-progress-foreground: 45 60% 99%;
+  --in-progress-muted: 42 68% 89%;
+  --alert: 12 57% 39%;
+  --alert-foreground: 45 60% 99%;
+  --alert-muted: 15 55% 91%;
+  --interruption: 7 48% 32%;
+  --interruption-foreground: 45 60% 99%;
+  --interruption-muted: 13 36% 88%;
+  --radius: 0.5rem;
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  font-family: "Public Sans", system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.5;
 }
@@ -31,4 +52,9 @@
 
 body {
   margin: 0;
+}
+
+::selection {
+  color: hsl(var(--primary-foreground));
+  background: hsl(var(--primary));
 }

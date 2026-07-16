@@ -32,3 +32,28 @@ export const WithValue: Story = {
     </Select>
   ),
 }
+
+export const Invalid: Story = {
+  args: {
+    "invalid": true,
+    "aria-describedby": "class-error",
+  },
+  render: (args) => (
+    <div className="w-80 space-y-2">
+      <Select {...args}>
+        <SelectItem value="5a">5e A</SelectItem>
+      </Select>
+      <p id="class-error" className="text-alert text-sm">
+        Sélectionnez une classe pour continuer.
+      </p>
+    </div>
+  ),
+}
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+    placeholder: "Aucune classe disponible pour cette année scolaire",
+  },
+  render: (args) => <Select {...args} className="w-96" />,
+}
