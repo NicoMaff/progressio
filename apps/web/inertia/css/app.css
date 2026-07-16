@@ -1,272 +1,309 @@
 :root {
-  --background: 0 0% 98.5%;
-  --foreground: 0 0% 14.5%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 14.5%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 14.5%;
-  --primary: 217 100% 56%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 0 0% 97%;
-  --secondary-foreground: 0 0% 14.5%;
-  --muted: 0 0% 97%;
-  --muted-foreground: 0 0% 43.9%;
-  --accent: 204 94% 94%;
-  --accent-foreground: 217 73% 31%;
-  --destructive: 356 84% 57%;
-  --destructive-foreground: 0 0% 100%;
-  --border: 0 0% 87%;
-  --input: 0 0% 87%;
-  --ring: 207 90% 54%;
-  --gray-1: oklch(98.5% 0 0);
-  --gray-2: oklch(97% 0 0);
-  --gray-3: oklch(92.2% 0 0);
-  --gray-4: oklch(87% 0 0);
-  --gray-6: oklch(55.6% 0 0);
-  --gray-7: oklch(43.9% 0 0);
-  --gray-8: oklch(37.1% 0 0);
-  --gray-10: oklch(26.9% 0 0);
-  --gray-12: oklch(14.5% 0 0);
+  --progressio-background: #f8fafc;
+  --progressio-sidebar: #102a43;
+  --progressio-sidebar-muted: #b8c7d9;
+  --progressio-sidebar-active: #1f88c9;
+  --progressio-border: #e2e8f0;
+  --progressio-text: #102a43;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html,
-body {
-  height: 100%;
-  font-family: system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  background: var(--gray-2);
-  color: var(--gray-10);
-  font-size: 16px;
-  line-height: 1.5;
+body,
+#app {
+  min-height: 100%;
+  margin: 0;
 }
 
-a {
-  color: inherit;
+body {
+  background: var(--progressio-background);
+  color: var(--progressio-text);
+  font-family: system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.progressio-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.progressio-sidebar {
+  display: flex;
+  width: 248px;
+  flex: 0 0 248px;
+  flex-direction: column;
+  padding: 20px 14px;
+  color: white;
+  background: var(--progressio-sidebar);
+  transition:
+    width 180ms ease,
+    flex-basis 180ms ease,
+    padding 180ms ease;
+}
+
+.progressio-shell.is-collapsed .progressio-sidebar {
+  width: 76px;
+  flex-basis: 76px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.progressio-brand-row,
+.progressio-navigation-link,
+.progressio-sidebar-footer {
+  display: flex;
+  align-items: center;
+}
+
+.progressio-brand-row {
+  justify-content: space-between;
+  min-height: 40px;
+}
+
+.progressio-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: white;
+  font-weight: 700;
   text-decoration: none;
 }
 
-[x-cloak] {
-  display: none;
+.progressio-brand-mark,
+.progressio-user-initials {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  place-items: center;
+  border-radius: 9px;
+  color: var(--progressio-sidebar);
+  background: #f5c542;
+  font-weight: 800;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--gray-12);
+.progressio-brand-name,
+.progressio-navigation-label,
+.progressio-logout,
+.progressio-context-value {
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    opacity 140ms ease,
+    width 180ms ease;
 }
-h1 {
-  font-size: 34px;
+
+.progressio-shell.is-collapsed .progressio-brand-name,
+.progressio-shell.is-collapsed .progressio-navigation-label,
+.progressio-shell.is-collapsed .progressio-logout,
+.progressio-shell.is-collapsed .progressio-context-value {
+  width: 0;
+  opacity: 0;
+}
+
+.progressio-collapse-button {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  color: var(--progressio-sidebar-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.progressio-collapse-button:hover,
+.progressio-collapse-button:focus-visible {
+  color: white;
+  background: rgb(255 255 255 / 12%);
+}
+
+.progressio-navigation {
+  display: grid;
+  gap: 6px;
+  margin-top: 36px;
+}
+
+.progressio-navigation-link {
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-left: 3px solid transparent;
+  border-radius: 7px;
+  color: var(--progressio-sidebar-muted);
+  text-decoration: none;
+}
+
+.progressio-shell.is-collapsed .progressio-navigation-link {
+  justify-content: center;
+  padding: 0;
+}
+
+.progressio-navigation-link:hover,
+.progressio-navigation-link:focus-visible,
+.progressio-navigation-link.is-active {
+  color: white;
+  background: rgb(255 255 255 / 10%);
+}
+
+.progressio-navigation-link.is-active {
+  border-left-color: #f5c542;
+  font-weight: 700;
+}
+
+.progressio-sidebar-footer {
+  gap: 10px;
+  min-height: 40px;
+  margin-top: auto;
+}
+
+.progressio-logout {
+  padding: 0;
+  border: 0;
+  color: var(--progressio-sidebar-muted);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.progressio-logout:hover,
+.progressio-logout:focus-visible {
+  color: white;
+}
+
+.progressio-workspace {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.progressio-topbar {
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--progressio-border);
+  background: white;
+}
+
+.progressio-context {
+  display: grid;
+  gap: 2px;
+}
+
+.progressio-context-label {
+  color: #64748b;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.progressio-context-value {
+  display: block;
+  width: 300px;
+  color: var(--progressio-text);
+  font-size: 0.95rem;
   font-weight: 650;
 }
-h2 {
-  margin-bottom: 8px;
-  font-size: 22px;
-}
-p {
-  color: var(--gray-7);
+
+.progressio-content {
+  min-width: 0;
+  flex: 1;
 }
 
-/* Header */
-header {
-  max-width: 1440px;
-  margin: auto;
-  padding: 0 30px;
-}
-header > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 64px;
-}
-header nav {
-  display: flex;
-  align-items: center;
-  gap: 26px;
-}
-header nav a {
-  font-weight: 500;
-  color: var(--gray-8);
-}
-header nav a:hover,
-header nav a.current {
-  color: var(--gray-12);
-}
-
-/* Main */
-main {
-  max-width: 1440px;
-  margin: 0 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: calc(100vh - 65px);
-  background: #fff;
-  border: 1px solid var(--gray-3);
-}
-
-.hero {
-  padding: 100px 50px;
-  max-width: 880px;
-}
-.hero h1 {
-  margin-bottom: 15px;
-  font-size: 52px;
-  font-weight: 600;
-  letter-spacing: -1px;
-  line-height: 1.05;
-}
-.hero p {
-  font-size: 22px;
-  color: var(--gray-7);
-}
-.hero .button {
-  margin-top: 30px;
-  display: inline-block;
-  padding: 10px 16px;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  padding: 0 50px;
-  border-top: 1px solid var(--gray-3);
-}
-.cards a {
-  padding: 30px 40px;
-  border-right: 1px solid var(--gray-3);
-}
-.cards a:first-child {
-  border-left: 1px solid var(--gray-3);
-}
-.cards a:hover {
-  background: var(--gray-1);
-}
-.cards h3 {
-  margin-bottom: 10px;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.4px;
-}
-.cards p {
-  color: var(--gray-6);
-}
-
-/* Form */
-.form-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 400px;
-  margin: auto;
-}
-.form-container h1 {
-  font-size: 32px;
-  letter-spacing: -0.5px;
-  margin: 5px 0;
-}
-.form-container p {
-  font-size: 18px;
-  margin-bottom: 48px;
-  color: var(--gray-6);
-}
-form {
+.progressio-content form {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
-label {
-  margin-bottom: 4px;
+
+.progressio-content label {
   display: block;
-  font-size: 14px;
-  font-weight: 500;
+  margin-bottom: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
-input,
-textarea,
-button {
+
+.progressio-content input:not([type="color"]),
+.progressio-content textarea {
   width: 100%;
+  border: 1px solid #cbd5e1;
   border-radius: 4px;
+  padding: 8px 12px;
   font: inherit;
 }
-input,
-textarea {
+
+.progressio-content input:not([type="color"]) {
   height: 40px;
-  border: 1px solid var(--gray-4);
-  padding: 0 16px;
 }
-textarea {
+
+.progressio-content textarea {
   min-height: 120px;
-  padding: 10px 16px;
   resize: vertical;
 }
-input[data-invalid="true"],
-textarea[data-invalid="true"] {
-  border-color: #fb2c36;
-}
-input[data-invalid="true"] + div,
-textarea[data-invalid="true"] + div {
-  color: #fb2c36;
-  font-size: 14px;
-  font-weight: 500;
-  margin-top: 2px;
-}
 
-button {
-  background: var(--gray-12);
-  color: #fff;
-  border: none;
+.progressio-content button[type="submit"] {
+  width: 100%;
+  border: 0;
+  border-radius: 4px;
   padding: 10px;
-  font-weight: 500;
-}
-button:hover {
-  background: var(--gray-10);
-}
-
-/* Alerts */
-.alert {
-  background: #fff;
-  position: relative;
-  padding: 12px 16px;
-  font-size: 14px;
-  min-width: 380px;
-  font-weight: 500;
-  border: 1px solid var(--gray-3);
-  border-radius: 10px;
-  animation: scale-up 0.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-}
-.alert-destructive {
-  color: #fb2c36;
-  background: #fb2c361a;
-  border-color: #fb2c36;
-}
-.alert-success {
-  color: #00a63e;
-  background: #00a63e1a;
-  border-color: #00a63e;
-}
-.flash-container {
-  position: fixed;
-  top: 80px;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  color: white;
+  background: var(--progressio-text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
 }
 
-@keyframes scale-up {
-  from {
-    transform: scale(0.7);
+.progressio-content button[type="submit"]:hover {
+  background: #243b53;
+}
+
+@media (max-width: 1024px) {
+  .progressio-sidebar {
+    width: 76px;
+    flex-basis: 76px;
+    padding-right: 10px;
+    padding-left: 10px;
   }
-  to {
-    transform: scale(1);
+
+  .progressio-brand-row {
+    justify-content: center;
+  }
+
+  .progressio-brand-name,
+  .progressio-navigation-label,
+  .progressio-logout {
+    width: 0;
+    opacity: 0;
+  }
+
+  .progressio-navigation-link {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .progressio-context-value {
+    width: min(42vw, 300px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressio-sidebar,
+  .progressio-brand-name,
+  .progressio-navigation-label,
+  .progressio-logout,
+  .progressio-context-value {
+    transition: none;
   }
 }

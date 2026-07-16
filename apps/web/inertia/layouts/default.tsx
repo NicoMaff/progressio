@@ -1,59 +1,142 @@
 import { type Data } from "@generated/data"
-import { toast, Toaster } from "sonner"
 import { usePage } from "@inertiajs/react"
-import { type ReactElement, useEffect } from "react"
 import { Form, Link } from "@adonisjs/inertia/react"
+import { Icon, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@progressio/ui"
+import { toast, Toaster } from "sonner"
+import { type ReactElement, useEffect, useMemo, useState } from "react"
+
+const SIDEBAR_STORAGE_KEY = "progressio.app-shell.sidebar-collapsed"
+
+type PageContext = {
+  schoolYear?: { label: string; subject: string }
+  dashboard?: { schoolYear: { label: string; subject: string }; levels: { id: string }[] }
+  levelProgressSummary?: { schoolYear: { label: string; subject: string }; level: { id: string } }
+  progressionView?: {
+    schoolYear: { label: string; subject: string }
+    level: { id: string }
+    teachingClass: { id: string }
+  }
+  level?: { id: string }
+}
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
-  const { url } = usePage()
+  const { url, props } = usePage<Data.SharedProps & PageContext>()
+  const [isCollapsed, setIsCollapsed] = useState(
+    () => typeof window !== "undefined" && window.localStorage.getItem(SIDEBAR_STORAGE_KEY) === "true"
+  )
+
+  const context = useMemo(() => {
+    const schoolYear =
+      props.schoolYear ??
+      props.dashboard?.schoolYear ??
+      props.levelProgressSummary?.schoolYear ??
+      props.progressionView?.schoolYear
+    const levelId = props.level?.id ?? props.levelProgressSummary?.level.id ?? props.progressionView?.level.id
+
+    return { schoolYear, levelId, classId: props.progressionView?.teachingClass.id }
+  }, [props])
+
+  useEffect(() => {
+    window.localStorage.setItem(SIDEBAR_STORAGE_KEY, String(isCollapsed))
+  }, [isCollapsed])
+
   useEffect(() => {
     toast.dismiss()
   }, [url])
 
   useEffect(() => {
-    if (children.props.flash.error) {
-      toast.error(children.props.flash.error)
-    }
-    if (children.props.flash.success) {
-      toast.success(children.props.flash.success)
-    }
-  })
+    if (props.flash.error) toast.error(props.flash.error)
+    if (props.flash.success) toast.success(props.flash.success)
+  }, [props.flash.error, props.flash.success])
+
+  const navigation = [
+    { label: "Synthèse annuelle", href: "/", icon: "dashboard" as const, active: url === "/" },
+    context.levelId
+      ? {
+          label: "Contenus",
+          href: `/teaching-content/levels/${context.levelId}`,
+          icon: "teachingContent" as const,
+          active: url.startsWith("/teaching-content"),
+        }
+      : null,
+    context.classId
+      ? {
+          label: "Progression",
+          href: `/planning/classes/${context.classId}/progression`,
+          icon: "planning" as const,
+          active: url.startsWith("/planning"),
+        }
+      : null,
+  ].filter((item): item is NonNullable<typeof item> => item !== null)
 
   return (
-    <>
-      <header>
-        <div>
-          <div>
-            <Link route="home">
-              <svg width="120" height="24" viewBox="0 0 195 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M180 37.5v-30h-7.5V0H195v7.5h-7.5v30H180ZM150 15V7.5h-15V0h15v7.5h7.5V15H150Zm-15 22.5V30h-7.5V7.5h7.5V30h15v7.5h-15Zm15-7.5v-7.5h7.5V30H150ZM82.5 37.5v-30H90V0h15v7.5h7.5v30H105v-15H90v15h-7.5ZM90 15h15V7.8H90V15ZM45 37.5V0h22.5v7.5h-15V15h15v7.5h-15V30h15v7.5H45ZM0 37.5V0h22.5v7.5H30V15h-7.5v15H30v7.5h-7.5V30H15v-7.5H7.5v15H0ZM7.5 15h14.7V7.5H7.5V15Z"
-                  fill="currentColor"
-                />
-              </svg>
+    <TooltipProvider delayDuration={300}>
+      <div className={`progressio-shell${isCollapsed ? "is-collapsed" : ""}`}>
+        <aside className="progressio-sidebar" aria-label="Navigation principale">
+          <div className="progressio-brand-row">
+            <Link className="progressio-brand" href="/" aria-label="Progressio, synthèse annuelle">
+              <span className="progressio-brand-mark" aria-hidden="true">
+                P
+              </span>
+              <span className="progressio-brand-name">Progressio</span>
             </Link>
+            <button
+              className="progressio-collapse-button"
+              type="button"
+              aria-label={isCollapsed ? "Étendre le menu" : "Réduire le menu"}
+              aria-expanded={!isCollapsed}
+              onClick={() => setIsCollapsed((collapsed) => !collapsed)}
+            >
+              <Icon name="menu" size="md" />
+            </button>
           </div>
-          <div>
-            <nav>
-              {children.props.user ? (
-                <>
-                  <span>{children.props.user.initials}</span>
-                  <Form route="session.destroy">
-                    <button type="submit"> Logout </button>
-                  </Form>
-                </>
-              ) : (
-                <>
-                  <Link route="new_account.create">Signup</Link>
-                  <Link route="session.create">Login</Link>
-                </>
-              )}
-            </nav>
+          <nav className="progressio-navigation">
+            {navigation.map((item) => (
+              <Tooltip key={item.href}>
+                <TooltipTrigger asChild>
+                  <Link
+                    className={`progressio-navigation-link${item.active ? "is-active" : ""}`}
+                    href={item.href}
+                    aria-current={item.active ? "page" : undefined}
+                  >
+                    <Icon name={item.icon} size="md" />
+                    <span className="progressio-navigation-label">{item.label}</span>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">{item.label}</TooltipContent>
+              </Tooltip>
+            ))}
+          </nav>
+          <div className="progressio-sidebar-footer">
+            {props.user ? (
+              <>
+                <span className="progressio-user-initials" aria-label={`Profil de ${props.user.initials}`}>
+                  {props.user.initials}
+                </span>
+                <Form route="session.destroy">
+                  <button className="progressio-logout" type="submit">
+                    Déconnexion
+                  </button>
+                </Form>
+              </>
+            ) : null}
           </div>
+        </aside>
+        <div className="progressio-workspace">
+          <header className="progressio-topbar">
+            <div className="progressio-context" aria-label="Work File actif">
+              <span className="progressio-context-label">Work File actif</span>
+              <span className="progressio-context-value">
+                {context.schoolYear
+                  ? `${context.schoolYear.label} · ${context.schoolYear.subject}`
+                  : "Aucun contexte disponible"}
+              </span>
+            </div>
+          </header>
+          <main className="progressio-content">{children}</main>
         </div>
-      </header>
-      <main>{children}</main>
-      <Toaster position="top-center" richColors />
-    </>
+        <Toaster position="top-right" richColors closeButton />
+      </div>
+    </TooltipProvider>
   )
 }

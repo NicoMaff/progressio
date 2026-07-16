@@ -6,6 +6,10 @@ const iconClassNames = {
   check: "i-hugeicons-checkmark-circle-02",
   chevronDown: "i-hugeicons-arrow-down-01",
   close: "i-hugeicons-cancel-01",
+  dashboard: "i-hugeicons-dashboard-square-01",
+  menu: "i-hugeicons-menu-01",
+  planning: "i-hugeicons-calendar-03",
+  teachingContent: "i-hugeicons-book-open-01",
   info: "i-hugeicons-information-circle",
   search: "i-hugeicons-search-01",
 } as const
