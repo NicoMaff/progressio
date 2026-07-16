@@ -17,6 +17,7 @@ test.group("demo work-file refresh", () => {
     await runDemoWorkFileRefresh()
 
     assert.isTrue(hasTable("school_years"))
+    assert.isFalse(hasTable("users"))
     assert.isTrue(hasTable("adonis_schema"))
     assert.isAbove(countRows("adonis_schema"), 0)
 

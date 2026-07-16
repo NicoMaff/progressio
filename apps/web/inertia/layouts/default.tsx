@@ -1,6 +1,6 @@
 import { type Data } from "@generated/data"
 import { usePage } from "@inertiajs/react"
-import { Form, Link } from "@adonisjs/inertia/react"
+import { Link } from "@adonisjs/inertia/react"
 import { Icon, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@progressio/ui"
 import { toast, Toaster } from "sonner"
 import { type ReactElement, useEffect, useMemo, useState } from "react"
@@ -95,7 +95,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
               <Tooltip key={item.href}>
                 <TooltipTrigger asChild>
                   <Link
-                    className={`progressio-navigation-link${item.active ? "is-active" : ""}`}
+                    className={`progressio-navigation-link${item.active ? " is-active" : ""}`}
                     href={item.href}
                     aria-current={item.active ? "page" : undefined}
                   >
@@ -107,20 +107,6 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
               </Tooltip>
             ))}
           </nav>
-          <div className="progressio-sidebar-footer">
-            {props.user ? (
-              <>
-                <span className="progressio-user-initials" aria-label={`Profil de ${props.user.initials}`}>
-                  {props.user.initials}
-                </span>
-                <Form route="session.destroy">
-                  <button className="progressio-logout" type="submit">
-                    Déconnexion
-                  </button>
-                </Form>
-              </>
-            ) : null}
-          </div>
         </aside>
         <div className="progressio-workspace">
           <header className="progressio-topbar">

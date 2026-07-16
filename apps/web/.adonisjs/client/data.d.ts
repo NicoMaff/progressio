@@ -18,7 +18,6 @@ import type TeachingContentTeachingContentPageSchoolYearTransformer from '#src/t
 import type TeachingContentTeachingContentPageTransformer from '#src/teaching_content/transformers/teaching_content_page_transformer'
 import type ThemesTeachingContentPageThemeTransformer from '#src/themes/transformers/teaching_content_page_theme_transformer'
 import type ThemesThemeTransformer from '#src/themes/transformers/theme_transformer'
-import type UserTransformer from '#src/transformers/user_transformer'
 import type InertiaMiddleware from '#middlewares/inertia_middleware'
 
 export namespace Data {
@@ -79,10 +78,6 @@ export namespace Data {
     export namespace Theme {
       export type Variants = InferVariants<ThemesThemeTransformer>
     }
-  }
-  export type User = InferData<UserTransformer>
-  export namespace User {
-    export type Variants = InferVariants<UserTransformer>
   }
   export type SharedProps = InferSharedProps<InertiaMiddleware>
 }
