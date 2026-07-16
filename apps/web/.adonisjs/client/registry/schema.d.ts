@@ -55,6 +55,42 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/teaching_content_controller').default['render']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'teaching_content.themes.destroy': {
+    methods: ["DELETE"]
+    pattern: '/teaching-content/levels/:levelId/themes/:themeId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; themeId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_theme_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_theme_controller').default['execute']>>>
+    }
+  }
+  'teaching_content.chapters.destroy': {
+    methods: ["DELETE"]
+    pattern: '/teaching-content/levels/:levelId/chapters/:chapterId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; chapterId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_chapter_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_chapter_controller').default['execute']>>>
+    }
+  }
+  'teaching_content.activities.destroy': {
+    methods: ["DELETE"]
+    pattern: '/teaching-content/levels/:levelId/activities/:activityId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; activityId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_activity_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_activity_controller').default['execute']>>>
+    }
+  }
   'themes.list': {
     methods: ["GET","HEAD"]
     pattern: '/levels/:levelId/themes'

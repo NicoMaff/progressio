@@ -30,6 +30,24 @@ const routes = {
     tokens: [{"old":"/teaching-content/levels/:levelId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId","type":1,"val":"levelId","end":""}],
     types: placeholder as Registry['teaching_content.render']['types'],
   },
+  'teaching_content.themes.destroy': {
+    methods: ["DELETE"],
+    pattern: '/teaching-content/levels/:levelId/themes/:themeId',
+    tokens: [{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":0,"val":"themes","end":""},{"old":"/teaching-content/levels/:levelId/themes/:themeId","type":1,"val":"themeId","end":""}],
+    types: placeholder as Registry['teaching_content.themes.destroy']['types'],
+  },
+  'teaching_content.chapters.destroy': {
+    methods: ["DELETE"],
+    pattern: '/teaching-content/levels/:levelId/chapters/:chapterId',
+    tokens: [{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":0,"val":"chapters","end":""},{"old":"/teaching-content/levels/:levelId/chapters/:chapterId","type":1,"val":"chapterId","end":""}],
+    types: placeholder as Registry['teaching_content.chapters.destroy']['types'],
+  },
+  'teaching_content.activities.destroy': {
+    methods: ["DELETE"],
+    pattern: '/teaching-content/levels/:levelId/activities/:activityId',
+    tokens: [{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":1,"val":"levelId","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":0,"val":"activities","end":""},{"old":"/teaching-content/levels/:levelId/activities/:activityId","type":1,"val":"activityId","end":""}],
+    types: placeholder as Registry['teaching_content.activities.destroy']['types'],
+  },
   'themes.list': {
     methods: ["GET","HEAD"],
     pattern: '/levels/:levelId/themes',

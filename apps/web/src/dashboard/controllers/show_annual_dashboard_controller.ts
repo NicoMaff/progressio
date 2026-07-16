@@ -4,15 +4,23 @@ import PlannedSession from "#models/planned_session"
 import SchoolYear from "#models/school_year"
 import Level from "#models/level"
 import AnnualDashboardTransformer from "#dashboard/transformers/annual_dashboard_transformer"
+import WorkFileContext from "#work_files/services/work_file_context"
 import { inject } from "@adonisjs/core"
 import type { HttpContext } from "@adonisjs/core/http"
 import { DateTime } from "luxon"
 
 @inject()
 export default class ShowAnnualDashboardController {
-  constructor(private showAnnualDashboard: ShowAnnualDashboardAction) {}
+  constructor(
+    private showAnnualDashboard: ShowAnnualDashboardAction,
+    private workFileContext: WorkFileContext
+  ) {}
 
   async render({ inertia }: HttpContext) {
+    if (!this.workFileContext.isOpen()) {
+      return inertia.render("work_files/no_work_file", {})
+    }
+
     const schoolYear = await SchoolYear.query().firstOrFail()
     const [levels, classes] = await Promise.all([
       Level.query().where("school_year_id", schoolYear.id).orderBy("short_code").orderBy("name"),
