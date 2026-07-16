@@ -6,7 +6,7 @@ import { cn } from "#lib/utils"
 export const selectVariants = cva("", {
   variants: {
     invalid: {
-      true: "border-red-500 focus:border-red-500 focus:ring-red-100",
+      true: "border-alert focus-visible:border-alert focus-visible:ring-alert/25",
       false: "",
     },
   },
@@ -17,13 +17,25 @@ export const selectVariants = cva("", {
 
 export type SelectProps = ComponentProps<typeof SelectPrimitive.Root> &
   VariantProps<typeof selectVariants> & {
-    children?: ReactNode
-    className?: string
-    placeholder?: string
+    "aria-describedby"?: string
+    "aria-label"?: string
+    "aria-labelledby"?: string
+    "children"?: ReactNode
+    "className"?: string
+    "placeholder"?: string
   }
 
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select(
-  { children, className, invalid, placeholder, ...props },
+  {
+    "aria-describedby": ariaDescribedBy,
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
+    children,
+    className,
+    invalid,
+    placeholder,
+    ...props
+  },
   ref
 ) {
   return (
@@ -31,7 +43,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
       <SelectTrigger
         ref={ref}
         className={cn(selectVariants({ invalid }), className)}
+        aria-describedby={ariaDescribedBy}
         aria-invalid={invalid || undefined}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
       >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
@@ -52,7 +67,7 @@ export const SelectTrigger = forwardRef<
     <SelectPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex h-10 w-full items-center justify-between rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-950 transition-colors focus:border-[#2076FF] focus:ring-2 focus:ring-sky-200 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:text-neutral-500 data-[placeholder]:text-neutral-400 [&>span]:line-clamp-1",
+        "border-input bg-card text-foreground focus-visible:border-primary focus-visible:ring-ring/30 disabled:bg-muted disabled:text-muted-foreground data-[placeholder]:text-muted-foreground flex h-11 w-full items-center justify-between rounded-md border px-3 text-sm shadow-sm transition-colors focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed [&>span]:line-clamp-1",
         className
       )}
       {...props}
@@ -104,7 +119,7 @@ export const SelectContent = forwardRef<
       <SelectPrimitive.Content
         ref={ref}
         className={cn(
-          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] origin-[--radix-select-content-transform-origin] overflow-x-hidden overflow-y-auto rounded-md border border-neutral-200 bg-white text-neutral-950 shadow-[0_12px_32px_rgba(15,23,42,0.16)]",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 border-border bg-popover text-popover-foreground relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] origin-[--radix-select-content-transform-origin] overflow-x-hidden overflow-y-auto rounded-md border shadow-lg",
           position === "popper" &&
             "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
           className
@@ -145,7 +160,7 @@ export const SelectItem = forwardRef<React.ComponentRef<typeof SelectPrimitive.I
       <SelectPrimitive.Item
         ref={ref}
         className={cn(
-          "relative flex w-full cursor-default items-center rounded-sm py-1.5 pr-8 pl-2 text-sm outline-none select-none focus:bg-sky-50 focus:text-sky-800 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+          "focus:bg-accent focus:text-accent-foreground relative flex min-h-10 w-full cursor-default items-center rounded-sm py-1.5 pr-8 pl-2 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
           className
         )}
         {...props}

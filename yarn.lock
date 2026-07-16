@@ -1278,6 +1278,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/caveat@npm:^5.2.8":
+  version: 5.2.8
+  resolution: "@fontsource/caveat@npm:5.2.8"
+  checksum: 10c0/dae0bb8d65ac04cc26c9c1c6def8061ed7ac3dcd9b8bc4be155457c1ce7419603d958ec76980f748531a47a67950141045bd7dc6e5089814946304a5b6e3d5a7
+  languageName: node
+  linkType: hard
+
+"@fontsource/newsreader@npm:^5.2.10":
+  version: 5.2.10
+  resolution: "@fontsource/newsreader@npm:5.2.10"
+  checksum: 10c0/e482f7f36cb7374a376694c5dc8f5bd7f8c1507d16b765808386a13ca1138c63273052ff4424726b4fe3997cdbc0565508749e703675037d197acf8dcbc6f2f3
+  languageName: node
+  linkType: hard
+
+"@fontsource/public-sans@npm:^5.2.7":
+  version: 5.2.7
+  resolution: "@fontsource/public-sans@npm:5.2.7"
+  checksum: 10c0/7089c2edd3965b659e9450a3ec3a603a075b62c7b6488199c40beb4e8d277c0b43fab5d39962c3768d22b8f485ef57d833500a7e2dc6ff717616638b0fde37c3
+  languageName: node
+  linkType: hard
+
 "@hookform/resolvers@npm:^5.4.0":
   version: 5.4.0
   resolution: "@hookform/resolvers@npm:5.4.0"
@@ -2297,6 +2318,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@progressio/ui@workspace:packages/ui"
   dependencies:
+    "@fontsource/caveat": "npm:^5.2.8"
+    "@fontsource/newsreader": "npm:^5.2.10"
+    "@fontsource/public-sans": "npm:^5.2.7"
     "@hookform/resolvers": "npm:^5.4.0"
     "@radix-ui/react-dialog": "npm:^1.1.19"
     "@radix-ui/react-dropdown-menu": "npm:^2.1.20"

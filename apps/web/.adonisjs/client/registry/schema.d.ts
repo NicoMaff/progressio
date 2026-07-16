@@ -151,6 +151,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/restore_theme_controller').default['execute']>>>
     }
   }
+  'themes.destroy': {
+    methods: ["DELETE"]
+    pattern: '/levels/:levelId/themes/:themeId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; themeId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_theme_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_theme_controller').default['execute']>>>
+    }
+  }
   'chapters.store': {
     methods: ["POST"]
     pattern: '/levels/:levelId/chapters'
@@ -199,6 +211,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/restore_chapter_controller').default['execute']>>>
     }
   }
+  'chapters.destroy': {
+    methods: ["DELETE"]
+    pattern: '/levels/:levelId/chapters/:chapterId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; chapterId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_chapter_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_chapter_controller').default['execute']>>>
+    }
+  }
   'activities.store': {
     methods: ["POST"]
     pattern: '/levels/:levelId/activities'
@@ -245,6 +269,78 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#src/activities/controllers/restore_activity_controller').default['execute']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/activities/controllers/restore_activity_controller').default['execute']>>>
+    }
+  }
+  'activities.destroy': {
+    methods: ["DELETE"]
+    pattern: '/levels/:levelId/activities/:activityId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; activityId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_activity_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_activity_controller').default['execute']>>>
+    }
+  }
+  'new_account.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/signup'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['create']>>>
+    }
+  }
+  'new_account.store': {
+    methods: ["POST"]
+    pattern: '/signup'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/user').signupValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/user').signupValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'session.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/login'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['create']>>>
+    }
+  }
+  'session.store': {
+    methods: ["POST"]
+    pattern: '/login'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['store']>>>
+    }
+  }
+  'session.destroy': {
+    methods: ["POST"]
+    pattern: '/logout'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
     }
   }
 }

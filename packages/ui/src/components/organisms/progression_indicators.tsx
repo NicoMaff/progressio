@@ -28,8 +28,8 @@ export function ClassPacingIndicator({
   if (state === "notPlanned") {
     return (
       <div className={cn("space-y-1", className)} {...props}>
-        <p className="font-600 text-xs tracking-wide text-neutral-500 uppercase">Rythme de classe</p>
-        <p className="font-600 text-sm text-neutral-800">Progression à planifier</p>
+        <p className="font-600 text-muted-foreground text-xs tracking-wide uppercase">Rythme de classe</p>
+        <p className="font-600 text-foreground text-sm">Progression à planifier</p>
       </div>
     )
   }
@@ -37,26 +37,36 @@ export function ClassPacingIndicator({
   if (state === "nothingDue") {
     return (
       <div className={cn("space-y-1", className)} {...props}>
-        <p className="font-600 text-xs tracking-wide text-neutral-500 uppercase">Rythme de classe</p>
-        <p className="text-sm text-neutral-600">Aucune séance à suivre pour le moment</p>
+        <p className="font-600 text-muted-foreground text-xs tracking-wide uppercase">Rythme de classe</p>
+        <p className="text-muted-foreground text-sm">Aucune séance à suivre pour le moment</p>
       </div>
     )
   }
 
   const resolvedSessionCount = Object.values(outcomeCounts).reduce((sum, count) => sum + count, 0)
   const outcomeTags = [
-    { count: outcomeCounts.realized, pluralLabel: "réalisées", singularLabel: "réalisée", tone: "green" as const },
-    { count: outcomeCounts.partial, pluralLabel: "partielles", singularLabel: "partielle", tone: "amber" as const },
-    { count: outcomeCounts.shifted, pluralLabel: "décalées", singularLabel: "décalée", tone: "blue" as const },
+    { count: outcomeCounts.realized, pluralLabel: "réalisées", singularLabel: "réalisée", tone: "completed" as const },
+    {
+      count: outcomeCounts.partial,
+      pluralLabel: "partielles",
+      singularLabel: "partielle",
+      tone: "inProgress" as const,
+    },
+    { count: outcomeCounts.shifted, pluralLabel: "décalées", singularLabel: "décalée", tone: "primary" as const },
     { count: outcomeCounts.cancelled, pluralLabel: "annulées", singularLabel: "annulée", tone: "neutral" as const },
-    { count: outcomeCounts.toCatchUp, pluralLabel: "à rattraper", singularLabel: "à rattraper", tone: "red" as const },
+    {
+      count: outcomeCounts.toCatchUp,
+      pluralLabel: "à rattraper",
+      singularLabel: "à rattraper",
+      tone: "alert" as const,
+    },
   ].filter((outcome) => outcome.count > 0)
 
   return (
     <div className={cn("space-y-2", className)} {...props}>
       <div>
-        <p className="font-600 text-xs tracking-wide text-neutral-500 uppercase">Rythme de classe</p>
-        <p className="font-600 mt-0.5 text-sm text-neutral-900">
+        <p className="font-600 text-muted-foreground text-xs tracking-wide uppercase">Rythme de classe</p>
+        <p className="font-600 text-foreground mt-0.5 text-sm">
           {resolvedSessionCount} sur {dueSessionCount} séances suivies
         </p>
       </div>
@@ -88,19 +98,19 @@ export function ProgressionFollowUpIndicator({
 
   return (
     <div className={cn("space-y-1", className)} {...props}>
-      <p className="font-600 text-xs tracking-wide text-neutral-500 uppercase">Suivi de progression</p>
+      <p className="font-600 text-muted-foreground text-xs tracking-wide uppercase">Suivi de progression</p>
       {followUpCount === 0 ? (
-        <p className="font-600 inline-flex items-center gap-1.5 text-sm text-emerald-700">
-          <span className="h-2 w-2 rounded-full bg-emerald-500" />
+        <p className="font-600 text-completed inline-flex items-center gap-1.5 text-sm">
+          <span className="bg-completed h-2 w-2 rounded-full" />
           Suivi à jour
         </p>
       ) : (
         <div className="space-y-1.5">
-          <p className="font-600 inline-flex items-center gap-1.5 text-sm text-amber-800">
-            <span className="h-2 w-2 rounded-full bg-amber-500" />
+          <p className="font-600 text-in-progress inline-flex items-center gap-1.5 text-sm">
+            <span className="bg-in-progress h-2 w-2 rounded-full" />
             {followUpCount} {followUpCount > 1 ? "séances à vérifier" : "séance à vérifier"}
           </p>
-          <p className="text-xs text-neutral-500">
+          <p className="text-muted-foreground text-xs">
             {missingOutcomeCount} sans bilan · {reviewRequiredCount} à revoir
           </p>
         </div>

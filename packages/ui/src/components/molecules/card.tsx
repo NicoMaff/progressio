@@ -6,7 +6,7 @@ export type CardProps = HTMLAttributes<HTMLDivElement> & {
 }
 
 export function Card({ children, className, ...props }: CardProps) {
-  const classes = cn("rounded-md border border-neutral-200 bg-white shadow-[0_8px_24px_rgba(15,23,42,0.08)]", className)
+  const classes = cn("rounded-lg border border-border bg-card text-card-foreground shadow-sm", className)
 
   return (
     <div className={classes} {...props}>
@@ -16,7 +16,7 @@ export function Card({ children, className, ...props }: CardProps) {
 }
 
 export function CardHeader({ children, className, ...props }: CardProps) {
-  const classes = cn("space-y-1.5 border-b border-neutral-100 p-4", className)
+  const classes = cn("space-y-1.5 border-b border-border/70 p-5", className)
 
   return (
     <div className={classes} {...props}>
@@ -26,7 +26,7 @@ export function CardHeader({ children, className, ...props }: CardProps) {
 }
 
 export function CardTitle({ children, className, ...props }: CardProps) {
-  const classes = cn("text-base font-600 text-neutral-950", className)
+  const classes = cn("font-display text-xl font-600 text-foreground", className)
 
   return (
     <h3 className={classes} {...props}>
@@ -36,7 +36,7 @@ export function CardTitle({ children, className, ...props }: CardProps) {
 }
 
 export function CardDescription({ children, className, ...props }: CardProps) {
-  const classes = cn("text-sm text-neutral-500", className)
+  const classes = cn("text-sm text-muted-foreground", className)
 
   return (
     <p className={classes} {...props}>
@@ -46,7 +46,7 @@ export function CardDescription({ children, className, ...props }: CardProps) {
 }
 
 export function CardContent({ children, className, ...props }: CardProps) {
-  const classes = cn("p-4", className)
+  const classes = cn("p-5", className)
 
   return (
     <div className={classes} {...props}>
@@ -56,7 +56,7 @@ export function CardContent({ children, className, ...props }: CardProps) {
 }
 
 export function CardFooter({ children, className, ...props }: CardProps) {
-  const classes = cn("flex items-center justify-end gap-2 border-t border-neutral-100 p-4", className)
+  const classes = cn("flex items-center justify-end gap-2 border-t border-border/70 p-5", className)
 
   return (
     <div className={classes} {...props}>
