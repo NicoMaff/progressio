@@ -6,8 +6,20 @@ export interface ApiDefinition {
   dashboard: {
     levelProgressSummary: typeof routes['dashboard.level_progress_summary']
   }
+  planning: {
+    progressionView: typeof routes['planning.progression_view']
+  }
   teachingContent: {
     render: typeof routes['teaching_content.render']
+    themes: {
+      destroy: typeof routes['teaching_content.themes.destroy']
+    }
+    chapters: {
+      destroy: typeof routes['teaching_content.chapters.destroy']
+    }
+    activities: {
+      destroy: typeof routes['teaching_content.activities.destroy']
+    }
   }
   themes: {
     list: typeof routes['themes.list']
@@ -27,14 +39,5 @@ export interface ApiDefinition {
     update: typeof routes['activities.update']
     archive: typeof routes['activities.archive']
     restore: typeof routes['activities.restore']
-  }
-  newAccount: {
-    create: typeof routes['new_account.create']
-    store: typeof routes['new_account.store']
-  }
-  session: {
-    create: typeof routes['session.create']
-    store: typeof routes['session.store']
-    destroy: typeof routes['session.destroy']
   }
 }
