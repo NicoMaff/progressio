@@ -3,11 +3,11 @@ import { forwardRef, type InputHTMLAttributes } from "react"
 import { cn } from "#lib/utils"
 
 export const inputVariants = cva(
-  "h-10 w-full rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-950 transition-colors placeholder:text-neutral-400 focus:border-[#2076FF] focus:ring-2 focus:ring-sky-200 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:text-neutral-500",
+  "border-input bg-card text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-ring/30 disabled:bg-muted disabled:text-muted-foreground h-11 w-full rounded-md border px-3 text-sm shadow-sm transition-colors focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed",
   {
     variants: {
       invalid: {
-        true: "border-red-500 focus:border-red-500 focus:ring-red-100",
+        true: "border-alert focus-visible:border-alert focus-visible:ring-alert/25",
         false: "",
       },
     },

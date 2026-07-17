@@ -5,7 +5,13 @@ import { react } from "@adonisjs/eslint-config/react"
 
 export default configApp(
   {
-    ignores: ["./apps/web/.adonisjs/**", "./apps/web/database/schema.ts", ".adonisjs/**", "database/schema.ts"],
+    ignores: [
+      "./apps/web/.adonisjs/**",
+      "./apps/web/database/schema.ts",
+      ".adonisjs/**",
+      "database/schema.ts",
+      "**/storybook-static/**",
+    ],
   },
   ...react
 )

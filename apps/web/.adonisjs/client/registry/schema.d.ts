@@ -26,9 +26,21 @@ export interface Registry {
       body: {}
       paramsTuple: [ParamValue]
       params: { levelId: ParamValue }
-      query: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#dashboard/validators/level_progress_summary_validator').levelProgressSummaryValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_level_progress_summary_controller').default['render']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_level_progress_summary_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_level_progress_summary_controller').default['render']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'planning.progression_view': {
+    methods: ["GET","HEAD"]
+    pattern: '/planning/classes/:classId/progression'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { classId: ParamValue }
+      query: ExtractQueryForGet<InferInput<(typeof import('#dashboard/validators/progression_view_validator').progressionViewValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_progression_view_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_progression_view_controller').default['render']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'teaching_content.render': {
@@ -41,6 +53,42 @@ export interface Registry {
       query: ExtractQueryForGet<InferInput<(typeof import('#teaching_content/validators/teaching_content_archive_filter_validator').teachingContentArchiveFilterValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/teaching_content_controller').default['render']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/teaching_content_controller').default['render']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'teaching_content.themes.destroy': {
+    methods: ["DELETE"]
+    pattern: '/teaching-content/levels/:levelId/themes/:themeId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; themeId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_theme_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_theme_controller').default['execute']>>>
+    }
+  }
+  'teaching_content.chapters.destroy': {
+    methods: ["DELETE"]
+    pattern: '/teaching-content/levels/:levelId/chapters/:chapterId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; chapterId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_chapter_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_chapter_controller').default['execute']>>>
+    }
+  }
+  'teaching_content.activities.destroy': {
+    methods: ["DELETE"]
+    pattern: '/teaching-content/levels/:levelId/activities/:activityId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; activityId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_activity_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_activity_controller').default['execute']>>>
     }
   }
   'themes.list': {
@@ -103,6 +151,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/restore_theme_controller').default['execute']>>>
     }
   }
+  'themes.destroy': {
+    methods: ["DELETE"]
+    pattern: '/levels/:levelId/themes/:themeId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; themeId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_theme_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_theme_controller').default['execute']>>>
+    }
+  }
   'chapters.store': {
     methods: ["POST"]
     pattern: '/levels/:levelId/chapters'
@@ -151,6 +211,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/restore_chapter_controller').default['execute']>>>
     }
   }
+  'chapters.destroy': {
+    methods: ["DELETE"]
+    pattern: '/levels/:levelId/chapters/:chapterId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; chapterId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_chapter_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_chapter_controller').default['execute']>>>
+    }
+  }
   'activities.store': {
     methods: ["POST"]
     pattern: '/levels/:levelId/activities'
@@ -197,6 +269,18 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#src/activities/controllers/restore_activity_controller').default['execute']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/activities/controllers/restore_activity_controller').default['execute']>>>
+    }
+  }
+  'activities.destroy': {
+    methods: ["DELETE"]
+    pattern: '/levels/:levelId/activities/:activityId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; activityId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_activity_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_activity_controller').default['execute']>>>
     }
   }
   'new_account.create': {

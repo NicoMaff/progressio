@@ -33,7 +33,9 @@ export const Default: Story = {
         </ModalHeader>
         <ModalFooter>
           <ModalClose>Annuler</ModalClose>
-          <ModalClose className="border-[#1665df] bg-[#2076FF] text-white hover:bg-[#4a91ff]">Confirmer</ModalClose>
+          <ModalClose className="border-primary bg-primary text-primary-foreground hover:bg-primary/90">
+            Confirmer
+          </ModalClose>
         </ModalFooter>
       </ModalContent>
     </Modal>

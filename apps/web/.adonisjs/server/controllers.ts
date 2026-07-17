@@ -16,8 +16,6 @@ export const controllers = {
     RestoreChapter: () => import('#src/chapters/controllers/restore_chapter_controller'),
     UpdateChapter: () => import('#src/chapters/controllers/update_chapter_controller'),
   },
-  NewAccount: () => import('#src/controllers/new_account_controller'),
-  Session: () => import('#src/controllers/session_controller'),
   dashboard: {
     ShowAnnualDashboard: () => import('#src/dashboard/controllers/show_annual_dashboard_controller'),
     ShowLevelProgressSummary: () => import('#src/dashboard/controllers/show_level_progress_summary_controller'),

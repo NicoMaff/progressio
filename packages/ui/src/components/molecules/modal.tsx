@@ -48,11 +48,11 @@ export type ModalCloseProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 export function ModalClose({ children, className, type = "button", ...props }: ModalCloseProps) {
   const classes = children
     ? cn(
-        "inline-flex h-10 items-center justify-center rounded-md border border-neutral-300 bg-white px-4 text-sm font-500 text-neutral-950 hover:bg-neutral-50 focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:outline-none",
+        "inline-flex min-h-11 items-center justify-center rounded-md border border-border bg-card px-4 text-sm font-600 text-foreground hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/35 focus-visible:ring-offset-2 focus-visible:outline-none",
         className
       )
     : cn(
-        "absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-md text-neutral-500 hover:bg-neutral-100 hover:text-neutral-950 focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:outline-none",
+        "absolute top-3 right-3 inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/35 focus-visible:outline-none",
         className
       )
 

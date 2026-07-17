@@ -1,23 +1,7 @@
 import { type Data } from "@generated/data"
 import { usePage } from "@inertiajs/react"
-import { Form, Link } from "@adonisjs/inertia/react"
-import { Icon, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@progressio/ui"
-import { toast, Toaster } from "sonner"
-import { type ReactElement, useEffect, useMemo, useState } from "react"
-
-const SIDEBAR_STORAGE_KEY = "progressio.app-shell.sidebar-collapsed"
-
-type PageContext = {
-  schoolYear?: { label: string; subject: string }
-  dashboard?: { schoolYear: { label: string; subject: string }; levels: { id: string }[] }
-  levelProgressSummary?: { schoolYear: { label: string; subject: string }; level: { id: string } }
-  progressionView?: {
-    schoolYear: { label: string; subject: string }
-    level: { id: string }
-    teachingClass: { id: string }
-  }
-  level?: { id: string }
-}
+import { type ReactElement, useEffect } from "react"
+import { Link } from "@adonisjs/inertia/react"
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const { url, props } = usePage<Data.SharedProps & PageContext>()
@@ -90,50 +74,6 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
               <Icon name="menu" size="md" />
             </button>
           </div>
-          <nav className="progressio-navigation">
-            {navigation.map((item) => (
-              <Tooltip key={item.href}>
-                <TooltipTrigger asChild>
-                  <Link
-                    className={`progressio-navigation-link${item.active ? "is-active" : ""}`}
-                    href={item.href}
-                    aria-current={item.active ? "page" : undefined}
-                  >
-                    <Icon name={item.icon} size="md" />
-                    <span className="progressio-navigation-label">{item.label}</span>
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="right">{item.label}</TooltipContent>
-              </Tooltip>
-            ))}
-          </nav>
-          <div className="progressio-sidebar-footer">
-            {props.user ? (
-              <>
-                <span className="progressio-user-initials" aria-label={`Profil de ${props.user.initials}`}>
-                  {props.user.initials}
-                </span>
-                <Form route="session.destroy">
-                  <button className="progressio-logout" type="submit">
-                    Déconnexion
-                  </button>
-                </Form>
-              </>
-            ) : null}
-          </div>
-        </aside>
-        <div className="progressio-workspace">
-          <header className="progressio-topbar">
-            <div className="progressio-context" aria-label="Work File actif">
-              <span className="progressio-context-label">Work File actif</span>
-              <span className="progressio-context-value">
-                {context.schoolYear
-                  ? `${context.schoolYear.label} · ${context.schoolYear.subject}`
-                  : "Aucun contexte disponible"}
-              </span>
-            </div>
-          </header>
-          <main className="progressio-content">{children}</main>
         </div>
         <Toaster position="top-right" richColors closeButton />
       </div>
