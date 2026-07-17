@@ -110,8 +110,8 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
         </aside>
         <div className="progressio-workspace">
           <header className="progressio-topbar">
-            <div className="progressio-context" aria-label="Work File actif">
-              <span className="progressio-context-label">Work File actif</span>
+            <div className="progressio-context" aria-label="Fichier de travail actif">
+              <span className="progressio-context-label">Fichier de travail actif</span>
               <span className="progressio-context-value">
                 {context.schoolYear
                   ? `${context.schoolYear.label} · ${context.schoolYear.subject}`
