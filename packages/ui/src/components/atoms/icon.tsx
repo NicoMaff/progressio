@@ -2,6 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import type { HTMLAttributes } from "react"
 
 const iconClassNames = {
+  arrowRight: "i-hugeicons-arrow-right-01",
   calendar: "i-hugeicons-calendar-03",
   check: "i-hugeicons-checkmark-circle-02",
   chevronDown: "i-hugeicons-arrow-down-01",
