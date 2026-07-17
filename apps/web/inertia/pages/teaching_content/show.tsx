@@ -350,7 +350,7 @@ function DeleteContentForm({
   if (contentType === "themes") {
     return (
       <Form
-        route="teaching_content.themes.destroy"
+        route="themes.destroy"
         routeParams={{ levelId, themeId: contentId }}
         className="mt-2"
         options={{ preserveScroll: true }}
@@ -363,7 +363,7 @@ function DeleteContentForm({
   if (contentType === "chapters") {
     return (
       <Form
-        route="teaching_content.chapters.destroy"
+        route="chapters.destroy"
         routeParams={{ levelId, chapterId: contentId }}
         className="mt-2"
         options={{ preserveScroll: true }}
@@ -375,7 +375,7 @@ function DeleteContentForm({
 
   return (
     <Form
-      route="teaching_content.activities.destroy"
+      route="activities.destroy"
       routeParams={{ levelId, activityId: contentId }}
       className="mt-2"
       options={{ preserveScroll: true }}

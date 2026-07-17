@@ -78,6 +78,12 @@ const routes = {
     tokens: [{"old":"/levels/:levelId/themes/:themeId/restore","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":1,"val":"themeId","end":""},{"old":"/levels/:levelId/themes/:themeId/restore","type":0,"val":"restore","end":""}],
     types: placeholder as Registry['themes.restore']['types'],
   },
+  'themes.destroy': {
+    methods: ["DELETE"],
+    pattern: '/levels/:levelId/themes/:themeId',
+    tokens: [{"old":"/levels/:levelId/themes/:themeId","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/:themeId","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/:themeId","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/:themeId","type":1,"val":"themeId","end":""}],
+    types: placeholder as Registry['themes.destroy']['types'],
+  },
   'chapters.store': {
     methods: ["POST"],
     pattern: '/levels/:levelId/chapters',
@@ -101,6 +107,12 @@ const routes = {
     pattern: '/levels/:levelId/chapters/:chapterId/restore',
     tokens: [{"old":"/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"chapters","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":1,"val":"chapterId","end":""},{"old":"/levels/:levelId/chapters/:chapterId/restore","type":0,"val":"restore","end":""}],
     types: placeholder as Registry['chapters.restore']['types'],
+  },
+  'chapters.destroy': {
+    methods: ["DELETE"],
+    pattern: '/levels/:levelId/chapters/:chapterId',
+    tokens: [{"old":"/levels/:levelId/chapters/:chapterId","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters/:chapterId","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters/:chapterId","type":0,"val":"chapters","end":""},{"old":"/levels/:levelId/chapters/:chapterId","type":1,"val":"chapterId","end":""}],
+    types: placeholder as Registry['chapters.destroy']['types'],
   },
   'activities.store': {
     methods: ["POST"],
