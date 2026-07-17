@@ -1,7 +1,23 @@
 import { type Data } from "@generated/data"
 import { usePage } from "@inertiajs/react"
-import { type ReactElement, useEffect } from "react"
 import { Link } from "@adonisjs/inertia/react"
+import { Icon, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@progressio/ui"
+import { toast, Toaster } from "sonner"
+import { type ReactElement, useEffect, useMemo, useState } from "react"
+
+const SIDEBAR_STORAGE_KEY = "progressio.app-shell.sidebar-collapsed"
+
+type PageContext = {
+  schoolYear?: { label: string; subject: string }
+  dashboard?: { schoolYear: { label: string; subject: string }; levels: { id: string }[] }
+  levelProgressSummary?: { schoolYear: { label: string; subject: string }; level: { id: string } }
+  progressionView?: {
+    schoolYear: { label: string; subject: string }
+    level: { id: string }
+    teachingClass: { id: string }
+  }
+  level?: { id: string }
+}
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const { url, props } = usePage<Data.SharedProps & PageContext>()
@@ -74,6 +90,36 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
               <Icon name="menu" size="md" />
             </button>
           </div>
+          <nav className="progressio-navigation">
+            {navigation.map((item) => (
+              <Tooltip key={item.href}>
+                <TooltipTrigger asChild>
+                  <Link
+                    className={`progressio-navigation-link${item.active ? "is-active" : ""}`}
+                    href={item.href}
+                    aria-current={item.active ? "page" : undefined}
+                  >
+                    <Icon name={item.icon} size="md" />
+                    <span className="progressio-navigation-label">{item.label}</span>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">{item.label}</TooltipContent>
+              </Tooltip>
+            ))}
+          </nav>
+        </aside>
+        <div className="progressio-workspace">
+          <header className="progressio-topbar">
+            <div className="progressio-context" aria-label="Fichier de travail actif">
+              <span className="progressio-context-label">Fichier de travail actif</span>
+              <span className="progressio-context-value">
+                {context.schoolYear
+                  ? `${context.schoolYear.label} · ${context.schoolYear.subject}`
+                  : "Aucun contexte disponible"}
+              </span>
+            </div>
+          </header>
+          <main className="progressio-content">{children}</main>
         </div>
         <Toaster position="top-right" richColors closeButton />
       </div>
