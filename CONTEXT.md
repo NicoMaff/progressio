@@ -8,13 +8,25 @@ Progressio helps a teacher plan and follow the progression of teaching work acro
 A reusable piece of teaching work that can be placed inside a session. An activity is pedagogical content, not a dated calendar item.
 _Avoid_: Lesson, event
 
+**Chapter Activity Order**:
+The user-defined relative pedagogical position of a reusable activity among the activities of the same chapter. It expresses that some activities should normally happen before others when preparing sessions, but it does not constrain activity order inside a specific template, planned, or actual session.
+_Avoid_: Session activity order, alphabetical order
+
 **Theme**:
 A broad teaching content grouping for a level, used to organize chapters in dense progression views.
 _Avoid_: Period, category
 
+**Level Theme Order**:
+The user-defined relative pedagogical position of a theme among the themes of the same level. It guides teaching-content organization without constraining the order of sessions in a template, planned, or actual progression.
+_Avoid_: Session order, alphabetical order
+
 **Chapter**:
 A teaching content unit inside a level, optionally grouped under a theme, and used as the main pedagogical anchor for sessions and activities.
 _Avoid_: Session, lesson
+
+**Theme Chapter Order**:
+The user-defined relative pedagogical position of a chapter among the chapters of the same theme. It guides teaching-content organization without constraining the order of sessions in a template, planned, or actual progression.
+_Avoid_: Session order, alphabetical order
 
 **Local Actual Activity**:
 An activity recorded only inside an actual session, without becoming reusable teaching content. It supports improvised or incidental work that happened in class but does not need to be added to the activity catalog. It can optionally have an activity type for display and tracking.
@@ -141,7 +153,7 @@ The optional link from a planned session back to the recurring slot it was gener
 _Avoid_: Slot constraint
 
 **Archived Teaching Content**:
-Teaching content that is hidden from normal planning without being removed from existing progressions. Archived teaching content remains archived while it is still used, and permanent deletion is only available for archived content with no remaining references.
+Teaching content that is hidden from normal planning without being removed from existing progressions. Archiving preserves its pedagogical order so restoration can return it to its prior position; archived teaching content remains archived while it is still used, and permanent deletion is only available for archived content with no remaining references.
 _Avoid_: Deleted content
 
 **Reference Indicator**:
@@ -217,16 +229,12 @@ A free-form note written in Markdown and stored directly on the relevant object.
 _Avoid_: Resource, attachment
 
 **Progression View**:
-A class-level view that compares planned progression and actual progression. It opens on the current period and offers access to the school-year view.
+A class-level view that compares planned progression and actual progression across one continuous school-year roadmap organized primarily by calendar week. It opens focused on the current calendar week when that week intersects the school year, while school weeks remain secondary pedagogical references and user-defined periods remain structural markers.
 _Avoid_: Calendar, timeline
 
 **Progression Chronology**:
 A planned-session-centered reading of a class's progression. Actual sessions linked to a planned session appear with it, while unplanned actual sessions appear as separate entries.
 _Avoid_: Separate planned and actual timelines
-
-**Current Progression Window**:
-The period containing the current date in a progression view. When no user-defined period contains that date, it is the current calendar month.
-_Avoid_: Fixed school-year window
 
 **Session Order**:
 The position of a planned or actual session within a class progression. Session order can include manual ordering choices. When a session is added, moved, rescheduled, completed, or deleted, the UI should offer to recalculate following session orders instead of silently changing them. Recalculation only affects following sessions for the same class and the same progression kind; planned and actual progressions are not recalculated together. Recalculation proposals are transient UI decisions, and only the resulting order values are persisted.
@@ -292,18 +300,10 @@ _Avoid_: Isolated move, automatic rescheduling
 A descriptive category for a recurring slot, such as standard, practical work, long assessment, or half-group. Slot type guides planning and display but does not block scheduling.
 _Avoid_: Slot constraint, interruption
 
-**Theme**:
-A broad domain of the teaching program for a level that can group chapters.
-_Avoid_: Topic, subject
-
 **Theme Color**:
 The main visual color used to identify a theme in progression views.
 _Avoid_: Activity color
 
-**Chapter**:
-A structured teaching unit that can belong to a theme and can group activities. A chapter may remain unassigned to a theme while the progression is being drafted.
-_Avoid_: Lesson, unit
-
-**Orphan Activity**:
-An activity that is not yet attached to a chapter.
-_Avoid_: Uncategorized lesson
+**Unassigned Activity**:
+A reusable activity that is not attached to a chapter. This is an allowed teaching-content state, not an error.
+_Avoid_: Orphan activity, uncategorized lesson
