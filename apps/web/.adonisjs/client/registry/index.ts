@@ -138,42 +138,6 @@ const routes = {
     tokens: [{"old":"/levels/:levelId/activities/:activityId/restore","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":0,"val":"activities","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":1,"val":"activityId","end":""},{"old":"/levels/:levelId/activities/:activityId/restore","type":0,"val":"restore","end":""}],
     types: placeholder as Registry['activities.restore']['types'],
   },
-  'activities.destroy': {
-    methods: ["DELETE"],
-    pattern: '/levels/:levelId/activities/:activityId',
-    tokens: [{"old":"/levels/:levelId/activities/:activityId","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/activities/:activityId","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/activities/:activityId","type":0,"val":"activities","end":""},{"old":"/levels/:levelId/activities/:activityId","type":1,"val":"activityId","end":""}],
-    types: placeholder as Registry['activities.destroy']['types'],
-  },
-  'new_account.create': {
-    methods: ["GET","HEAD"],
-    pattern: '/signup',
-    tokens: [{"old":"/signup","type":0,"val":"signup","end":""}],
-    types: placeholder as Registry['new_account.create']['types'],
-  },
-  'new_account.store': {
-    methods: ["POST"],
-    pattern: '/signup',
-    tokens: [{"old":"/signup","type":0,"val":"signup","end":""}],
-    types: placeholder as Registry['new_account.store']['types'],
-  },
-  'session.create': {
-    methods: ["GET","HEAD"],
-    pattern: '/login',
-    tokens: [{"old":"/login","type":0,"val":"login","end":""}],
-    types: placeholder as Registry['session.create']['types'],
-  },
-  'session.store': {
-    methods: ["POST"],
-    pattern: '/login',
-    tokens: [{"old":"/login","type":0,"val":"login","end":""}],
-    types: placeholder as Registry['session.store']['types'],
-  },
-  'session.destroy': {
-    methods: ["POST"],
-    pattern: '/logout',
-    tokens: [{"old":"/logout","type":0,"val":"logout","end":""}],
-    types: placeholder as Registry['session.destroy']['types'],
-  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

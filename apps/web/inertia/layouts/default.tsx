@@ -35,6 +35,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
 
     return { schoolYear, levelId, classId: props.progressionView?.teachingClass.id }
   }, [props])
+  const isWorkFileOpen = context.schoolYear !== undefined
 
   useEffect(() => {
     window.localStorage.setItem(SIDEBAR_STORAGE_KEY, String(isCollapsed))
@@ -49,25 +50,35 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
     if (props.flash.success) toast.success(props.flash.success)
   }, [props.flash.error, props.flash.success])
 
-  const navigation = [
-    { label: "Synthèse annuelle", href: "/", icon: "dashboard" as const, active: url === "/" },
-    context.levelId
-      ? {
-          label: "Contenus",
-          href: `/teaching-content/levels/${context.levelId}`,
-          icon: "teachingContent" as const,
-          active: url.startsWith("/teaching-content"),
-        }
-      : null,
-    context.classId
-      ? {
-          label: "Progression",
-          href: `/planning/classes/${context.classId}/progression`,
-          icon: "planning" as const,
-          active: url.startsWith("/planning"),
-        }
-      : null,
-  ].filter((item): item is NonNullable<typeof item> => item !== null)
+  const navigation = isWorkFileOpen
+    ? [
+        { label: "Synthèse annuelle", href: "/", icon: "dashboard" as const, active: url === "/" },
+        ...(context.levelId
+          ? [
+              {
+                label: "Contenus",
+                href: `/teaching-content/levels/${context.levelId}`,
+                icon: "teachingContent" as const,
+                active: url.startsWith("/teaching-content"),
+              },
+            ]
+          : []),
+        ...(context.classId
+          ? [
+              {
+                label: "Progression",
+                href: `/planning/classes/${context.classId}/progression`,
+                icon: "planning" as const,
+                active: url.startsWith("/planning"),
+              },
+            ]
+          : []),
+      ]
+    : [
+        { label: "Synthèse annuelle", icon: "dashboard" as const },
+        { label: "Contenus", icon: "teachingContent" as const },
+        { label: "Progression", icon: "planning" as const },
+      ]
 
   return (
     <TooltipProvider delayDuration={300}>
@@ -92,35 +103,55 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
           </div>
           <nav className="progressio-navigation">
             {navigation.map((item) => (
-              <Tooltip key={item.href}>
+              <Tooltip key={item.label}>
                 <TooltipTrigger asChild>
-                  <Link
-                    className={`progressio-navigation-link${item.active ? "is-active" : ""}`}
-                    href={item.href}
-                    aria-current={item.active ? "page" : undefined}
-                  >
-                    <Icon name={item.icon} size="md" />
-                    <span className="progressio-navigation-label">{item.label}</span>
-                  </Link>
+                  {"href" in item ? (
+                    <Link
+                      className={item.active ? "progressio-navigation-link is-active" : "progressio-navigation-link"}
+                      href={item.href}
+                      aria-current={item.active ? "page" : undefined}
+                    >
+                      <Icon name={item.icon} size="md" />
+                      <span className="progressio-navigation-label">{item.label}</span>
+                    </Link>
+                  ) : (
+                    <button
+                      className="progressio-navigation-link is-unavailable"
+                      type="button"
+                      aria-describedby="work-file-required-description"
+                      aria-disabled="true"
+                    >
+                      <Icon name={item.icon} size="md" />
+                      <span className="progressio-navigation-label">{item.label}</span>
+                    </button>
+                  )}
                 </TooltipTrigger>
-                <TooltipContent side="right">{item.label}</TooltipContent>
+                <TooltipContent side="right">
+                  {"href" in item ? item.label : "Ouvrez un Work File pour accéder à cette destination"}
+                </TooltipContent>
               </Tooltip>
             ))}
           </nav>
         </aside>
         <div className="progressio-workspace">
           <header className="progressio-topbar">
-            <div className="progressio-context" aria-label="Fichier de travail actif">
-              <span className="progressio-context-label">Fichier de travail actif</span>
+            <div
+              className="progressio-context"
+              aria-label={isWorkFileOpen ? "Work File actif" : "Aucun Work File ouvert"}
+            >
+              <span className="progressio-context-label">Work File actif</span>
               <span className="progressio-context-value">
                 {context.schoolYear
                   ? `${context.schoolYear.label} · ${context.schoolYear.subject}`
-                  : "Aucun contexte disponible"}
+                  : "Aucun Work File ouvert"}
               </span>
             </div>
           </header>
           <main className="progressio-content">{children}</main>
         </div>
+        <p id="work-file-required-description" className="progressio-visually-hidden">
+          Ouvrez un Work File pour accéder aux données de planification.
+        </p>
         <Toaster position="top-right" richColors closeButton />
       </div>
     </TooltipProvider>
