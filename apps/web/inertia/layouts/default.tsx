@@ -50,43 +50,35 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
     if (props.flash.success) toast.success(props.flash.success)
   }, [props.flash.error, props.flash.success])
 
-  const navigation = [
-    {
-      label: "Synthèse annuelle",
-      href: "/",
-      icon: "dashboard" as const,
-      active: url === "/",
-      unavailable: !isWorkFileOpen,
-    },
-    context.levelId
-      ? {
-          label: "Contenus",
-          href: `/teaching-content/levels/${context.levelId}`,
-          icon: "teachingContent" as const,
-          active: url.startsWith("/teaching-content"),
-          unavailable: false,
-        }
-      : {
-          label: "Contenus",
-          icon: "teachingContent" as const,
-          active: false,
-          unavailable: true,
-        },
-    context.classId
-      ? {
-          label: "Progression",
-          href: `/planning/classes/${context.classId}/progression`,
-          icon: "planning" as const,
-          active: url.startsWith("/planning"),
-          unavailable: false,
-        }
-      : {
-          label: "Progression",
-          icon: "planning" as const,
-          active: false,
-          unavailable: true,
-        },
-  ]
+  const navigation = isWorkFileOpen
+    ? [
+        { label: "Synthèse annuelle", href: "/", icon: "dashboard" as const, active: url === "/" },
+        ...(context.levelId
+          ? [
+              {
+                label: "Contenus",
+                href: `/teaching-content/levels/${context.levelId}`,
+                icon: "teachingContent" as const,
+                active: url.startsWith("/teaching-content"),
+              },
+            ]
+          : []),
+        ...(context.classId
+          ? [
+              {
+                label: "Progression",
+                href: `/planning/classes/${context.classId}/progression`,
+                icon: "planning" as const,
+                active: url.startsWith("/planning"),
+              },
+            ]
+          : []),
+      ]
+    : [
+        { label: "Synthèse annuelle", icon: "dashboard" as const },
+        { label: "Contenus", icon: "teachingContent" as const },
+        { label: "Progression", icon: "planning" as const },
+      ]
 
   return (
     <TooltipProvider delayDuration={300}>
@@ -113,7 +105,16 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
             {navigation.map((item) => (
               <Tooltip key={item.label}>
                 <TooltipTrigger asChild>
-                  {item.unavailable ? (
+                  {"href" in item ? (
+                    <Link
+                      className={item.active ? "progressio-navigation-link is-active" : "progressio-navigation-link"}
+                      href={item.href}
+                      aria-current={item.active ? "page" : undefined}
+                    >
+                      <Icon name={item.icon} size="md" />
+                      <span className="progressio-navigation-label">{item.label}</span>
+                    </Link>
+                  ) : (
                     <button
                       className="progressio-navigation-link is-unavailable"
                       type="button"
@@ -123,19 +124,10 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
                       <Icon name={item.icon} size="md" />
                       <span className="progressio-navigation-label">{item.label}</span>
                     </button>
-                  ) : (
-                    <Link
-                      className={`progressio-navigation-link${item.active ? "is-active" : ""}`}
-                      href={item.href!}
-                      aria-current={item.active ? "page" : undefined}
-                    >
-                      <Icon name={item.icon} size="md" />
-                      <span className="progressio-navigation-label">{item.label}</span>
-                    </Link>
                   )}
                 </TooltipTrigger>
                 <TooltipContent side="right">
-                  {item.unavailable ? "Ouvrez un Work File pour accéder à cette destination" : item.label}
+                  {"href" in item ? item.label : "Ouvrez un Work File pour accéder à cette destination"}
                 </TooltipContent>
               </Tooltip>
             ))}
