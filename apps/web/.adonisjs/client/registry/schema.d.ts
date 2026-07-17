@@ -271,4 +271,16 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/activities/controllers/restore_activity_controller').default['execute']>>>
     }
   }
+  'activities.destroy': {
+    methods: ["DELETE"]
+    pattern: '/levels/:levelId/activities/:activityId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; activityId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_activity_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_activity_controller').default['execute']>>>
+    }
+  }
 }
