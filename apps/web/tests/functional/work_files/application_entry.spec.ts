@@ -81,6 +81,8 @@ test.group("Application entry", (group) => {
     const page = extractInertiaPage(response.text())
     assert.equal(page.component, "work_files/no_work_file")
     assert.notProperty(page.props, "dashboard")
+    assert.notProperty(page.props, "levelProgressSummary")
+    assert.notProperty(page.props, "progressionView")
   })
 
   test("guards planning routes when no Work File is open", async ({ assert, client }) => {
