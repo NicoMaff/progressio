@@ -1,4 +1,4 @@
-import { Slot } from "@radix-ui/react-slot"
+import { Slot, Slottable } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react"
 import { cn } from "#lib/utils"
@@ -53,7 +53,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
           {leftIcon}
         </span>
       ) : null}
-      {children}
+      {asChild ? <Slottable>{children}</Slottable> : children}
       {rightIcon ? (
         <span className="inline-flex shrink-0 items-center" aria-hidden="true">
           {rightIcon}
