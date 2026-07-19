@@ -98,8 +98,13 @@ export default function Home({ dashboard }: PageProps) {
                   <span className="text-muted-foreground text-sm">
                     {level.classes.length} {level.classes.length > 1 ? "classes" : "classe"}
                   </span>
-                  <Button asChild variant="outline" size="sm" rightIcon={<Icon name="arrowRight" size="sm" />}>
-                    <Link href={`/dashboard/levels/${level.id}`}>Voir le niveau</Link>
+                  <Button
+                    render={<Link href={`/dashboard/levels/${level.id}`} />}
+                    variant="outline"
+                    size="sm"
+                    rightIcon={<Icon name="arrowRight" size="sm" />}
+                  >
+                    Voir le niveau
                   </Button>
                 </div>
               </header>
@@ -136,8 +141,13 @@ export default function Home({ dashboard }: PageProps) {
                         />
                       }
                       action={
-                        <Button asChild variant="ghost" size="sm" rightIcon={<Icon name="arrowRight" size="sm" />}>
-                          <Link href={`/planning/classes/${teachingClass.id}/progression`}>Ouvrir la progression</Link>
+                        <Button
+                          render={<Link href={`/planning/classes/${teachingClass.id}/progression`} />}
+                          variant="ghost"
+                          size="sm"
+                          rightIcon={<Icon name="arrowRight" size="sm" />}
+                        >
+                          Ouvrir la progression
                         </Button>
                       }
                     />

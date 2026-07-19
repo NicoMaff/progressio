@@ -1,7 +1,7 @@
 import { type Data } from "@generated/data"
 import { usePage } from "@inertiajs/react"
 import { Link } from "@adonisjs/inertia/react"
-import { Icon, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@progressio/ui"
+import { Icon, Tooltip } from "@progressio/ui"
 import { toast, Toaster } from "sonner"
 import { type ReactElement, useEffect, useMemo, useState } from "react"
 
@@ -81,79 +81,78 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
       ]
 
   return (
-    <TooltipProvider delayDuration={300}>
-      <div className={`progressio-shell${isCollapsed ? "is-collapsed" : ""}`}>
-        <aside className="progressio-sidebar" aria-label="Navigation principale">
-          <div className="progressio-brand-row">
-            <Link className="progressio-brand" href="/" aria-label="Progressio, synthèse annuelle">
-              <span className="progressio-brand-mark" aria-hidden="true">
-                P
-              </span>
-              <span className="progressio-brand-name">Progressio</span>
-            </Link>
-            <button
-              className="progressio-collapse-button"
-              type="button"
-              aria-label={isCollapsed ? "Étendre le menu" : "Réduire le menu"}
-              aria-expanded={!isCollapsed}
-              onClick={() => setIsCollapsed((collapsed) => !collapsed)}
-            >
-              <Icon name="menu" size="md" />
-            </button>
-          </div>
-          <nav className="progressio-navigation">
-            {navigation.map((item) => (
-              <Tooltip key={item.label}>
-                <TooltipTrigger asChild>
-                  {"href" in item ? (
-                    <Link
-                      className={item.active ? "progressio-navigation-link is-active" : "progressio-navigation-link"}
-                      href={item.href}
-                      aria-current={item.active ? "page" : undefined}
-                    >
-                      <Icon name={item.icon} size="md" />
-                      <span className="progressio-navigation-label">{item.label}</span>
-                    </Link>
-                  ) : (
-                    <button
-                      className="progressio-navigation-link is-unavailable"
-                      type="button"
-                      aria-describedby="work-file-required-description"
-                      aria-disabled="true"
-                    >
-                      <Icon name={item.icon} size="md" />
-                      <span className="progressio-navigation-label">{item.label}</span>
-                    </button>
-                  )}
-                </TooltipTrigger>
-                <TooltipContent side="right">
-                  {"href" in item ? item.label : "Ouvrez un Work File pour accéder à cette destination"}
-                </TooltipContent>
-              </Tooltip>
-            ))}
-          </nav>
-        </aside>
-        <div className="progressio-workspace">
-          <header className="progressio-topbar">
-            <div
-              className="progressio-context"
-              aria-label={isWorkFileOpen ? "Work File actif" : "Aucun Work File ouvert"}
-            >
-              <span className="progressio-context-label">Work File actif</span>
-              <span className="progressio-context-value">
-                {context.schoolYear
-                  ? `${context.schoolYear.label} · ${context.schoolYear.subject}`
-                  : "Aucun Work File ouvert"}
-              </span>
-            </div>
-          </header>
-          <main className="progressio-content">{children}</main>
+    <div className={`progressio-shell${isCollapsed ? "is-collapsed" : ""}`}>
+      <aside className="progressio-sidebar" aria-label="Navigation principale">
+        <div className="progressio-brand-row">
+          <Link className="progressio-brand" href="/" aria-label="Progressio, synthèse annuelle">
+            <span className="progressio-brand-mark" aria-hidden="true">
+              P
+            </span>
+            <span className="progressio-brand-name">Progressio</span>
+          </Link>
+          <button
+            className="progressio-collapse-button"
+            type="button"
+            aria-label={isCollapsed ? "Étendre le menu" : "Réduire le menu"}
+            aria-expanded={!isCollapsed}
+            onClick={() => setIsCollapsed((collapsed) => !collapsed)}
+          >
+            <Icon name="menu" size="md" />
+          </button>
         </div>
-        <p id="work-file-required-description" className="progressio-visually-hidden">
-          Ouvrez un Work File pour accéder aux données de planification.
-        </p>
-        <Toaster position="top-right" richColors closeButton />
+        <nav className="progressio-navigation">
+          {navigation.map((item) => (
+            <Tooltip
+              key={item.label}
+              content={"href" in item ? item.label : "Ouvrez un Work File pour accéder à cette destination"}
+              delayDuration={300}
+              positioning="right"
+              trigger={
+                "href" in item ? (
+                  <Link
+                    className={item.active ? "progressio-navigation-link is-active" : "progressio-navigation-link"}
+                    href={item.href}
+                    aria-current={item.active ? "page" : undefined}
+                  >
+                    <Icon name={item.icon} size="md" />
+                    <span className="progressio-navigation-label">{item.label}</span>
+                  </Link>
+                ) : (
+                  <button
+                    className="progressio-navigation-link is-unavailable"
+                    type="button"
+                    aria-describedby="work-file-required-description"
+                    aria-disabled="true"
+                  >
+                    <Icon name={item.icon} size="md" />
+                    <span className="progressio-navigation-label">{item.label}</span>
+                  </button>
+                )
+              }
+            />
+          ))}
+        </nav>
+      </aside>
+      <div className="progressio-workspace">
+        <header className="progressio-topbar">
+          <div
+            className="progressio-context"
+            aria-label={isWorkFileOpen ? "Work File actif" : "Aucun Work File ouvert"}
+          >
+            <span className="progressio-context-label">Work File actif</span>
+            <span className="progressio-context-value">
+              {context.schoolYear
+                ? `${context.schoolYear.label} · ${context.schoolYear.subject}`
+                : "Aucun Work File ouvert"}
+            </span>
+          </div>
+        </header>
+        <main className="progressio-content">{children}</main>
       </div>
-    </TooltipProvider>
+      <p id="work-file-required-description" className="progressio-visually-hidden">
+        Ouvrez un Work File pour accéder aux données de planification.
+      </p>
+      <Toaster position="top-right" richColors closeButton />
+    </div>
   )
 }
