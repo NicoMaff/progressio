@@ -1,6 +1,12 @@
-import { Slot, Slottable } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react"
+import {
+  cloneElement,
+  forwardRef,
+  type ButtonHTMLAttributes,
+  type ReactElement,
+  type ReactNode,
+  type RefAttributes,
+} from "react"
 import { cn } from "#lib/utils"
 
 export const buttonVariants = cva(
@@ -34,31 +40,44 @@ export const buttonVariants = cva(
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
     children: ReactNode
     leftIcon?: ReactNode
+    render?: ReactElement<{ children?: ReactNode; className?: string } & RefAttributes<HTMLElement>>
     rightIcon?: ReactNode
   }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { asChild = false, children, className, leftIcon, rightIcon, size, type = "button", variant, ...props },
+  { children, className, leftIcon, render, rightIcon, size, type = "button", variant, ...props },
   ref
 ) {
-  const Component = asChild ? Slot : "button"
-
-  return (
-    <Component ref={ref} className={cn(buttonVariants({ size, variant }), className)} type={type} {...props}>
+  const content = (
+    <>
       {leftIcon ? (
         <span className="inline-flex shrink-0 items-center" aria-hidden="true">
           {leftIcon}
         </span>
       ) : null}
-      {asChild ? <Slottable>{children}</Slottable> : children}
+      {children}
       {rightIcon ? (
         <span className="inline-flex shrink-0 items-center" aria-hidden="true">
           {rightIcon}
         </span>
       ) : null}
-    </Component>
+    </>
+  )
+
+  if (render) {
+    return cloneElement(render, {
+      className: cn(buttonVariants({ size, variant }), className, render.props.className),
+      children: content,
+      ref,
+      ...props,
+    })
+  }
+
+  return (
+    <button ref={ref} className={cn(buttonVariants({ size, variant }), className)} type={type} {...props}>
+      {content}
+    </button>
   )
 })

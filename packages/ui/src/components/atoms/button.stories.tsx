@@ -56,6 +56,13 @@ export const Disabled: Story = {
   },
 }
 
+export const RenderedLink: Story = {
+  args: {
+    render: <a href="/progression">Ouvrir la progression</a>,
+    children: "Ouvrir la progression",
+  },
+}
+
 export const WithLeftIcon: Story = {
   args: {
     leftIcon: <CalendarIcon />,
