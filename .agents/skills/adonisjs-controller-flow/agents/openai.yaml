@@ -1,0 +1,4 @@
+interface:
+  display_name: "AdonisJS Controller Flow"
+  short_description: "Apply AdonisJS controller and HTTP conventions"
+  default_prompt: "Use $adonisjs-controller-flow to implement this AdonisJS controller flow consistently."

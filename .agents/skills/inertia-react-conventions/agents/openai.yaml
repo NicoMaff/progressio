@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inertia React Conventions"
+  short_description: "Build consistent typed Inertia React interfaces"
+  default_prompt: "Use $inertia-react-conventions to implement this Inertia React interface consistently."

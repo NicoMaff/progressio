@@ -1,6 +1,6 @@
 ---
 name: adonisjs-persistence-services
-version: 0.1.0
+version: 0.1.1
 description: AdonisJS persistence, actions, services, and Lucid conventions. Use in AdonisJS projects when changing or reviewing use cases, reusable services, queries, dependency injection, Lucid models, persistence, transactions, or action/service errors.
 ---
 

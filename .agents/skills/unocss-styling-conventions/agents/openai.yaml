@@ -1,0 +1,4 @@
+interface:
+  display_name: "UnoCSS Styling Conventions"
+  short_description: "Apply maintainable UnoCSS styling patterns"
+  default_prompt: "Use $unocss-styling-conventions to implement this UI styling change with the existing UnoCSS patterns."

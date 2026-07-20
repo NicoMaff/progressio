@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tuyau AdonisJS Client Conventions"
+  short_description: "Use typed Tuyau API clients consistently"
+  default_prompt: "Use $tuyau-adonisjs-client-conventions to implement this typed API client change."

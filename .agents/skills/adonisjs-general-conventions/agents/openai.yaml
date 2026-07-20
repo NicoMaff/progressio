@@ -1,0 +1,4 @@
+interface:
+  display_name: "AdonisJS General Conventions"
+  short_description: "Apply and route AdonisJS backend conventions"
+  default_prompt: "Use $adonisjs-general-conventions to organize this AdonisJS backend change."

@@ -1,10 +1,10 @@
 {
-  "installedAt": "2026-07-09T16:36:06.500Z",
+  "installedAt": "2026-07-20T16:06:00.456Z",
   "skills": [
     {
       "name": "adonisjs-controller-flow",
       "displayName": "adonisjs-controller-flow",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "type": "local",
       "sourcePath": "skills/local/backend/adonisjs-controller-flow",
       "installPath": "adonisjs-controller-flow"
@@ -12,7 +12,7 @@
     {
       "name": "adonisjs-data-transformers",
       "displayName": "adonisjs-data-transformers",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "type": "local",
       "sourcePath": "skills/local/backend/adonisjs-data-transformers",
       "installPath": "adonisjs-data-transformers"
@@ -20,7 +20,7 @@
     {
       "name": "adonisjs-general-conventions",
       "displayName": "adonisjs-general-conventions",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "type": "local",
       "sourcePath": "skills/local/backend/adonisjs-general-conventions",
       "installPath": "adonisjs-general-conventions"
@@ -28,7 +28,7 @@
     {
       "name": "adonisjs-japa-testing",
       "displayName": "adonisjs-japa-testing",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "type": "local",
       "sourcePath": "skills/local/testing/adonisjs-japa-testing",
       "installPath": "adonisjs-japa-testing"
@@ -36,7 +36,7 @@
     {
       "name": "adonisjs-persistence-services",
       "displayName": "adonisjs-persistence-services",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "type": "local",
       "sourcePath": "skills/local/backend/adonisjs-persistence-services",
       "installPath": "adonisjs-persistence-services"
@@ -100,7 +100,7 @@
     {
       "name": "inertia-react-conventions",
       "displayName": "inertia-react-conventions",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "type": "local",
       "sourcePath": "skills/local/frontend/inertia-react-conventions",
       "installPath": "inertia-react-conventions"
@@ -108,7 +108,7 @@
     {
       "name": "tuyau-adonisjs-client-conventions",
       "displayName": "tuyau-adonisjs-client-conventions",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "type": "local",
       "sourcePath": "skills/local/frontend/tuyau-adonisjs-client-conventions",
       "installPath": "tuyau-adonisjs-client-conventions"
@@ -116,7 +116,7 @@
     {
       "name": "unocss-styling-conventions",
       "displayName": "unocss-styling-conventions",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "type": "local",
       "sourcePath": "skills/local/frontend/unocss-styling-conventions",
       "installPath": "unocss-styling-conventions"

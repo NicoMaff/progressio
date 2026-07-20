@@ -1,0 +1,4 @@
+interface:
+  display_name: "AdonisJS Persistence Services"
+  short_description: "Structure AdonisJS persistence and services"
+  default_prompt: "Use $adonisjs-persistence-services to implement this persistence workflow with the project conventions."

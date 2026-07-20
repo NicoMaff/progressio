@@ -1,6 +1,6 @@
 ---
 name: adonisjs-general-conventions
-version: 0.1.0
+version: 0.1.1
 description: AdonisJS general conventions and skill router. Use in AdonisJS projects when reviewing backend structure, src feature organization, src/core boundaries, local convention priority, or deciding whether to use a more specific AdonisJS skill.
 ---
 

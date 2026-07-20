@@ -1,0 +1,4 @@
+interface:
+  display_name: "AdonisJS Data Transformers"
+  short_description: "Shape typed AdonisJS client payloads safely"
+  default_prompt: "Use $adonisjs-data-transformers to design the transformer and client payload for this change."

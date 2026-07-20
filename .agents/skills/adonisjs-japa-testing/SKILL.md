@@ -1,6 +1,6 @@
 ---
 name: adonisjs-japa-testing
-version: 0.2.0
+version: 0.2.1
 description: AdonisJS testing conventions for Japa. Use in AdonisJS projects when adding, updating, diagnosing, or running Japa tests, including unit, functional, API, browser, database, and regression tests.
 ---
 

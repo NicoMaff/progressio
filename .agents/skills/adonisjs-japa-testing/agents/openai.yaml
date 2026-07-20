@@ -1,0 +1,4 @@
+interface:
+  display_name: "AdonisJS Japa Testing"
+  short_description: "Design and run focused AdonisJS Japa tests"
+  default_prompt: "Use $adonisjs-japa-testing to add focused Japa coverage for this AdonisJS behavior."

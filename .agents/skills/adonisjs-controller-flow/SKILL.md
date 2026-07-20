@@ -1,6 +1,6 @@
 ---
 name: adonisjs-controller-flow
-version: 0.1.0
+version: 0.1.1
 description: AdonisJS controller flow conventions. Use in AdonisJS projects when changing or reviewing routes, controllers, HTTP validation, authorization, generated barrel files, Inertia page flows, or API response conventions.
 ---
 

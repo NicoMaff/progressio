@@ -1,6 +1,6 @@
 ---
 name: adonisjs-data-transformers
-version: 0.2.0
+version: 0.2.1
 description: AdonisJS data transformer and payload conventions. Use in AdonisJS projects when changing or reviewing transformers, browser/API payloads, exposed Lucid data, generated frontend types, or Tuyau client contracts.
 ---
 

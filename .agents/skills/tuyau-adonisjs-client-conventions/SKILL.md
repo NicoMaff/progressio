@@ -1,6 +1,6 @@
 ---
 name: tuyau-adonisjs-client-conventions
-version: 0.1.0
+version: 0.1.1
 description: Tuyau client conventions for AdonisJS APIs. Use in codebases when changing or reviewing API calls made through a Tuyau generated client, typed request helpers, generated route types, or generated API response contracts.
 ---
 

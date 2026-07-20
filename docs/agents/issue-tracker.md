@@ -18,6 +18,7 @@ Infer the repository from `git remote -v`; `gh` does this automatically when run
 - Add every specification and ticket created with `to-spec` or `to-tickets` to the `progressio` GitHub Project.
 - A specification is the parent issue. When a parent specification exists, create its tickets as native GitHub sub-issues.
 - Establish every applicable native GitHub issue relationship, including parent-child, `blocking`, and `blocked by` dependencies.
+- When `implement` is invoked for a ticket, immediately set that ticket's status in the `progressio` GitHub Project to `In Progress`, before changing code. Do not change the status of related parent specifications or other tickets.
 
 ## Pull requests as a triage surface
 

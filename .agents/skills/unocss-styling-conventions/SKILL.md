@@ -1,6 +1,6 @@
 ---
 name: unocss-styling-conventions
-version: 0.1.0
+version: 0.1.1
 description: UnoCSS styling conventions. Use in codebases when changing or reviewing UnoCSS configuration, utility classes, presets, shortcuts, theme tokens, extractors, resets, or UI styling in projects that use UnoCSS.
 ---
 

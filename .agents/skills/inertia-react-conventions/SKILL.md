@@ -1,6 +1,6 @@
 ---
 name: inertia-react-conventions
-version: 0.1.0
+version: 0.1.1
 description: Inertia React conventions. Use in codebases when changing or reviewing Inertia.js React pages, layouts, forms, shared props, AdonisJS Inertia adapters, generated page or route types, routing, client-side state, UI behavior, or browser-facing code.
 ---
 
