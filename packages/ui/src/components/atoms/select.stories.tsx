@@ -1,10 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { Select, SelectItem } from "./select.js"
+import { useState } from "react"
+import { Select, type SelectOption } from "./select.js"
+
+const classOptions: SelectOption[] = [
+  { value: "5a", label: "5e A" },
+  { value: "5b", label: "5e B" },
+  { value: "4a", label: "4e A", disabled: true },
+]
 
 const meta = {
   title: "Atoms/Select",
   component: Select,
   args: {
+    options: classOptions,
     placeholder: "Choisir une classe",
   },
 } satisfies Meta<typeof Select>
@@ -13,24 +21,27 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  render: (args) => (
-    <Select {...args}>
-      <SelectItem value="5a">5e A</SelectItem>
-      <SelectItem value="5b">5e B</SelectItem>
-      <SelectItem value="4a">4e A</SelectItem>
-    </Select>
-  ),
+export const Default: Story = {}
+
+export const WithInitialValue: Story = {
+  args: {
+    defaultValue: "5b",
+  },
 }
 
-export const WithValue: Story = {
-  render: (args) => (
-    <Select {...args} defaultValue="5b">
-      <SelectItem value="5a">5e A</SelectItem>
-      <SelectItem value="5b">5e B</SelectItem>
-      <SelectItem value="4a">4e A</SelectItem>
-    </Select>
-  ),
+export const Controlled: Story = {
+  render: (args) => {
+    const [value, setValue] = useState("5a")
+
+    return <Select {...args} value={value} onValueChange={(nextValue) => setValue(nextValue ?? "")} />
+  },
+}
+
+export const Empty: Story = {
+  args: {
+    options: [],
+    placeholder: "Aucune classe disponible",
+  },
 }
 
 export const Invalid: Story = {
@@ -40,9 +51,7 @@ export const Invalid: Story = {
   },
   render: (args) => (
     <div className="w-80 space-y-2">
-      <Select {...args}>
-        <SelectItem value="5a">5e A</SelectItem>
-      </Select>
+      <Select {...args} />
       <p id="class-error" className="text-alert text-sm">
         Sélectionnez une classe pour continuer.
       </p>
@@ -55,5 +64,17 @@ export const Disabled: Story = {
     disabled: true,
     placeholder: "Aucune classe disponible pour cette année scolaire",
   },
-  render: (args) => <Select {...args} className="w-96" />,
+}
+
+export const RequiredInNativeForm: Story = {
+  args: {
+    name: "class",
+    required: true,
+  },
+  render: (args) => (
+    <form className="w-80 space-y-3" onSubmit={(event) => event.preventDefault()}>
+      <Select {...args} />
+      <button type="submit">Enregistrer la séance</button>
+    </form>
+  ),
 }
