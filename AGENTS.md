@@ -71,6 +71,10 @@ Use the smallest useful set of skills from `.agents/skills/`; combine focused sk
 
 Issues and PRDs are tracked in this repository's GitHub Issues. See `docs/agents/issue-tracker.md`.
 
+- When `/implement` is invoked for a ticket, set that ticket's `progressio` project status to `In Progress` before changing code; do not modify related parent specifications or other tickets.
+- When creating a pull request for an implementation, automatically link it to the ticket currently being implemented.
+- After creating the pull request, add it to the `progressio` GitHub Project and set its project status to `In Review`.
+
 ### Triage labels
 
 The standard five-role triage label vocabulary is used. See `docs/agents/triage-labels.md`.
