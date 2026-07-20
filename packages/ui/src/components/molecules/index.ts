@@ -1,7 +1,6 @@
 export * from "./alert.js"
 export * from "./breadcrumb.js"
 export * from "./card.js"
-export * from "./dialog.js"
 export * from "./dropdown_menu.js"
 export * from "./empty_state.js"
 export * from "./field.js"
