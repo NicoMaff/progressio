@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { Badge } from "#atoms/tag"
+import { Badge } from "#atoms/badge"
 
 const meta = {
   title: "Foundations/Atelier cartographique",

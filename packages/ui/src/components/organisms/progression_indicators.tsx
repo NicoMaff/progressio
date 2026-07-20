@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react"
-import { Tag } from "#atoms/tag"
+import { Badge } from "#atoms/badge"
 import { cn } from "#lib/utils"
 
 export type ClassPacingState = "tracked" | "notPlanned" | "nothingDue"
@@ -73,9 +73,9 @@ export function ClassPacingIndicator({
       {outcomeTags.length > 0 ? (
         <div className="flex flex-wrap gap-1.5">
           {outcomeTags.map((outcome) => (
-            <Tag key={outcome.pluralLabel} tone={outcome.tone}>
+            <Badge key={outcome.pluralLabel} tone={outcome.tone}>
               {outcome.count} {outcome.count > 1 ? outcome.pluralLabel : outcome.singularLabel}
-            </Tag>
+            </Badge>
           ))}
         </div>
       ) : null}

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Button } from "#atoms/button"
-import { Tag } from "#atoms/tag"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card.js"
+import { Badge } from "#atoms/badge"
+import { Card } from "./card.js"
 
 const meta = {
   title: "Molecules/Card",
@@ -17,22 +17,24 @@ export const Default: Story = {
     children: null,
   },
   render: () => (
-    <Card className="w-90">
-      <CardHeader>
-        <CardTitle>Séquence proportionnalité</CardTitle>
-        <CardDescription>Classe de 5e A, période 2</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center justify-between gap-4">
-          <span className="text-sm text-neutral-600">6 séances prévues</span>
-          <Tag tone="blue">Planifié</Tag>
-        </div>
-      </CardContent>
-      <CardFooter>
+    <Card
+      className="w-90"
+      footer={
         <Button variant="secondary" size="sm">
           Ouvrir
         </Button>
-      </CardFooter>
+      }
+      header={{
+        title: "Séquence proportionnalité",
+        description: "Classe de 5e A, période 2",
+      }}
+    >
+      <div className="p-5">
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-sm text-neutral-600">6 séances prévues</span>
+          <Badge tone="blue">Planifié</Badge>
+        </div>
+      </div>
     </Card>
   ),
 }
