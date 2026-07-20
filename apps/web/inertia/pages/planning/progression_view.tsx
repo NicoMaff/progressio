@@ -1,15 +1,6 @@
 import { Link } from "@adonisjs/inertia/react"
 import { type Data } from "@generated/data"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-  EmptyState,
-  ProgressionChronologyEntry,
-} from "@progressio/ui"
+import { Breadcrumb, EmptyState, ProgressionChronologyEntry } from "@progressio/ui"
 import { type InertiaProps } from "~/types"
 
 type PageProps = InertiaProps<{
@@ -22,25 +13,14 @@ export default function ProgressionView({ progressionView }: PageProps) {
 
   return (
     <section className="mx-auto w-full max-w-4xl space-y-8 p-6 md:p-9">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/">Synthèse annuelle</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href={`/dashboard/levels/${level.id}`}>{level.name}</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{teachingClass.name}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <Breadcrumb
+        items={[
+          { id: "annual-dashboard", label: "Synthèse annuelle", href: "/" },
+          { id: level.id, label: level.name, href: `/dashboard/levels/${level.id}` },
+          { id: teachingClass.id, label: teachingClass.name, current: true },
+        ]}
+        renderLink={(item) => <Link href={item.href!} />}
+      />
 
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-2">

@@ -1,48 +1,68 @@
-import { Slot } from "@radix-ui/react-slot"
-import type { ComponentPropsWithoutRef, HTMLAttributes, ReactNode } from "react"
+import { cloneElement, type ReactElement, type ReactNode } from "react"
 import { cn } from "#lib/utils"
 
-export type BreadcrumbProps = ComponentPropsWithoutRef<"nav">
+export type BreadcrumbItem =
+  | {
+      current: true
+      href?: never
+      id: string
+      label: string
+    }
+  | {
+      current?: false
+      href: string
+      id: string
+      label: string
+    }
 
-export function Breadcrumb({ className, ...props }: BreadcrumbProps) {
-  return <nav aria-label="Fil d’Ariane" className={cn("text-sm", className)} {...props} />
+export type BreadcrumbProps = {
+  className?: string
+  items: readonly BreadcrumbItem[]
+  renderLink?: (item: BreadcrumbItem) => ReactElement<{ children?: ReactNode; className?: string }>
 }
 
-export function BreadcrumbList({ className, ...props }: HTMLAttributes<HTMLOListElement>) {
-  return <ol className={cn("text-muted-foreground flex flex-wrap items-center gap-2", className)} {...props} />
+function BreadcrumbLink({ item, renderLink }: Pick<BreadcrumbProps, "renderLink"> & { item: BreadcrumbItem }) {
+  if (item.current) {
+    return null
+  }
+
+  if (!renderLink) {
+    return (
+      <a className="font-500 text-muted-foreground hover:text-primary hover:underline" href={item.href}>
+        {item.label}
+      </a>
+    )
+  }
+
+  const link = renderLink(item)
+
+  return cloneElement(link, {
+    className: cn("font-500 text-muted-foreground hover:text-primary hover:underline", link.props.className),
+    children: item.label,
+  })
 }
 
-export function BreadcrumbItem({ className, ...props }: HTMLAttributes<HTMLLIElement>) {
-  return <li className={cn("inline-flex items-center gap-2", className)} {...props} />
-}
-
-export type BreadcrumbLinkProps = ComponentPropsWithoutRef<"a"> & {
-  asChild?: boolean
-}
-
-export function BreadcrumbLink({ asChild = false, className, ...props }: BreadcrumbLinkProps) {
-  const Component = asChild ? Slot : "a"
-
+export function Breadcrumb({ className, items, renderLink }: BreadcrumbProps) {
   return (
-    <Component
-      className={cn("font-500 text-muted-foreground hover:text-primary hover:underline", className)}
-      {...props}
-    />
-  )
-}
-
-export function BreadcrumbPage({ className, ...props }: HTMLAttributes<HTMLSpanElement>) {
-  return <span aria-current="page" className={cn("font-600 text-foreground", className)} {...props} />
-}
-
-export type BreadcrumbSeparatorProps = HTMLAttributes<HTMLSpanElement> & {
-  children?: ReactNode
-}
-
-export function BreadcrumbSeparator({ children = "/", className, ...props }: BreadcrumbSeparatorProps) {
-  return (
-    <span aria-hidden="true" className={cn("text-border", className)} role="presentation" {...props}>
-      {children}
-    </span>
+    <nav aria-label="Fil d’Ariane" className={cn("text-sm", className)}>
+      <ol className="text-muted-foreground flex flex-wrap items-center gap-2">
+        {items.map((item, index) => (
+          <li key={item.id} className="inline-flex items-center gap-2">
+            {item.current ? (
+              <span aria-current="page" className="font-600 text-foreground">
+                {item.label}
+              </span>
+            ) : (
+              <BreadcrumbLink item={item} renderLink={renderLink} />
+            )}
+            {index < items.length - 1 ? (
+              <span aria-hidden="true" className="text-border" role="presentation">
+                /
+              </span>
+            ) : null}
+          </li>
+        ))}
+      </ol>
+    </nav>
   )
 }
