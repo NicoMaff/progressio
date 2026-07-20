@@ -22,9 +22,6 @@ export const badgeVariants = cva("font-600 inline-flex items-center gap-1.5 roun
   },
 })
 
-/** @deprecated Use `badgeVariants` instead. */
-export const tagVariants = badgeVariants
-
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> &
   VariantProps<typeof badgeVariants> & {
     children: ReactNode
@@ -38,12 +35,4 @@ export function Badge({ children, className, tone, ...props }: BadgeProps) {
       {children}
     </span>
   )
-}
-
-/** @deprecated Use `BadgeProps` instead. */
-export type TagProps = BadgeProps
-
-/** @deprecated Use `Badge` instead. */
-export function Tag(props: TagProps) {
-  return <Badge {...props} />
 }

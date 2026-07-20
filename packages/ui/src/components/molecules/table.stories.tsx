@@ -1,11 +1,60 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { Badge } from "#atoms/tag"
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "./table.js"
+import { Badge } from "#atoms/badge"
+import { Table, type TableColumn } from "./table.js"
+
+type AnnualProgressRow = {
+  id: string
+  classLabel: string
+  completedSessionCount: number
+  progressLabel: string
+  tone: "completed" | "inProgress"
+}
+
+const rows: AnnualProgressRow[] = [
+  {
+    id: "premiere-generale-1",
+    classLabel: "Première générale 1",
+    completedSessionCount: 39,
+    progressLabel: "Étude approfondie des fonctions exponentielles et de leurs applications",
+    tone: "completed",
+  },
+  {
+    id: "premiere-generale-2",
+    classLabel: "Première générale 2",
+    completedSessionCount: 35,
+    progressLabel: "Probabilités conditionnelles",
+    tone: "inProgress",
+  },
+]
+
+const columns = [
+  { id: "class", label: "Classe", render: (row) => <span className="font-600">{row.classLabel}</span> },
+  { id: "progress", label: "Dernière séquence travaillée", render: (row) => row.progressLabel },
+  {
+    id: "status",
+    label: "État",
+    render: (row) => (
+      <Badge tone={row.tone}>
+        <span
+          className={row.tone === "completed" ? "i-hugeicons-checkmark-circle-02" : "i-hugeicons-clock-03"}
+          aria-hidden="true"
+        />
+        {row.tone === "completed" ? "À jour" : "En cours"}
+      </Badge>
+    ),
+  },
+  {
+    id: "completedSessions",
+    label: "Séances réalisées",
+    headerClassName: "text-right",
+    cellClassName: "text-right",
+    render: (row) => row.completedSessionCount,
+  },
+] satisfies TableColumn<AnnualProgressRow>[]
 
 const meta = {
   title: "Molecules/Table",
-  component: Table,
-} satisfies Meta<typeof Table>
+} satisfies Meta
 
 export default meta
 
@@ -14,39 +63,7 @@ type Story = StoryObj<typeof meta>
 export const AnnualProgress: Story = {
   render: () => (
     <div className="w-[min(58rem,92vw)]">
-      <Table>
-        <TableCaption>Progression arrêtée au 16 juillet 2026.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Classe</TableHead>
-            <TableHead>Dernière séquence travaillée</TableHead>
-            <TableHead>État</TableHead>
-            <TableHead className="text-right">Séances réalisées</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-600">Première générale 1</TableCell>
-            <TableCell>Étude approfondie des fonctions exponentielles et de leurs applications</TableCell>
-            <TableCell>
-              <Badge tone="completed">
-                <span className="i-hugeicons-checkmark-circle-02" aria-hidden="true" /> À jour
-              </Badge>
-            </TableCell>
-            <TableCell className="text-right">39</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-600">Première générale 2</TableCell>
-            <TableCell>Probabilités conditionnelles</TableCell>
-            <TableCell>
-              <Badge tone="inProgress">
-                <span className="i-hugeicons-clock-03" aria-hidden="true" /> En cours
-              </Badge>
-            </TableCell>
-            <TableCell className="text-right">35</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <Table caption="Progression arrêtée au 16 juillet 2026." columns={columns} rows={rows} />
     </div>
   ),
 }

@@ -1,69 +1,57 @@
-import {
-  forwardRef,
-  type HTMLAttributes,
-  type TableHTMLAttributes,
-  type TdHTMLAttributes,
-  type ThHTMLAttributes,
-} from "react"
+import type { HTMLAttributes, ReactNode } from "react"
 import { cn } from "#lib/utils"
 
-export const Table = forwardRef<HTMLTableElement, TableHTMLAttributes<HTMLTableElement>>(function Table(
-  { className, ...props },
-  ref
-) {
+export type TableRow = {
+  id: string
+}
+
+export type TableColumn<Row extends TableRow> = {
+  id: string
+  label: ReactNode
+  cellClassName?: string
+  headerClassName?: string
+  render: (row: Row) => ReactNode
+}
+
+export type TableProps<Row extends TableRow> = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
+  caption?: ReactNode
+  columns: TableColumn<Row>[]
+  rows: Row[]
+}
+
+export function Table<Row extends TableRow>({ caption, className, columns, rows, ...props }: TableProps<Row>) {
   return (
-    <div className="border-border relative w-full overflow-auto rounded-lg border">
-      <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
+    <div className={cn("border-border relative w-full overflow-auto rounded-lg border", className)} {...props}>
+      <table className="w-full caption-bottom text-sm">
+        {caption ? <caption className="text-muted-foreground mt-3 text-sm">{caption}</caption> : null}
+        <thead className="bg-muted/70 [&_tr]:border-b">
+          <tr>
+            {columns.map((column) => (
+              <th
+                className={cn("font-700 text-foreground h-11 px-4 text-left align-middle", column.headerClassName)}
+                key={column.id}
+                scope="col"
+              >
+                {column.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="bg-card [&_tr:last-child]:border-0">
+          {rows.map((row) => (
+            <tr
+              className="border-border hover:bg-muted/45 data-[state=selected]:bg-accent border-b transition-colors"
+              key={row.id}
+            >
+              {columns.map((column) => (
+                <td className={cn("text-foreground p-4 align-middle", column.cellClassName)} key={column.id}>
+                  {column.render(row)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
-})
-
-export const TableHeader = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
-  function TableHeader({ className, ...props }, ref) {
-    return <thead ref={ref} className={cn("bg-muted/70 [&_tr]:border-b", className)} {...props} />
-  }
-)
-
-export const TableBody = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
-  function TableBody({ className, ...props }, ref) {
-    return <tbody ref={ref} className={cn("bg-card [&_tr:last-child]:border-0", className)} {...props} />
-  }
-)
-
-export const TableRow = forwardRef<HTMLTableRowElement, HTMLAttributes<HTMLTableRowElement>>(function TableRow(
-  { className, ...props },
-  ref
-) {
-  return (
-    <tr
-      ref={ref}
-      className={cn(
-        "border-border hover:bg-muted/45 data-[state=selected]:bg-accent border-b transition-colors",
-        className
-      )}
-      {...props}
-    />
-  )
-})
-
-export const TableHead = forwardRef<HTMLTableCellElement, ThHTMLAttributes<HTMLTableCellElement>>(function TableHead(
-  { className, ...props },
-  ref
-) {
-  return (
-    <th ref={ref} className={cn("font-700 text-foreground h-11 px-4 text-left align-middle", className)} {...props} />
-  )
-})
-
-export const TableCell = forwardRef<HTMLTableCellElement, TdHTMLAttributes<HTMLTableCellElement>>(function TableCell(
-  { className, ...props },
-  ref
-) {
-  return <td ref={ref} className={cn("text-foreground p-4 align-middle", className)} {...props} />
-})
-
-export const TableCaption = forwardRef<HTMLTableCaptionElement, HTMLAttributes<HTMLTableCaptionElement>>(
-  function TableCaption({ className, ...props }, ref) {
-    return <caption ref={ref} className={cn("text-muted-foreground mt-3 text-sm", className)} {...props} />
-  }
-)
+}

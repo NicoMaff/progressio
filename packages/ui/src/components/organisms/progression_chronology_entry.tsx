@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react"
-import { Tag, type TagProps } from "#atoms/tag"
+import { Badge, type BadgeProps } from "#atoms/badge"
 import { cn } from "#lib/utils"
 
 export type LinkedActualSession = {
@@ -15,7 +15,7 @@ export type ProgressionChronologyEntryProps = Omit<HTMLAttributes<HTMLElement>, 
   detail?: ReactNode
   kind: "planned" | "unplannedActual"
   outcomeLabel?: ReactNode
-  outcomeTone?: TagProps["tone"]
+  outcomeTone?: BadgeProps["tone"]
   title: ReactNode
 }
 
@@ -61,7 +61,7 @@ export function ProgressionChronologyEntry({
         {detail ? <div className="mt-2 text-sm text-neutral-600">{detail}</div> : null}
         {outcomeLabel ? (
           <div className="mt-3">
-            <Tag tone={outcomeTone}>{outcomeLabel}</Tag>
+            <Badge tone={outcomeTone}>{outcomeLabel}</Badge>
           </div>
         ) : null}
         {actualSessions.length > 0 ? (
