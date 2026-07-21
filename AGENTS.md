@@ -71,10 +71,12 @@ Use the smallest useful set of skills from `.agents/skills/`; combine focused sk
 
 Issues and PRDs are tracked in this repository's GitHub Issues. See `docs/agents/issue-tracker.md`.
 
-- When `to-spec` creates a specification, set its `progressio` project status to `Backlog`. When `to-tickets` creates its sub-issues, set the parent specification to `Ready`.
-- When `/implement` is invoked for a sub-issue, set both that ticket and its parent specification's `progressio` project status to `In Progress` before changing code. When all sub-issues are `Done`, set the parent specification to `Done`.
-- When creating a pull request for an implementation, automatically link it to the ticket currently being implemented.
-- After creating the pull request, add it to the `progressio` GitHub Project and set its project status to `In Review`.
+- When `to-spec` creates a specification, add it to the `progressio` GitHub Project, apply the `spec` label, and set its project status to `Backlog`.
+- When `to-tickets` creates tickets, add each ticket to the `progressio` GitHub Project, apply the `ticket` label, set its project status to `Ready`, link it to its specification as a native GitHub sub-issue, and retain a parent-specification annotation in its body. Once every ticket is created and linked, set the parent specification to `Ready`.
+- Add native `Blocked by` relationships only for real ticket dependencies, while retaining useful dependency annotations in issue bodies.
+- When `implement` is invoked for a sub-issue, set both that ticket and its parent specification's `progressio` project status to `In Progress` before changing code.
+- When creating a pull request for an implementation, add `Closes #<ticket-number>` to its body and set the ticket status to `In Review`.
+- After a pull request is merged, set its ticket to `Done`; set the parent specification to `Done` only when all of its sub-issues are `Done`. If a pull request is closed without merging, return its ticket to `In Progress`.
 
 ### Triage labels
 

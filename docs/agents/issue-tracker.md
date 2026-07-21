@@ -16,14 +16,14 @@ Infer the repository from `git remote -v`; `gh` does this automatically when run
 ## GitHub Project and issue relationships
 
 - Add every specification and ticket created with `to-spec` or `to-tickets` to the `progressio` GitHub Project.
-- A specification is the parent issue. When a parent specification exists, create its tickets as native GitHub sub-issues.
-- Establish every applicable native GitHub issue relationship, including parent-child, `blocking`, and `blocked by` dependencies.
-- When `to-spec` creates a specification, set that specification's status in the `progressio` GitHub Project to `Backlog`.
-- When `to-tickets` creates the sub-issues of a specification, set that parent specification's status to `Ready`.
-- When `implement` is invoked for a sub-issue, immediately set that ticket's status in the `progressio` GitHub Project to `In Progress`, before changing code, and set its parent specification's status to `In Progress`.
-- When every sub-issue of a specification is `Done`, set that parent specification's status to `Done`.
-- When creating a pull request for an implementation, automatically link it to the ticket currently being implemented (for example with `Closes #<number>` in the PR body).
-- Once created, add the pull request to the `progressio` GitHub Project and set its project status to `In Review`.
+- When `to-spec` creates a specification, apply the `spec` label and set its project status to `Backlog`.
+- A specification is the parent issue. When `to-tickets` creates a ticket, apply the `ticket` label, set the ticket status to `Ready`, create a native GitHub sub-issue relationship to its specification, and retain an annotation in the ticket body identifying its parent specification.
+- Create native `Blocked by` dependencies only when a ticket actually depends on another ticket. Retain useful dependency annotations in issue bodies as well.
+- After every ticket is created and linked, set the parent specification's status to `Ready`.
+- When `implement` is invoked for a sub-issue, immediately set that ticket's status and its parent specification's status to `In Progress`, before changing code.
+- When creating a pull request for an implementation, link it to the ticket with `Closes #<number>` in the PR body and set the ticket status to `In Review`.
+- After a pull request is merged, set the linked ticket status to `Done`. Set the parent specification to `Done` only after every one of its sub-issues is `Done`.
+- If a pull request is closed without merging, return the linked ticket to `In Progress`.
 
 ## Pull requests as a triage surface
 
