@@ -1,4 +1,4 @@
-import { Icon } from "@progressio/ui"
+import { Button, Icon } from "@progressio/ui"
 
 export default function NoWorkFile() {
   return (
@@ -16,6 +16,9 @@ export default function NoWorkFile() {
         <p className="text-muted-foreground mx-auto mt-5 max-w-xl text-sm">
           Les destinations de planification restent indisponibles tant qu’aucun Work File n’est ouvert.
         </p>
+        <Button className="mt-8" leftIcon={<Icon name="folder" size="md" />} type="button">
+          Ouvrir un Work File
+        </Button>
       </div>
     </section>
   )

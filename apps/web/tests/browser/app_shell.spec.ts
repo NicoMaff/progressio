@@ -6,7 +6,10 @@ import { DateTime } from "luxon"
 test.group("Progressio App Shell", (group) => {
   group.setup(() => testUtils.db().migrate())
 
-  test("supports tablet navigation, keyboard collapse, tooltips, and persistence", async ({ assert, visit }) => {
+  test("keeps the workspace navigation usable when the sidebar collapses or becomes an overlay", async ({
+    assert,
+    visit,
+  }) => {
     const today = DateTime.local().startOf("day")
     await SchoolYear.create({
       label: "2025-2026",
@@ -18,14 +21,28 @@ test.group("Progressio App Shell", (group) => {
     })
 
     const page = await visit("/")
-    await page.setViewportSize({ width: 1024, height: 768 })
+    await page.setViewportSize({ width: 1280, height: 768 })
     await page.locator(".progressio-shell").waitFor({ state: "visible" })
+
+    for (const destination of [
+      "Vue d’ensemble",
+      "Organisation",
+      "Niveaux",
+      "Classes",
+      "Contenus",
+      "Thèmes",
+      "Chapitres",
+      "Activités",
+      "Progressions",
+    ]) {
+      await page.getByRole("link", { name: destination, exact: true }).waitFor({ state: "visible" })
+    }
 
     const collapseButton = page.getByRole("button", { name: "Réduire le menu" })
     await collapseButton.press("Enter")
     const expandButton = page.getByRole("button", { name: "Étendre le menu" })
     await expandButton.hover()
-    await page.getByRole("link", { name: "Synthèse annuelle", exact: true }).hover()
+    await page.getByRole("link", { name: "Vue d’ensemble", exact: true }).hover()
     await page.waitForTimeout(400)
     assert.isTrue(await page.getByRole("tooltip").isVisible())
 
@@ -34,5 +51,11 @@ test.group("Progressio App Shell", (group) => {
     await page.getByRole("button", { name: "Étendre le menu" }).waitFor({ state: "visible" })
     assert.isTrue(await page.locator(".progressio-sidebar").isVisible())
     assert.equal(await page.getByRole("main").getAttribute("class"), "progressio-content")
+
+    await page.setViewportSize({ width: 768, height: 768 })
+    await page.getByRole("button", { name: "Ouvrir le menu" }).click()
+    await page.getByRole("navigation", { name: "Navigation principale" }).waitFor({ state: "visible" })
+    await page.getByRole("link", { name: "Vue d’ensemble", exact: true }).click()
+    assert.isFalse(await page.getByRole("navigation", { name: "Navigation principale" }).isVisible())
   })
 })
