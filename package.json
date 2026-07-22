@@ -23,13 +23,13 @@
   "devDependencies": {
     "@adonisjs/eslint-config": "^3.1.0",
     "@adonisjs/prettier-config": "^1.5.0",
-    "@iconify-json/hugeicons": "^1.2.30",
+    "@iconify-json/hugeicons": "^1.2.31",
     "@unocss/preset-icons": "^66.7.5",
-    "eslint": "10.6.0",
+    "eslint": "10.7.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "prettier": "^3.9.4",
-    "prettier-plugin-tailwindcss": "^0.8.0",
+    "prettier": "^3.9.5",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript": "~6.0.3",
     "unocss": "^66.7.5"
   },
