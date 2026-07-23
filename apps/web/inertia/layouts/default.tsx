@@ -45,7 +45,7 @@ const navigationDestinations: NavigationDestination[] = [
     href: ({ levelId }) => (levelId ? urlFor("teaching_content.render", { levelId }) : urlFor("home")),
     icon: "teachingContent",
     children: [
-      { label: "Thèmes", href: ({ levelId }) => (levelId ? urlFor("themes.list", { levelId }) : urlFor("home")) },
+      { label: "Thèmes", href: urlFor("themes.select") },
       {
         label: "Chapitres",
         href: ({ levelId }) => (levelId ? urlFor("teaching_content.render", { levelId }) : urlFor("home")),

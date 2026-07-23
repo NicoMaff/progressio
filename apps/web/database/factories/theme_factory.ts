@@ -14,6 +14,7 @@ export const ThemeFactory = factory
       color: "#6366F1",
       noteMarkdown: null,
       archivedAt: null,
+      displayOrder: themeIndex,
     }
   })
   .before("create", async (_, theme, ctx) => {

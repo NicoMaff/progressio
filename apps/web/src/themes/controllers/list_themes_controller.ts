@@ -1,5 +1,5 @@
 import ListActiveThemesAction from "#themes/actions/list_active_themes_action"
-import ThemeTransformer from "#themes/transformers/theme_transformer"
+import ThemeWorkspaceTransformer from "#themes/transformers/theme_workspace_transformer"
 import type { HttpContext } from "@adonisjs/core/http"
 import { inject } from "@adonisjs/core"
 
@@ -8,7 +8,7 @@ export default class ListThemesController {
   constructor(private readonly listActiveThemes: ListActiveThemesAction) {}
 
   async render({ inertia, params }: HttpContext) {
-    const { level, schoolYear, themes } = await this.listActiveThemes.execute(params.levelId)
+    const { level, schoolYear, themes, chapterCountsByThemeId } = await this.listActiveThemes.execute(params.levelId)
 
     return inertia.render("themes/index", {
       schoolYear: {
@@ -21,7 +21,7 @@ export default class ListThemesController {
         name: level.name,
         shortCode: level.shortCode,
       },
-      themes: ThemeTransformer.transform(themes),
+      themes: ThemeWorkspaceTransformer.transform(themes, chapterCountsByThemeId),
     })
   }
 }

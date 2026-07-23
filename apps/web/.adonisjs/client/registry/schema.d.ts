@@ -55,6 +55,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/teaching_content_controller').default['render']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'themes.select': {
+    methods: ["GET","HEAD"]
+    pattern: '/themes'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/themes/controllers/select_themes_level_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/select_themes_level_controller').default['render']>>>
+    }
+  }
   'teaching_content.themes.destroy': {
     methods: ["DELETE"]
     pattern: '/teaching-content/levels/:levelId/themes/:themeId'
@@ -103,6 +115,30 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/list_themes_controller').default['render']>>>
     }
   }
+  'themes.archived': {
+    methods: ["GET","HEAD"]
+    pattern: '/levels/:levelId/themes/archive'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/themes/controllers/list_archived_themes_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/list_archived_themes_controller').default['render']>>>
+    }
+  }
+  'themes.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/levels/:levelId/themes/:themeId/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; themeId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/themes/controllers/render_theme_editor_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/render_theme_editor_controller').default['render']>>>
+    }
+  }
   'themes.store': {
     methods: ["POST"]
     pattern: '/levels/:levelId/themes'
@@ -113,6 +149,18 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#themes/validators/theme_validator').createThemeValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#src/themes/controllers/create_theme_controller').default['execute']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/create_theme_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'themes.reorder': {
+    methods: ["PUT"]
+    pattern: '/levels/:levelId/themes/reorder'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/themes/controllers/reorder_themes_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/reorder_themes_controller').default['execute']>>>
     }
   }
   'themes.update': {

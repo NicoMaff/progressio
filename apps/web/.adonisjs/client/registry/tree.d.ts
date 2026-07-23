@@ -22,8 +22,12 @@ export interface ApiDefinition {
     }
   }
   themes: {
+    select: typeof routes['themes.select']
     list: typeof routes['themes.list']
+    archived: typeof routes['themes.archived']
+    edit: typeof routes['themes.edit']
     store: typeof routes['themes.store']
+    reorder: typeof routes['themes.reorder']
     update: typeof routes['themes.update']
     archive: typeof routes['themes.archive']
     restore: typeof routes['themes.restore']

@@ -27,6 +27,8 @@ router
       .get("/teaching-content/levels/:levelId", [controllers.teachingContent.TeachingContent, "render"])
       .as("teaching_content.render")
 
+    router.get("/themes", [controllers.themes.SelectThemesLevel, "render"]).as("themes.select")
+
     router
       .delete("/teaching-content/levels/:levelId/themes/:themeId", [controllers.teachingContent.DeleteTheme, "execute"])
       .as("teaching_content.themes.destroy")
@@ -46,7 +48,10 @@ router
     router
       .group(() => {
         router.get("/", [controllers.themes.ListThemes, "render"]).as("list")
+        router.get("/archive", [controllers.themes.ListArchivedThemes, "render"]).as("archived")
+        router.get(":themeId/edit", [controllers.themes.RenderThemeEditor, "render"]).as("edit")
         router.post("/", [controllers.themes.CreateTheme, "execute"]).as("store")
+        router.put("/reorder", [controllers.themes.ReorderThemes, "execute"]).as("reorder")
         router.put(":themeId", [controllers.themes.UpdateTheme, "execute"]).as("update")
         router.post(":themeId/archive", [controllers.themes.ArchiveTheme, "execute"]).as("archive")
         router.post(":themeId/restore", [controllers.themes.RestoreTheme, "execute"]).as("restore")
