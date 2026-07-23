@@ -1,5 +1,6 @@
 import CreateChapterAction from "#chapters/actions/create_chapter_action"
 import UpdateChapterAction from "#chapters/actions/update_chapter_action"
+import ReorderChaptersAction from "#chapters/actions/reorder_chapters_action"
 import {
   ChapterShortCodeAlreadyExistsError,
   ChapterShortCodeFormatError,
@@ -123,6 +124,45 @@ test.group("chapters actions", (group) => {
     assert.equal(updatedChapter.shortCode, "EQU")
     assert.equal(updatedChapter.themeId, theme.id)
     assert.isNull(updatedChapter.noteMarkdown)
+  })
+
+  test("appends new chapters and appends when changing theme", async ({ assert }) => {
+    const level = await createLevel()
+    const firstTheme = await ThemeFactory.merge({ levelId: level.id, shortCode: "ALG" }).create()
+    const secondTheme = await ThemeFactory.merge({ levelId: level.id, shortCode: "GEO" }).create()
+    const first = await new CreateChapterAction().execute(level.id, {
+      name: "Un",
+      shortCode: "UN",
+      themeId: firstTheme.id,
+    })
+    const second = await new CreateChapterAction().execute(level.id, {
+      name: "Deux",
+      shortCode: "DEUX",
+      themeId: firstTheme.id,
+    })
+    const moved = await new UpdateChapterAction().execute(level.id, second.id, {
+      name: second.name,
+      shortCode: second.shortCode,
+      themeId: secondTheme.id,
+    })
+
+    assert.equal(first.displayOrder, 1)
+    assert.equal(moved.displayOrder, 1)
+    assert.equal(moved.themeId, secondTheme.id)
+  })
+
+  test("persists ordering within one theme", async ({ assert }) => {
+    const level = await createLevel()
+    const theme = await ThemeFactory.merge({ levelId: level.id }).create()
+    const first = await ChapterFactory.merge({ levelId: level.id, themeId: theme.id }).create()
+    const second = await ChapterFactory.merge({ levelId: level.id, themeId: theme.id }).create()
+
+    await new ReorderChaptersAction().execute(level.id, theme.id, [second.id, first.id])
+
+    const refreshedFirst = await first.refresh()
+    const refreshedSecond = await second.refresh()
+    assert.equal(refreshedFirst.displayOrder, 2)
+    assert.equal(refreshedSecond.displayOrder, 1)
   })
 })
 

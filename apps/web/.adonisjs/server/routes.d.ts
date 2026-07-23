@@ -20,6 +20,7 @@ export type ScannedRoutes = {
     'planning.session.update': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'classId': ParamValue,'kind': ParamValue,'sessionId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.select': { paramsTuple?: []; params?: {} }
+    'chapters.select': { paramsTuple?: []; params?: {} }
     'teaching_content.themes.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'teaching_content.chapters.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
     'teaching_content.activities.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
@@ -32,6 +33,10 @@ export type ScannedRoutes = {
     'themes.archive': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'themes.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'themes.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
+    'chapters.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'chapters.archived': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'chapters.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
+    'chapters.reorder': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'chapters.store': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'chapters.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
     'chapters.archive': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
@@ -55,9 +60,13 @@ export type ScannedRoutes = {
     'planning.session.show': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'classId': ParamValue,'kind': ParamValue,'sessionId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.select': { paramsTuple?: []; params?: {} }
+    'chapters.select': { paramsTuple?: []; params?: {} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.archived': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
+    'chapters.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'chapters.archived': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'chapters.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -71,9 +80,13 @@ export type ScannedRoutes = {
     'planning.session.show': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'classId': ParamValue,'kind': ParamValue,'sessionId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.select': { paramsTuple?: []; params?: {} }
+    'chapters.select': { paramsTuple?: []; params?: {} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.archived': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
+    'chapters.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'chapters.archived': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'chapters.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
   }
   POST: {
     'organisation.levels.create': { paramsTuple?: []; params?: {} }
@@ -94,6 +107,7 @@ export type ScannedRoutes = {
     'planning.session.update': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'classId': ParamValue,'kind': ParamValue,'sessionId': ParamValue} }
     'themes.reorder': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
+    'chapters.reorder': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'chapters.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
     'activities.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
   }

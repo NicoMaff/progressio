@@ -89,8 +89,10 @@ export default class extends ProgressioSchema {
       table.text("short_code").notNullable()
       table.text("note_markdown").nullable()
       table.timestamp("archived_at").nullable()
+      table.integer("display_order").notNullable()
 
       table.unique(["level_id", "short_code"])
+      table.index(["level_id", "theme_id", "display_order"])
     })
 
     this.createTable("activities", (table) => {

@@ -199,6 +199,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/themes/controllers/select_themes_level_controller').default['render']>>>
     }
   }
+  'chapters.select': {
+    methods: ["GET","HEAD"]
+    pattern: '/chapters'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/chapters/controllers/select_chapters_level_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/select_chapters_level_controller').default['render']>>>
+    }
+  }
   'teaching_content.themes.destroy': {
     methods: ["DELETE"]
     pattern: '/teaching-content/levels/:levelId/themes/:themeId'
@@ -341,6 +353,54 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_theme_controller').default['execute']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/teaching_content/controllers/delete_theme_controller').default['execute']>>>
+    }
+  }
+  'chapters.list': {
+    methods: ["GET","HEAD"]
+    pattern: '/levels/:levelId/chapters'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/chapters/controllers/list_chapters_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/list_chapters_controller').default['render']>>>
+    }
+  }
+  'chapters.archived': {
+    methods: ["GET","HEAD"]
+    pattern: '/levels/:levelId/chapters/archive'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/chapters/controllers/list_archived_chapters_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/list_archived_chapters_controller').default['render']>>>
+    }
+  }
+  'chapters.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/levels/:levelId/chapters/:chapterId/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { levelId: ParamValue; chapterId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/chapters/controllers/render_chapter_editor_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/render_chapter_editor_controller').default['render']>>>
+    }
+  }
+  'chapters.reorder': {
+    methods: ["PUT"]
+    pattern: '/levels/:levelId/chapters/reorder'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/chapters/controllers/reorder_chapters_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/chapters/controllers/reorder_chapters_controller').default['execute']>>>
     }
   }
   'chapters.store': {

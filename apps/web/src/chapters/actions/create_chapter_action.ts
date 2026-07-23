@@ -1,5 +1,6 @@
 import Chapter from "#models/chapter"
 import Theme from "#models/theme"
+import db from "@adonisjs/lucid/services/db"
 import {
   CHAPTER_SHORT_CODE_PATTERN,
   ChapterShortCodeAlreadyExistsError,
@@ -29,9 +30,17 @@ export default class CreateChapterAction {
       throw new ChapterShortCodeAlreadyExistsError()
     }
 
-    return Chapter.create({
-      levelId,
-      ...payload,
+    return db.transaction(async (transaction) => {
+      const result = await transaction
+        .from("chapters")
+        .where("level_id", levelId)
+        .where((query) => (payload.themeId ? query.where("theme_id", payload.themeId) : query.whereNull("theme_id")))
+        .max("display_order as maximum")
+        .first()
+      return Chapter.create(
+        { levelId, displayOrder: Number(result?.maximum ?? 0) + 1, ...payload },
+        { client: transaction }
+      )
     })
   }
 

@@ -14,6 +14,7 @@ export const ChapterFactory = factory
       shortCode: `CH-${chapterIndex}`,
       noteMarkdown: null,
       archivedAt: null,
+      displayOrder: chapterIndex,
     }
   })
   .before("create", async (_, chapter, ctx) => {
