@@ -25,6 +25,10 @@ export interface ApiDefinition {
       list: typeof routes['planning.progressions.list']
     }
     progressionView: typeof routes['planning.progression_view']
+    session: {
+      show: typeof routes['planning.session.show']
+      update: typeof routes['planning.session.update']
+    }
   }
   teachingContent: {
     render: typeof routes['teaching_content.render']

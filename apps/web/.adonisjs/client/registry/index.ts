@@ -78,6 +78,18 @@ const routes = {
     tokens: [{"old":"/planning/classes/:classId/progression","type":0,"val":"planning","end":""},{"old":"/planning/classes/:classId/progression","type":0,"val":"classes","end":""},{"old":"/planning/classes/:classId/progression","type":1,"val":"classId","end":""},{"old":"/planning/classes/:classId/progression","type":0,"val":"progression","end":""}],
     types: placeholder as Registry['planning.progression_view']['types'],
   },
+  'planning.session.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/planning/classes/:classId/sessions/:kind/:sessionId',
+    tokens: [{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":0,"val":"planning","end":""},{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":0,"val":"classes","end":""},{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":1,"val":"classId","end":""},{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":0,"val":"sessions","end":""},{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":1,"val":"kind","end":""},{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":1,"val":"sessionId","end":""}],
+    types: placeholder as Registry['planning.session.show']['types'],
+  },
+  'planning.session.update': {
+    methods: ["PUT"],
+    pattern: '/planning/classes/:classId/sessions/:kind/:sessionId',
+    tokens: [{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":0,"val":"planning","end":""},{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":0,"val":"classes","end":""},{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":1,"val":"classId","end":""},{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":0,"val":"sessions","end":""},{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":1,"val":"kind","end":""},{"old":"/planning/classes/:classId/sessions/:kind/:sessionId","type":1,"val":"sessionId","end":""}],
+    types: placeholder as Registry['planning.session.update']['types'],
+  },
   'teaching_content.render': {
     methods: ["GET","HEAD"],
     pattern: '/teaching-content/levels/:levelId',

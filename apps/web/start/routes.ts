@@ -49,6 +49,12 @@ router
     router
       .get("/planning/classes/:classId/progression", [controllers.dashboard.ShowProgressionView, "render"])
       .as("planning.progression_view")
+    router
+      .get("/planning/classes/:classId/sessions/:kind/:sessionId", [controllers.dashboard.ShowSessionEditor, "render"])
+      .as("planning.session.show")
+    router
+      .put("/planning/classes/:classId/sessions/:kind/:sessionId", [controllers.dashboard.UpdateSession, "execute"])
+      .as("planning.session.update")
 
     router
       .get("/teaching-content/levels/:levelId", [controllers.teachingContent.TeachingContent, "render"])

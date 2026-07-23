@@ -16,6 +16,8 @@ export type ScannedRoutes = {
     'organisation.classes.update': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
+    'planning.session.show': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'classId': ParamValue,'kind': ParamValue,'sessionId': ParamValue} }
+    'planning.session.update': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'classId': ParamValue,'kind': ParamValue,'sessionId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.select': { paramsTuple?: []; params?: {} }
     'teaching_content.themes.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
@@ -50,6 +52,7 @@ export type ScannedRoutes = {
     'organisation.classes.edit': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
+    'planning.session.show': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'classId': ParamValue,'kind': ParamValue,'sessionId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.select': { paramsTuple?: []; params?: {} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
@@ -65,6 +68,7 @@ export type ScannedRoutes = {
     'organisation.classes.edit': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
+    'planning.session.show': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'classId': ParamValue,'kind': ParamValue,'sessionId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.select': { paramsTuple?: []; params?: {} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
@@ -87,6 +91,7 @@ export type ScannedRoutes = {
   PUT: {
     'organisation.levels.update': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'organisation.classes.update': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
+    'planning.session.update': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'classId': ParamValue,'kind': ParamValue,'sessionId': ParamValue} }
     'themes.reorder': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'chapters.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }

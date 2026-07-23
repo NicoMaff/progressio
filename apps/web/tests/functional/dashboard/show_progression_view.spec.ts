@@ -161,6 +161,37 @@ test.group("Progression roadmap", (group) => {
     assert.equal(currentWeek.plannedSessions[0].conflictCount, 1)
   })
 
+  test("opens a stable session page and the roadmap drawer", async ({ assert, client }) => {
+    const today = DateTime.local().startOf("day")
+    const { teachingClass } = await createProgressionContext(today.minus({ days: 3 }), today.plus({ days: 3 }))
+    const plannedSession = await PlannedSession.create({
+      classId: teachingClass.id,
+      title: "Cours initial",
+      sessionDate: today,
+      startTime: "08:00",
+      durationMinutes: 55,
+      sessionOrder: 1,
+      outcome: null,
+      outcomeReviewRequired: false,
+      noteMarkdown: null,
+    })
+
+    const detailResponse = await client.get(
+      `/planning/classes/${teachingClass.id}/sessions/planned/${plannedSession.id}`
+    )
+    detailResponse.assertStatus(200)
+    const detailPage = extractInertiaPage(detailResponse.text())
+    assert.equal(detailPage.component, "planning/session_editor")
+    assert.equal(detailPage.props.sessionEditor.session.id, plannedSession.id)
+
+    const drawerResponse = await client.get(
+      `/planning/classes/${teachingClass.id}/progression?sessionKind=planned&sessionId=${plannedSession.id}`
+    )
+    drawerResponse.assertStatus(200)
+    const drawerPage = extractInertiaPage(drawerResponse.text())
+    assert.equal(drawerPage.props.sessionEditor.session.title, "Cours initial")
+  })
+
   test("focuses the nearest school-year boundary when today is outside the work file", async ({ assert, client }) => {
     const today = DateTime.local().startOf("day")
     const { teachingClass } = await createProgressionContext(today.plus({ months: 2 }), today.plus({ months: 3 }))

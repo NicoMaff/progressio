@@ -22,6 +22,7 @@ declare module '@adonisjs/inertia/types' {
     'organisation/levels/show': ExtractProps<(typeof import('../../inertia/pages/organisation/levels/show.tsx'))['default']>
     'planning/list_progressions': ExtractProps<(typeof import('../../inertia/pages/planning/list_progressions.tsx'))['default']>
     'planning/progression_view': ExtractProps<(typeof import('../../inertia/pages/planning/progression_view.tsx'))['default']>
+    'planning/session_editor': ExtractProps<(typeof import('../../inertia/pages/planning/session_editor.tsx'))['default']>
     'teaching_content/show': ExtractProps<(typeof import('../../inertia/pages/teaching_content/show.tsx'))['default']>
     'themes/archive': ExtractProps<(typeof import('../../inertia/pages/themes/archive.tsx'))['default']>
     'themes/edit': ExtractProps<(typeof import('../../inertia/pages/themes/edit.tsx'))['default']>
