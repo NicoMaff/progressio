@@ -58,7 +58,7 @@ const navigationDestinations: NavigationDestination[] = [
   },
   {
     label: "Progressions",
-    href: ({ classId }) => (classId ? urlFor("planning.progression_view", { classId }) : urlFor("home")),
+    href: urlFor("planning.progressions.list"),
     icon: "planning",
   },
 ]

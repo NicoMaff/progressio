@@ -10,12 +10,8 @@ export default class ShowProgressionViewController {
   constructor(private showProgressionView: ShowProgressionViewAction) {}
 
   async render({ inertia, request }: HttpContext) {
-    const { params, window } = await request.validateUsing(progressionViewValidator)
-    const progressionView = await this.showProgressionView.execute(
-      params.classId,
-      window === "annual",
-      DateTime.local().startOf("day")
-    )
+    const { params } = await request.validateUsing(progressionViewValidator)
+    const progressionView = await this.showProgressionView.execute(params.classId, DateTime.local().startOf("day"))
 
     return inertia.render("planning/progression_view", {
       progressionView: ProgressionViewTransformer.transform(progressionView),

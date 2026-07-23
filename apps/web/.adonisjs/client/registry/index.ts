@@ -18,6 +18,12 @@ const routes = {
     tokens: [{"old":"/dashboard/levels/:levelId","type":0,"val":"dashboard","end":""},{"old":"/dashboard/levels/:levelId","type":0,"val":"levels","end":""},{"old":"/dashboard/levels/:levelId","type":1,"val":"levelId","end":""}],
     types: placeholder as Registry['dashboard.level_progress_summary']['types'],
   },
+  'planning.progressions.list': {
+    methods: ["GET","HEAD"],
+    pattern: '/planning/progressions',
+    tokens: [{"old":"/planning/progressions","type":0,"val":"planning","end":""},{"old":"/planning/progressions","type":0,"val":"progressions","end":""}],
+    types: placeholder as Registry['planning.progressions.list']['types'],
+  },
   'planning.progression_view': {
     methods: ["GET","HEAD"],
     pattern: '/planning/classes/:classId/progression',

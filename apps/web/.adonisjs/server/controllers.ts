@@ -17,6 +17,7 @@ export const controllers = {
     UpdateChapter: () => import('#src/chapters/controllers/update_chapter_controller'),
   },
   dashboard: {
+    ListProgressions: () => import('#src/dashboard/controllers/list_progressions_controller'),
     ShowAnnualDashboard: () => import('#src/dashboard/controllers/show_annual_dashboard_controller'),
     ShowLevelProgressSummary: () => import('#src/dashboard/controllers/show_level_progress_summary_controller'),
     ShowProgressionView: () => import('#src/dashboard/controllers/show_progression_view_controller'),

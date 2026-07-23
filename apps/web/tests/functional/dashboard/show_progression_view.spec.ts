@@ -1,8 +1,11 @@
 import ActualSession from "#models/actual_session"
 import TeachingClass from "#models/class"
+import Interruption from "#models/interruption"
+import InterruptionClass from "#models/interruption_class"
+import InterruptionType from "#models/interruption_type"
 import Level from "#models/level"
-import Period from "#models/period"
 import PlannedSession from "#models/planned_session"
+import PlanningConflict from "#models/planning_conflict"
 import SchoolYear from "#models/school_year"
 import testUtils from "@adonisjs/core/services/test_utils"
 import { test } from "@japa/runner"
@@ -14,14 +17,13 @@ function extractInertiaPage(html: string) {
   return JSON.parse(encodedPage.replaceAll("&quot;", '"').replaceAll("&amp;", "&"))
 }
 
-async function createProgressionContext() {
-  const today = DateTime.local().startOf("day")
+async function createProgressionContext(startDate: DateTime, endDate: DateTime) {
   const schoolYear = await SchoolYear.create({
     label: "2025-2026",
     subject: "Mathématiques",
-    startDate: today.minus({ months: 8 }),
-    endDate: today.plus({ months: 4 }),
-    firstTeachingDay: today.minus({ months: 8 }),
+    startDate,
+    endDate,
+    firstTeachingDay: startDate,
     teachingHourDurationMinutes: 55,
   })
   const level = await Level.create({ schoolYearId: schoolYear.id, name: "Première générale", shortCode: "1G" })
@@ -31,223 +33,141 @@ async function createProgressionContext() {
     name: "Première A",
     shortCode: "1A",
   })
-
-  return { today, schoolYear, level, teachingClass }
+  return { schoolYear, teachingClass }
 }
 
-test.group("Progression view", (group) => {
+test.group("Progression roadmap", (group) => {
   group.setup(() => testUtils.db().migrate())
   group.each.setup(async () => testUtils.db().wrapInGlobalTransaction())
 
-  test("selects the current period and groups linked actual sessions with their planned session", async ({
+  test("returns every intersecting calendar week including empty weeks and focuses the current week", async ({
     assert,
     client,
   }) => {
-    const { today, schoolYear, level, teachingClass } = await createProgressionContext()
-    await Period.create({
-      schoolYearId: schoolYear.id,
-      name: "Période en cours",
-      startDate: today.minus({ days: 2 }),
-      endDate: today.plus({ days: 2 }),
-    })
+    const today = DateTime.local().startOf("day")
+    const { teachingClass } = await createProgressionContext(today.minus({ days: 9 }), today.plus({ days: 9 }))
     const plannedSession = await PlannedSession.create({
       classId: teachingClass.id,
-      title: "Équations du premier degré",
+      title: "Séance prévue",
       sessionDate: today,
       startTime: "08:00",
       durationMinutes: 55,
       sessionOrder: 1,
-      outcome: "partial",
+      outcome: null,
       outcomeReviewRequired: false,
     })
-    const linkedActualSession = await ActualSession.create({
+    await ActualSession.create({
       classId: teachingClass.id,
-      plannedSessionId: plannedSession.id,
-      title: "Exercices guidés",
-      sessionDate: today.plus({ days: 1 }),
-      startTime: "08:00",
-      durationMinutes: 55,
-      sessionOrder: 1,
-      state: "completed",
-      completedAt: DateTime.utc(),
-    })
-    const unplannedActualSession = await ActualSession.create({
-      classId: teachingClass.id,
-      title: "Remédiation collective",
-      sessionDate: today.plus({ days: 2 }),
+      title: "Séance non prévue",
+      sessionDate: today.plus({ days: 7 }),
       startTime: "10:00",
       durationMinutes: 30,
-      sessionOrder: 2,
-      state: "completed",
-      completedAt: DateTime.utc(),
+      sessionOrder: 1,
+      state: "draft",
+      completedAt: null,
     })
 
     const response = await client.get(`/planning/classes/${teachingClass.id}/progression`)
     response.assertStatus(200)
     const page = extractInertiaPage(response.text())
+    const roadmap = page.props.progressionView.roadmap
 
     assert.equal(page.component, "planning/progression_view")
-    assert.deepEqual(page.props.progressionView.schoolYear, {
-      id: schoolYear.id,
-      label: "2025-2026",
-      subject: "Mathématiques",
-    })
-    assert.deepEqual(page.props.progressionView.level, {
-      id: level.id,
-      name: "Première générale",
-      shortCode: "1G",
-    })
-    assert.deepEqual(page.props.progressionView.teachingClass, {
-      id: teachingClass.id,
-      name: "Première A",
-      shortCode: "1A",
-    })
-    assert.deepEqual(page.props.progressionView.window, {
-      kind: "period",
-      label: "Période en cours",
-      startDate: today.minus({ days: 2 }).toISODate(),
-      endDate: today.plus({ days: 2 }).toISODate(),
-    })
-    assert.deepEqual(page.props.progressionView.chronology, [
+    assert.equal(roadmap.focusWeekStartDate, today.startOf("week").toISODate())
+    assert.equal(roadmap.weeks[0].startDate, today.minus({ days: 9 }).startOf("week").toISODate())
+    assert.equal(roadmap.weeks.at(-1).endDate, today.plus({ days: 9 }).endOf("week").toISODate())
+    assert.isTrue(roadmap.weeks.some((week: { plannedSessions: unknown[] }) => week.plannedSessions.length === 0))
+    assert.deepEqual(
+      roadmap.weeks.find((week: { startDate: string }) => week.startDate === today.startOf("week").toISODate())
+        .plannedSessions[0],
       {
         id: plannedSession.id,
-        kind: "planned",
         date: today.toISODate(),
-        dateLabel: today.setLocale("fr").toFormat("d LLLL yyyy"),
+        dateLabel: today.setLocale("fr").toFormat("d LLLL"),
+        title: "Séance prévue",
         detail: "55 min",
-        title: "Équations du premier degré",
-        outcomeLabel: "Partiellement réalisée",
-        outcomeTone: "amber",
-        actualSessions: [
-          {
-            id: linkedActualSession.id,
-            dateLabel: today.plus({ days: 1 }).setLocale("fr").toFormat("d LLLL yyyy"),
-            detail: "55 min",
-            title: "Exercices guidés",
-          },
-        ],
-      },
-      {
-        id: unplannedActualSession.id,
-        kind: "unplannedActual",
-        date: today.plus({ days: 2 }).toISODate(),
-        dateLabel: today.plus({ days: 2 }).setLocale("fr").toFormat("d LLLL yyyy"),
-        detail: "30 min",
-        title: "Remédiation collective",
-      },
-    ])
-  })
-
-  test("falls back to the current calendar month when no period contains today", async ({ assert, client }) => {
-    const { today, teachingClass } = await createProgressionContext()
-    const currentMonthSession = await PlannedSession.create({
-      classId: teachingClass.id,
-      title: "Séance du mois",
-      sessionDate: today.startOf("month").plus({ days: 1 }),
-      startTime: "08:00",
-      durationMinutes: 55,
-      sessionOrder: 1,
-      outcome: null,
-      outcomeReviewRequired: false,
-    })
-    await PlannedSession.create({
-      classId: teachingClass.id,
-      title: "Séance hors mois",
-      sessionDate: today.plus({ months: 1 }).startOf("month"),
-      startTime: "08:00",
-      durationMinutes: 55,
-      sessionOrder: 2,
-      outcome: null,
-      outcomeReviewRequired: false,
-    })
-
-    const response = await client.get(`/planning/classes/${teachingClass.id}/progression`)
-    response.assertStatus(200)
-    const page = extractInertiaPage(response.text())
-
-    assert.deepEqual(page.props.progressionView.window, {
-      kind: "month",
-      label: today.setLocale("fr").toFormat("LLLL yyyy"),
-      startDate: today.startOf("month").toISODate(),
-      endDate: today.endOf("month").toISODate(),
-    })
-    assert.deepEqual(
-      page.props.progressionView.chronology.map((entry: { id: string }) => entry.id),
-      [currentMonthSession.id]
+        statusLabel: "Prévue",
+        statusTone: "planned",
+        conflictCount: 0,
+      }
     )
   })
 
-  test("shows the whole school year when the annual window is requested", async ({ assert, client }) => {
-    const { today, schoolYear, teachingClass } = await createProgressionContext()
+  test("keeps global interruptions on every class roadmap and scopes class interruptions and conflicts", async ({
+    assert,
+    client,
+  }) => {
+    const today = DateTime.local().startOf("day")
+    const { schoolYear, teachingClass } = await createProgressionContext(
+      today.minus({ days: 3 }),
+      today.plus({ days: 3 })
+    )
+    const interruptionType = await InterruptionType.create({
+      schoolYearId: schoolYear.id,
+      name: "Vacances",
+      displayOrder: 1,
+      color: null,
+    })
+    const globalInterruption = await Interruption.create({
+      schoolYearId: schoolYear.id,
+      interruptionTypeId: interruptionType.id,
+      scope: "global",
+      title: "Férié",
+      startsAt: today.startOf("day"),
+      endsAt: today.plus({ days: 1 }).startOf("day"),
+      noteMarkdown: null,
+    })
+    const classInterruption = await Interruption.create({
+      schoolYearId: schoolYear.id,
+      interruptionTypeId: interruptionType.id,
+      scope: "class",
+      title: "Sortie scolaire",
+      startsAt: today.startOf("day"),
+      endsAt: today.plus({ days: 1 }).startOf("day"),
+      noteMarkdown: null,
+    })
+    await InterruptionClass.create({ interruptionId: classInterruption.id, classId: teachingClass.id })
     const plannedSession = await PlannedSession.create({
       classId: teachingClass.id,
-      title: "Séance annuelle",
-      sessionDate: today.minus({ months: 3 }),
+      title: "Séance en conflit",
+      sessionDate: today,
       startTime: "08:00",
       durationMinutes: 55,
       sessionOrder: 1,
-      outcome: null,
+      outcome: "to_catch_up",
       outcomeReviewRequired: false,
     })
-    const linkedActualSession = await ActualSession.create({
-      classId: teachingClass.id,
+    await PlanningConflict.create({
       plannedSessionId: plannedSession.id,
-      title: "Approfondissement annuel",
-      sessionDate: today.minus({ months: 2 }),
-      startTime: "08:00",
-      durationMinutes: 55,
-      sessionOrder: 1,
-      state: "completed",
-      completedAt: DateTime.utc(),
-    })
-    const unplannedActualSession = await ActualSession.create({
-      classId: teachingClass.id,
-      title: "Séance de consolidation",
-      sessionDate: today.minus({ months: 1 }),
-      startTime: "10:00",
-      durationMinutes: 30,
-      sessionOrder: 2,
-      state: "completed",
-      completedAt: DateTime.utc(),
+      interruptionId: classInterruption.id,
+      resolvedAt: null,
+      resolutionNoteMarkdown: null,
     })
 
-    const response = await client.get(`/planning/classes/${teachingClass.id}/progression?window=annual`)
-    response.assertStatus(200)
-    const page = extractInertiaPage(response.text())
+    const response = await client.get(`/planning/classes/${teachingClass.id}/progression`)
+    const roadmap = extractInertiaPage(response.text()).props.progressionView.roadmap
+    const currentWeek = roadmap.weeks.find(
+      (week: { startDate: string }) => week.startDate === today.startOf("week").toISODate()
+    )
 
-    assert.deepEqual(page.props.progressionView.window, {
-      kind: "schoolYear",
-      label: "2025-2026",
-      startDate: schoolYear.startDate.toISODate(),
-      endDate: schoolYear.endDate.toISODate(),
-    })
-    assert.deepEqual(page.props.progressionView.chronology, [
-      {
-        id: plannedSession.id,
-        kind: "planned",
-        date: today.minus({ months: 3 }).toISODate(),
-        dateLabel: today.minus({ months: 3 }).setLocale("fr").toFormat("d LLLL yyyy"),
-        detail: "55 min",
-        title: "Séance annuelle",
-        outcomeLabel: null,
-        outcomeTone: "neutral",
-        actualSessions: [
-          {
-            id: linkedActualSession.id,
-            dateLabel: today.minus({ months: 2 }).setLocale("fr").toFormat("d LLLL yyyy"),
-            detail: "55 min",
-            title: "Approfondissement annuel",
-          },
-        ],
-      },
-      {
-        id: unplannedActualSession.id,
-        kind: "unplannedActual",
-        date: today.minus({ months: 1 }).toISODate(),
-        dateLabel: today.minus({ months: 1 }).setLocale("fr").toFormat("d LLLL yyyy"),
-        detail: "30 min",
-        title: "Séance de consolidation",
-      },
-    ])
+    assert.deepEqual(
+      currentWeek.interruptions.map((interruption: { title: string; scope: string }) => interruption),
+      [
+        { id: globalInterruption.id, title: "Férié", scope: "global", scopeLabel: "Toutes les classes" },
+        { id: classInterruption.id, title: "Sortie scolaire", scope: "class", scopeLabel: "Cette classe" },
+      ]
+    )
+    assert.equal(currentWeek.plannedSessions[0].statusTone, "danger")
+    assert.equal(currentWeek.plannedSessions[0].conflictCount, 1)
+  })
+
+  test("focuses the nearest school-year boundary when today is outside the work file", async ({ assert, client }) => {
+    const today = DateTime.local().startOf("day")
+    const { teachingClass } = await createProgressionContext(today.plus({ months: 2 }), today.plus({ months: 3 }))
+
+    const response = await client.get(`/planning/classes/${teachingClass.id}/progression`)
+    const roadmap = extractInertiaPage(response.text()).props.progressionView.roadmap
+
+    assert.equal(roadmap.focusWeekStartDate, today.plus({ months: 2 }).startOf("week").toISODate())
   })
 })

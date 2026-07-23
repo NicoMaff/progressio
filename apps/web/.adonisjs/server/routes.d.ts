@@ -6,6 +6,7 @@ export type ScannedRoutes = {
   ALL: {
     'home': { paramsTuple?: []; params?: {} }
     'dashboard.level_progress_summary': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'teaching_content.themes.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
@@ -31,6 +32,7 @@ export type ScannedRoutes = {
   GET: {
     'home': { paramsTuple?: []; params?: {} }
     'dashboard.level_progress_summary': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
@@ -38,6 +40,7 @@ export type ScannedRoutes = {
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
     'dashboard.level_progress_summary': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
