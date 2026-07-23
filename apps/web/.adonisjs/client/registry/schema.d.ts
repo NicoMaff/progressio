@@ -151,6 +151,30 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_progression_view_controller').default['render']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'planning.session.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/planning/classes/:classId/sessions/:kind/:sessionId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue, ParamValue]
+      params: { classId: ParamValue; kind: ParamValue; sessionId: ParamValue }
+      query: ExtractQueryForGet<InferInput<(typeof import('#dashboard/validators/session_validator').sessionParamsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_session_editor_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_session_editor_controller').default['render']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'planning.session.update': {
+    methods: ["PUT"]
+    pattern: '/planning/classes/:classId/sessions/:kind/:sessionId'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#dashboard/validators/session_validator').sessionParamsValidator)>|InferInput<(typeof import('#dashboard/validators/session_validator').sessionUpdateValidator)>>
+      paramsTuple: [ParamValue, ParamValue, ParamValue]
+      params: { classId: ParamValue; kind: ParamValue; sessionId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#dashboard/validators/session_validator').sessionParamsValidator)>|InferInput<(typeof import('#dashboard/validators/session_validator').sessionUpdateValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/dashboard/controllers/update_session_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/dashboard/controllers/update_session_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'teaching_content.render': {
     methods: ["GET","HEAD"]
     pattern: '/teaching-content/levels/:levelId'

@@ -1,4 +1,4 @@
-import { Link } from "@adonisjs/inertia/react"
+import { Form, Link } from "@adonisjs/inertia/react"
 import { type Data } from "@generated/data"
 import { Icon } from "@progressio/ui"
 import { type ReactNode, useCallback, useEffect, useRef } from "react"
@@ -7,7 +7,24 @@ import { type InertiaProps } from "~/types"
 
 type PageProps = InertiaProps<{
   progressionView: Data.Dashboard.ProgressionView
+  sessionEditor?: SessionEditor
 }>
+
+export type SessionEditor = {
+  teachingClass: { id: string; name: string; shortCode: string }
+  session: {
+    id: string
+    kind: "planned" | "actual"
+    title: string
+    sessionDate: string
+    startTime: string
+    durationMinutes: number
+    noteMarkdown: string
+    outcome: string | null
+    state: string | null
+    statusLabel: string
+  }
+}
 
 const statusClasses = {
   planned: "border-sky-200 bg-sky-50 text-sky-900",
@@ -16,7 +33,7 @@ const statusClasses = {
   danger: "border-rose-200 bg-rose-50 text-rose-900",
 }
 
-export default function ProgressionView({ progressionView }: PageProps) {
+export default function ProgressionView({ progressionView, sessionEditor }: PageProps) {
   const { schoolYear, level, teachingClass, roadmap } = progressionView
   const roadmapRef = useRef<HTMLDivElement>(null)
 
@@ -129,18 +146,25 @@ export default function ProgressionView({ progressionView }: PageProps) {
               </RoadmapGroup>
               <RoadmapGroup title="Prévu" emptyLabel="Aucune séance prévue">
                 {week.plannedSessions.map((session) => (
-                  <SessionCard key={session.id} session={session} conflictCount={session.conflictCount} />
+                  <SessionCard
+                    key={session.id}
+                    session={session}
+                    kind="planned"
+                    classId={teachingClass.id}
+                    conflictCount={session.conflictCount}
+                  />
                 ))}
               </RoadmapGroup>
               <RoadmapGroup title="Réalisé" emptyLabel="Aucune séance effectuée">
                 {week.actualSessions.map((session) => (
-                  <SessionCard key={session.id} session={session} />
+                  <SessionCard key={session.id} session={session} kind="actual" classId={teachingClass.id} />
                 ))}
               </RoadmapGroup>
             </div>
           </article>
         ))}
       </div>
+      {sessionEditor ? <SessionDrawer sessionEditor={sessionEditor} /> : null}
     </section>
   )
 }
@@ -160,6 +184,8 @@ function RoadmapGroup({ title, emptyLabel, children }: { title: string; emptyLab
 
 function SessionCard({
   session,
+  kind,
+  classId,
   conflictCount,
 }: {
   session: {
@@ -170,23 +196,202 @@ function SessionCard({
     statusLabel: string
     statusTone: keyof typeof statusClasses
   }
+  kind: "planned" | "actual"
+  classId: string
   conflictCount?: number
 }) {
   return (
     <article className={`rounded-md border p-3 text-sm ${statusClasses[session.statusTone]}`}>
-      <p className="font-700">{session.title}</p>
-      <p className="mt-1">
-        {session.dateLabel} · {session.detail}
-      </p>
-      <p className="font-600 mt-2">
-        <span aria-hidden="true">● </span>
-        {session.statusLabel}
-      </p>
-      {conflictCount ? (
-        <p className="font-600 mt-1">
-          ⚠ {conflictCount} conflit{conflictCount > 1 ? "s" : ""}
+      <Link
+        className="block rounded-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-sky-700"
+        href={urlFor("planning.progression_view", { classId }, { qs: { sessionKind: kind, sessionId: session.id } })}
+        preserveScroll
+      >
+        <p className="font-700">{session.title}</p>
+        <p className="mt-1">
+          {session.dateLabel} · {session.detail}
         </p>
-      ) : null}
+        <p className="font-600 mt-2">
+          <span aria-hidden="true">● </span>
+          {session.statusLabel}
+        </p>
+        {conflictCount ? (
+          <p className="font-600 mt-1">
+            ⚠ {conflictCount} conflit{conflictCount > 1 ? "s" : ""}
+          </p>
+        ) : null}
+      </Link>
+      <Link
+        className="font-600 mt-2 inline-block text-xs underline underline-offset-2"
+        href={urlFor("planning.session.show", { classId, kind, sessionId: session.id })}
+      >
+        Ouvrir la page complète
+      </Link>
     </article>
+  )
+}
+
+function SessionDrawer({ sessionEditor }: { sessionEditor: SessionEditor }) {
+  const { session, teachingClass } = sessionEditor
+  const returnTo = urlFor("planning.progression_view", { classId: teachingClass.id })
+  const closeLinkRef = useRef<HTMLAnchorElement>(null)
+
+  useEffect(() => {
+    closeLinkRef.current?.focus()
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeLinkRef.current?.click()
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
+
+  return (
+    <div className="fixed inset-0 z-20" role="dialog" aria-modal="true" aria-labelledby="session-drawer-title">
+      <Link
+        className="absolute inset-0 bg-slate-950/30"
+        aria-label="Fermer l’édition de la séance"
+        href={returnTo}
+        preserveScroll
+      />
+      <aside className="absolute top-0 right-0 h-full w-full max-w-xl overflow-y-auto bg-white p-6 shadow-2xl">
+        <header className="flex items-start justify-between gap-4">
+          <div>
+            <p className="font-700 text-xs tracking-[0.16em] text-sky-700 uppercase">Édition rapide</p>
+            <h2 id="session-drawer-title" className="font-700 mt-1 text-2xl text-slate-950">
+              {session.kind === "planned" ? "Séance prévue" : "Séance réalisée"}
+            </h2>
+            <p className="mt-1 text-sm text-slate-600">{session.statusLabel}</p>
+          </div>
+          <Link ref={closeLinkRef} href={returnTo} preserveScroll aria-label="Fermer l’édition">
+            <span aria-hidden="true" className="text-2xl">
+              ×
+            </span>
+          </Link>
+        </header>
+        <SessionForm sessionEditor={sessionEditor} />
+      </aside>
+    </div>
+  )
+}
+
+export function SessionForm({ sessionEditor }: { sessionEditor: SessionEditor }) {
+  const { session, teachingClass } = sessionEditor
+  return (
+    <Form
+      className="mt-6 space-y-5"
+      route="planning.session.update"
+      routeParams={{ classId: teachingClass.id, kind: session.kind, sessionId: session.id }}
+    >
+      {({ processing, errors }) => (
+        <>
+          <label className="font-600 block text-sm" htmlFor="session-title">
+            Titre
+            <input
+              id="session-title"
+              className="mt-1 w-full rounded-md border border-slate-300 p-2"
+              name="title"
+              defaultValue={session.title}
+            />
+            {errors.title ? <span className="text-sm text-rose-700">{errors.title}</span> : null}
+          </label>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <label className="font-600 block text-sm" htmlFor="session-date">
+              Date
+              <input
+                id="session-date"
+                className="mt-1 w-full rounded-md border border-slate-300 p-2"
+                name="sessionDate"
+                type="date"
+                required
+                defaultValue={session.sessionDate}
+              />
+            </label>
+            <label className="font-600 block text-sm" htmlFor="session-start-time">
+              Heure
+              <input
+                id="session-start-time"
+                className="mt-1 w-full rounded-md border border-slate-300 p-2"
+                name="startTime"
+                type="time"
+                required
+                defaultValue={session.startTime}
+              />
+            </label>
+            <label className="font-600 block text-sm" htmlFor="session-duration">
+              Durée (min)
+              <input
+                id="session-duration"
+                className="mt-1 w-full rounded-md border border-slate-300 p-2"
+                name="durationMinutes"
+                type="number"
+                min="1"
+                required
+                defaultValue={session.durationMinutes}
+              />
+            </label>
+          </div>
+          {session.kind === "planned" ? (
+            <label className="font-600 block text-sm" htmlFor="session-outcome">
+              Bilan de la séance
+              <select
+                id="session-outcome"
+                className="mt-1 w-full rounded-md border border-slate-300 p-2"
+                name="outcome"
+                defaultValue={session.outcome ?? ""}
+              >
+                <option value="">À confirmer</option>
+                <option value="realized">Réalisée</option>
+                <option value="partial">Partiellement réalisée</option>
+                <option value="shifted">Reportée</option>
+                <option value="cancelled">Annulée</option>
+                <option value="to_catch_up">À rattraper</option>
+              </select>
+            </label>
+          ) : (
+            <label className="font-600 block text-sm" htmlFor="session-state">
+              État
+              <select
+                id="session-state"
+                className="mt-1 w-full rounded-md border border-slate-300 p-2"
+                name="state"
+                defaultValue={session.state ?? "draft"}
+              >
+                <option value="draft">Brouillon</option>
+                <option value="completed">Terminée</option>
+              </select>
+            </label>
+          )}
+          <label className="font-600 block text-sm" htmlFor="session-note">
+            Notes
+            <textarea
+              id="session-note"
+              className="mt-1 min-h-36 w-full rounded-md border border-slate-300 p-2"
+              name="noteMarkdown"
+              defaultValue={session.noteMarkdown}
+              placeholder="Ce qui est à retenir…"
+            />
+          </label>
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              className="font-600 rounded-md bg-[#3e3c90] px-4 py-2 text-white disabled:opacity-50"
+              type="submit"
+              disabled={processing}
+            >
+              {processing ? "Enregistrement…" : "Enregistrer"}
+            </button>
+            <Link
+              className="font-600 rounded-md border border-slate-300 px-4 py-2"
+              href={urlFor("planning.session.show", {
+                classId: teachingClass.id,
+                kind: session.kind,
+                sessionId: session.id,
+              })}
+            >
+              Ouvrir la page complète
+            </Link>
+          </div>
+        </>
+      )}
+    </Form>
   )
 }

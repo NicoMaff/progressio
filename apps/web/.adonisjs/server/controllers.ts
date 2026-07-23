@@ -21,6 +21,8 @@ export const controllers = {
     ShowAnnualDashboard: () => import('#src/dashboard/controllers/show_annual_dashboard_controller'),
     ShowLevelProgressSummary: () => import('#src/dashboard/controllers/show_level_progress_summary_controller'),
     ShowProgressionView: () => import('#src/dashboard/controllers/show_progression_view_controller'),
+    ShowSessionEditor: () => import('#src/dashboard/controllers/show_session_editor_controller'),
+    UpdateSession: () => import('#src/dashboard/controllers/update_session_controller'),
   },
   organisation: {
     CreateClass: () => import('#src/organisation/controllers/create_class_controller'),
