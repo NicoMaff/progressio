@@ -1,13 +1,5 @@
 import { ThemeSchema } from "#database/schema"
-import { beforeCreate } from "@adonisjs/lucid/orm"
-import { randomUUID } from "node:crypto"
+import { withUuidPrimary } from "#models/mixins/with_uuid_primary"
+import { compose } from "@adonisjs/core/helpers"
 
-export default class Theme extends ThemeSchema {
-  static table = "themes"
-  static selfAssignPrimaryKey = true
-
-  @beforeCreate()
-  static assignUuidPrimary(theme: Theme) {
-    theme.id ??= randomUUID()
-  }
-}
+export default class Theme extends compose(ThemeSchema, withUuidPrimary) {}

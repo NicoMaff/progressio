@@ -40,8 +40,12 @@ export const controllers = {
   themes: {
     ArchiveTheme: () => import('#src/themes/controllers/archive_theme_controller'),
     CreateTheme: () => import('#src/themes/controllers/create_theme_controller'),
+    ListArchivedThemes: () => import('#src/themes/controllers/list_archived_themes_controller'),
     ListThemes: () => import('#src/themes/controllers/list_themes_controller'),
+    RenderThemeEditor: () => import('#src/themes/controllers/render_theme_editor_controller'),
+    ReorderThemes: () => import('#src/themes/controllers/reorder_themes_controller'),
     RestoreTheme: () => import('#src/themes/controllers/restore_theme_controller'),
+    SelectThemesLevel: () => import('#src/themes/controllers/select_themes_level_controller'),
     UpdateTheme: () => import('#src/themes/controllers/update_theme_controller'),
   },
 }

@@ -464,7 +464,7 @@ export class TemplateSessionSchema extends BaseModel {
 }
 
 export class ThemeSchema extends BaseModel {
-  static $columns = ['archivedAt', 'color', 'createdAt', 'id', 'levelId', 'name', 'noteMarkdown', 'shortCode', 'updatedAt'] as const
+  static $columns = ['archivedAt', 'color', 'createdAt', 'displayOrder', 'id', 'levelId', 'name', 'noteMarkdown', 'shortCode', 'updatedAt'] as const
   $columns = ThemeSchema.$columns
   @column.dateTime()
   declare archivedAt: DateTime | null
@@ -472,6 +472,8 @@ export class ThemeSchema extends BaseModel {
   declare color: string
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
+  @column()
+  declare displayOrder: number
   @column({ isPrimary: true })
   declare id: string
   @column()

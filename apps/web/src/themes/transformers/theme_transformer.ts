@@ -10,6 +10,7 @@ export default class ThemeTransformer extends BaseTransformer<Theme> {
       "shortCode",
       "color",
       "noteMarkdown",
+      "displayOrder",
       "createdAt",
       "updatedAt",
     ])

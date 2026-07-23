@@ -1,6 +1,7 @@
 import CreateThemeAction from "#themes/actions/create_theme_action"
 import ListActiveThemesAction from "#themes/actions/list_active_themes_action"
 import UpdateThemeAction from "#themes/actions/update_theme_action"
+import ReorderThemesAction, { InvalidThemeOrderError } from "#themes/actions/reorder_themes_action"
 import { ThemeShortCodeAlreadyExistsError } from "#themes/actions/theme_input"
 import { LevelFactory } from "#database/factories"
 import Theme from "#models/theme"
@@ -99,6 +100,7 @@ test.group("themes actions", (group) => {
       name: "Archive",
       shortCode: "ARCH",
       color: "#6B7280",
+      displayOrder: 2,
       archivedAt: DateTime.utc(),
     })
 
@@ -108,6 +110,63 @@ test.group("themes actions", (group) => {
     assert.deepEqual(
       result.themes.map((theme) => theme.id),
       [activeTheme.id]
+    )
+  })
+
+  test("appends a new theme after the existing pedagogical order", async ({ assert }) => {
+    const level = await createLevel()
+    const firstTheme = await new CreateThemeAction().execute(level.id, {
+      name: "Nombres",
+      shortCode: "NBR",
+      color: "#6366F1",
+    })
+    const secondTheme = await new CreateThemeAction().execute(level.id, {
+      name: "Géométrie",
+      shortCode: "GEO",
+      color: "#22C55E",
+    })
+
+    assert.deepEqual([firstTheme.displayOrder, secondTheme.displayOrder], [1, 2])
+  })
+
+  test("persists a manual pedagogical order within one level", async ({ assert }) => {
+    const level = await createLevel()
+    const firstTheme = await new CreateThemeAction().execute(level.id, {
+      name: "Nombres",
+      shortCode: "NBR",
+      color: "#6366F1",
+    })
+    const secondTheme = await new CreateThemeAction().execute(level.id, {
+      name: "Géométrie",
+      shortCode: "GEO",
+      color: "#22C55E",
+    })
+
+    await new ReorderThemesAction().execute(level.id, [secondTheme.id, firstTheme.id])
+
+    const result = await new ListActiveThemesAction().execute(level.id)
+    assert.deepEqual(
+      result.themes.map((theme) => theme.id),
+      [secondTheme.id, firstTheme.id]
+    )
+  })
+
+  test("rejects a reordered list that omits or duplicates themes", async ({ assert }) => {
+    const level = await createLevel()
+    const firstTheme = await new CreateThemeAction().execute(level.id, {
+      name: "Nombres",
+      shortCode: "NBR",
+      color: "#6366F1",
+    })
+    await new CreateThemeAction().execute(level.id, {
+      name: "Géométrie",
+      shortCode: "GEO",
+      color: "#22C55E",
+    })
+
+    await assert.rejects(
+      () => new ReorderThemesAction().execute(level.id, [firstTheme.id, firstTheme.id]),
+      InvalidThemeOrderError
     )
   })
 })
