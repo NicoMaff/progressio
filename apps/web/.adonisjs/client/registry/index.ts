@@ -18,6 +18,54 @@ const routes = {
     tokens: [{"old":"/dashboard/levels/:levelId","type":0,"val":"dashboard","end":""},{"old":"/dashboard/levels/:levelId","type":0,"val":"levels","end":""},{"old":"/dashboard/levels/:levelId","type":1,"val":"levelId","end":""}],
     types: placeholder as Registry['dashboard.level_progress_summary']['types'],
   },
+  'organisation.levels.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/organisation/levels',
+    tokens: [{"old":"/organisation/levels","type":0,"val":"organisation","end":""},{"old":"/organisation/levels","type":0,"val":"levels","end":""}],
+    types: placeholder as Registry['organisation.levels.show']['types'],
+  },
+  'organisation.levels.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/organisation/levels/:levelId/edit',
+    tokens: [{"old":"/organisation/levels/:levelId/edit","type":0,"val":"organisation","end":""},{"old":"/organisation/levels/:levelId/edit","type":0,"val":"levels","end":""},{"old":"/organisation/levels/:levelId/edit","type":1,"val":"levelId","end":""},{"old":"/organisation/levels/:levelId/edit","type":0,"val":"edit","end":""}],
+    types: placeholder as Registry['organisation.levels.edit']['types'],
+  },
+  'organisation.levels.create': {
+    methods: ["POST"],
+    pattern: '/organisation/levels',
+    tokens: [{"old":"/organisation/levels","type":0,"val":"organisation","end":""},{"old":"/organisation/levels","type":0,"val":"levels","end":""}],
+    types: placeholder as Registry['organisation.levels.create']['types'],
+  },
+  'organisation.levels.update': {
+    methods: ["PUT"],
+    pattern: '/organisation/levels/:levelId',
+    tokens: [{"old":"/organisation/levels/:levelId","type":0,"val":"organisation","end":""},{"old":"/organisation/levels/:levelId","type":0,"val":"levels","end":""},{"old":"/organisation/levels/:levelId","type":1,"val":"levelId","end":""}],
+    types: placeholder as Registry['organisation.levels.update']['types'],
+  },
+  'organisation.classes.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/organisation/classes',
+    tokens: [{"old":"/organisation/classes","type":0,"val":"organisation","end":""},{"old":"/organisation/classes","type":0,"val":"classes","end":""}],
+    types: placeholder as Registry['organisation.classes.show']['types'],
+  },
+  'organisation.classes.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/organisation/classes/:classId/edit',
+    tokens: [{"old":"/organisation/classes/:classId/edit","type":0,"val":"organisation","end":""},{"old":"/organisation/classes/:classId/edit","type":0,"val":"classes","end":""},{"old":"/organisation/classes/:classId/edit","type":1,"val":"classId","end":""},{"old":"/organisation/classes/:classId/edit","type":0,"val":"edit","end":""}],
+    types: placeholder as Registry['organisation.classes.edit']['types'],
+  },
+  'organisation.classes.create': {
+    methods: ["POST"],
+    pattern: '/organisation/classes',
+    tokens: [{"old":"/organisation/classes","type":0,"val":"organisation","end":""},{"old":"/organisation/classes","type":0,"val":"classes","end":""}],
+    types: placeholder as Registry['organisation.classes.create']['types'],
+  },
+  'organisation.classes.update': {
+    methods: ["PUT"],
+    pattern: '/organisation/classes/:classId',
+    tokens: [{"old":"/organisation/classes/:classId","type":0,"val":"organisation","end":""},{"old":"/organisation/classes/:classId","type":0,"val":"classes","end":""},{"old":"/organisation/classes/:classId","type":1,"val":"classId","end":""}],
+    types: placeholder as Registry['organisation.classes.update']['types'],
+  },
   'planning.progression_view': {
     methods: ["GET","HEAD"],
     pattern: '/planning/classes/:classId/progression',
@@ -29,6 +77,12 @@ const routes = {
     pattern: '/teaching-content/levels/:levelId',
     tokens: [{"old":"/teaching-content/levels/:levelId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId","type":1,"val":"levelId","end":""}],
     types: placeholder as Registry['teaching_content.render']['types'],
+  },
+  'themes.select': {
+    methods: ["GET","HEAD"],
+    pattern: '/themes',
+    tokens: [{"old":"/themes","type":0,"val":"themes","end":""}],
+    types: placeholder as Registry['themes.select']['types'],
   },
   'teaching_content.themes.destroy': {
     methods: ["DELETE"],
@@ -54,11 +108,29 @@ const routes = {
     tokens: [{"old":"/levels/:levelId/themes","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes","type":0,"val":"themes","end":""}],
     types: placeholder as Registry['themes.list']['types'],
   },
+  'themes.archived': {
+    methods: ["GET","HEAD"],
+    pattern: '/levels/:levelId/themes/archive',
+    tokens: [{"old":"/levels/:levelId/themes/archive","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/archive","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/archive","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/archive","type":0,"val":"archive","end":""}],
+    types: placeholder as Registry['themes.archived']['types'],
+  },
+  'themes.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/levels/:levelId/themes/:themeId/edit',
+    tokens: [{"old":"/levels/:levelId/themes/:themeId/edit","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/:themeId/edit","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/:themeId/edit","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/:themeId/edit","type":1,"val":"themeId","end":""},{"old":"/levels/:levelId/themes/:themeId/edit","type":0,"val":"edit","end":""}],
+    types: placeholder as Registry['themes.edit']['types'],
+  },
   'themes.store': {
     methods: ["POST"],
     pattern: '/levels/:levelId/themes',
     tokens: [{"old":"/levels/:levelId/themes","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes","type":0,"val":"themes","end":""}],
     types: placeholder as Registry['themes.store']['types'],
+  },
+  'themes.reorder': {
+    methods: ["PUT"],
+    pattern: '/levels/:levelId/themes/reorder',
+    tokens: [{"old":"/levels/:levelId/themes/reorder","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/reorder","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/reorder","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/reorder","type":0,"val":"reorder","end":""}],
+    types: placeholder as Registry['themes.reorder']['types'],
   },
   'themes.update': {
     methods: ["PUT"],

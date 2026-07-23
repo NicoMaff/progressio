@@ -16,9 +16,16 @@ declare module '@adonisjs/inertia/types' {
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
     'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>
+    'organisation/classes/edit': ExtractProps<(typeof import('../../inertia/pages/organisation/classes/edit.tsx'))['default']>
+    'organisation/classes/show': ExtractProps<(typeof import('../../inertia/pages/organisation/classes/show.tsx'))['default']>
+    'organisation/levels/edit': ExtractProps<(typeof import('../../inertia/pages/organisation/levels/edit.tsx'))['default']>
+    'organisation/levels/show': ExtractProps<(typeof import('../../inertia/pages/organisation/levels/show.tsx'))['default']>
     'planning/progression_view': ExtractProps<(typeof import('../../inertia/pages/planning/progression_view.tsx'))['default']>
     'teaching_content/show': ExtractProps<(typeof import('../../inertia/pages/teaching_content/show.tsx'))['default']>
+    'themes/archive': ExtractProps<(typeof import('../../inertia/pages/themes/archive.tsx'))['default']>
+    'themes/edit': ExtractProps<(typeof import('../../inertia/pages/themes/edit.tsx'))['default']>
     'themes/index': ExtractProps<(typeof import('../../inertia/pages/themes/index.tsx'))['default']>
+    'themes/select_level': ExtractProps<(typeof import('../../inertia/pages/themes/select_level.tsx'))['default']>
     'work_files/no_work_file': ExtractProps<(typeof import('../../inertia/pages/work_files/no_work_file.tsx'))['default']>
   }
 }

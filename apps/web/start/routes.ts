@@ -19,6 +19,29 @@ router
       .get("/dashboard/levels/:levelId", [controllers.dashboard.ShowLevelProgressSummary, "render"])
       .as("dashboard.level_progress_summary")
 
+    router.get("/organisation/levels", [controllers.organisation.ListLevels, "render"]).as("organisation.levels.show")
+    router
+      .get("/organisation/levels/:levelId/edit", [controllers.organisation.ShowLevelEditor, "render"])
+      .as("organisation.levels.edit")
+    router
+      .post("/organisation/levels", [controllers.organisation.CreateLevel, "execute"])
+      .as("organisation.levels.create")
+    router
+      .put("/organisation/levels/:levelId", [controllers.organisation.UpdateLevel, "execute"])
+      .as("organisation.levels.update")
+    router
+      .get("/organisation/classes", [controllers.organisation.ListClasses, "render"])
+      .as("organisation.classes.show")
+    router
+      .get("/organisation/classes/:classId/edit", [controllers.organisation.ShowClassEditor, "render"])
+      .as("organisation.classes.edit")
+    router
+      .post("/organisation/classes", [controllers.organisation.CreateClass, "execute"])
+      .as("organisation.classes.create")
+    router
+      .put("/organisation/classes/:classId", [controllers.organisation.UpdateClass, "execute"])
+      .as("organisation.classes.update")
+
     router
       .get("/planning/classes/:classId/progression", [controllers.dashboard.ShowProgressionView, "render"])
       .as("planning.progression_view")
@@ -26,6 +49,8 @@ router
     router
       .get("/teaching-content/levels/:levelId", [controllers.teachingContent.TeachingContent, "render"])
       .as("teaching_content.render")
+
+    router.get("/themes", [controllers.themes.SelectThemesLevel, "render"]).as("themes.select")
 
     router
       .delete("/teaching-content/levels/:levelId/themes/:themeId", [controllers.teachingContent.DeleteTheme, "execute"])
@@ -46,7 +71,10 @@ router
     router
       .group(() => {
         router.get("/", [controllers.themes.ListThemes, "render"]).as("list")
+        router.get("/archive", [controllers.themes.ListArchivedThemes, "render"]).as("archived")
+        router.get(":themeId/edit", [controllers.themes.RenderThemeEditor, "render"]).as("edit")
         router.post("/", [controllers.themes.CreateTheme, "execute"]).as("store")
+        router.put("/reorder", [controllers.themes.ReorderThemes, "execute"]).as("reorder")
         router.put(":themeId", [controllers.themes.UpdateTheme, "execute"]).as("update")
         router.post(":themeId/archive", [controllers.themes.ArchiveTheme, "execute"]).as("archive")
         router.post(":themeId/restore", [controllers.themes.RestoreTheme, "execute"]).as("restore")

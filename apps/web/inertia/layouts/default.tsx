@@ -36,8 +36,8 @@ const navigationDestinations: NavigationDestination[] = [
     href: urlFor("home"),
     icon: "organization",
     children: [
-      { label: "Niveaux", href: urlFor("home") },
-      { label: "Classes", href: urlFor("home") },
+      { label: "Niveaux", href: urlFor("organisation.levels.show") },
+      { label: "Classes", href: urlFor("organisation.classes.show") },
     ],
   },
   {
@@ -45,7 +45,7 @@ const navigationDestinations: NavigationDestination[] = [
     href: ({ levelId }) => (levelId ? urlFor("teaching_content.render", { levelId }) : urlFor("home")),
     icon: "teachingContent",
     children: [
-      { label: "Thèmes", href: ({ levelId }) => (levelId ? urlFor("themes.list", { levelId }) : urlFor("home")) },
+      { label: "Thèmes", href: urlFor("themes.select") },
       {
         label: "Chapitres",
         href: ({ levelId }) => (levelId ? urlFor("teaching_content.render", { levelId }) : urlFor("home")),
