@@ -12,6 +12,10 @@ type ExtractProps<T> =
 
 declare module '@adonisjs/inertia/types' {
   export interface InertiaPages {
+    'chapters/archive': ExtractProps<(typeof import('../../inertia/pages/chapters/archive.tsx'))['default']>
+    'chapters/edit': ExtractProps<(typeof import('../../inertia/pages/chapters/edit.tsx'))['default']>
+    'chapters/index': ExtractProps<(typeof import('../../inertia/pages/chapters/index.tsx'))['default']>
+    'chapters/select_level': ExtractProps<(typeof import('../../inertia/pages/chapters/select_level.tsx'))['default']>
     'dashboard/level_progress_summary': ExtractProps<(typeof import('../../inertia/pages/dashboard/level_progress_summary.tsx'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>

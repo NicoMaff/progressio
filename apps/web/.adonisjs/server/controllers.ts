@@ -13,7 +13,12 @@ export const controllers = {
   chapters: {
     ArchiveChapter: () => import('#src/chapters/controllers/archive_chapter_controller'),
     CreateChapter: () => import('#src/chapters/controllers/create_chapter_controller'),
+    ListArchivedChapters: () => import('#src/chapters/controllers/list_archived_chapters_controller'),
+    ListChapters: () => import('#src/chapters/controllers/list_chapters_controller'),
+    RenderChapterEditor: () => import('#src/chapters/controllers/render_chapter_editor_controller'),
+    ReorderChapters: () => import('#src/chapters/controllers/reorder_chapters_controller'),
     RestoreChapter: () => import('#src/chapters/controllers/restore_chapter_controller'),
+    SelectChaptersLevel: () => import('#src/chapters/controllers/select_chapters_level_controller'),
     UpdateChapter: () => import('#src/chapters/controllers/update_chapter_controller'),
   },
   dashboard: {

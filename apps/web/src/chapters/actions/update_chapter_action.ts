@@ -35,7 +35,16 @@ export default class UpdateChapterAction {
       throw new ChapterShortCodeAlreadyExistsError()
     }
 
+    const previousThemeId = chapter.themeId
     chapter.merge(payload)
+    if (previousThemeId !== payload.themeId) {
+      const result = await Chapter.query()
+        .where("level_id", levelId)
+        .where((query) => (payload.themeId ? query.where("theme_id", payload.themeId) : query.whereNull("theme_id")))
+        .max("display_order as maximum")
+        .first()
+      chapter.displayOrder = Number(result?.$extras.maximum ?? 0) + 1
+    }
     await chapter.save()
 
     return chapter

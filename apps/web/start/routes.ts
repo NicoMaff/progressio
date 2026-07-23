@@ -55,6 +55,7 @@ router
       .as("teaching_content.render")
 
     router.get("/themes", [controllers.themes.SelectThemesLevel, "render"]).as("themes.select")
+    router.get("/chapters", [controllers.chapters.SelectChaptersLevel, "render"]).as("chapters.select")
 
     router
       .delete("/teaching-content/levels/:levelId/themes/:themeId", [controllers.teachingContent.DeleteTheme, "execute"])
@@ -89,6 +90,10 @@ router
 
     router
       .group(() => {
+        router.get("/", [controllers.chapters.ListChapters, "render"]).as("list")
+        router.get("/archive", [controllers.chapters.ListArchivedChapters, "render"]).as("archived")
+        router.get(":chapterId/edit", [controllers.chapters.RenderChapterEditor, "render"]).as("edit")
+        router.put("/reorder", [controllers.chapters.ReorderChapters, "execute"]).as("reorder")
         router.post("/", [controllers.chapters.CreateChapter, "execute"]).as("store")
         router.put(":chapterId", [controllers.chapters.UpdateChapter, "execute"]).as("update")
         router.post(":chapterId/archive", [controllers.chapters.ArchiveChapter, "execute"]).as("archive")

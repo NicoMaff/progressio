@@ -7,6 +7,7 @@
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
 import type ActivitiesTeachingContentPageActivityTransformer from '#src/activities/transformers/teaching_content_page_activity_transformer'
+import type ChaptersChapterWorkspaceTransformer from '#src/chapters/transformers/chapter_workspace_transformer'
 import type ChaptersTeachingContentPageChapterTransformer from '#src/chapters/transformers/teaching_content_page_chapter_transformer'
 import type DashboardAnnualDashboardTransformer from '#src/dashboard/transformers/annual_dashboard_transformer'
 import type DashboardClassProgressSummaryPayloadTransformer from '#src/dashboard/transformers/class_progress_summary_payload'
@@ -32,6 +33,10 @@ export namespace Data {
     }
   }
   export namespace Chapters {
+    export type ChapterWorkspace = InferData<ChaptersChapterWorkspaceTransformer>
+    export namespace ChapterWorkspace {
+      export type Variants = InferVariants<ChaptersChapterWorkspaceTransformer>
+    }
     export type TeachingContentPageChapter = InferData<ChaptersTeachingContentPageChapterTransformer>
     export namespace TeachingContentPageChapter {
       export type Variants = InferVariants<ChaptersTeachingContentPageChapterTransformer>

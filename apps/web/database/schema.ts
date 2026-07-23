@@ -114,12 +114,14 @@ export class ActualSessionSchema extends BaseModel {
 }
 
 export class ChapterSchema extends BaseModel {
-  static $columns = ['archivedAt', 'createdAt', 'id', 'levelId', 'name', 'noteMarkdown', 'shortCode', 'themeId', 'updatedAt'] as const
+  static $columns = ['archivedAt', 'createdAt', 'displayOrder', 'id', 'levelId', 'name', 'noteMarkdown', 'shortCode', 'themeId', 'updatedAt'] as const
   $columns = ChapterSchema.$columns
   @column.dateTime()
   declare archivedAt: DateTime | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
+  @column()
+  declare displayOrder: number
   @column({ isPrimary: true })
   declare id: string
   @column()
