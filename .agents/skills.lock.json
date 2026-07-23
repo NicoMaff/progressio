@@ -1,5 +1,5 @@
 {
-  "installedAt": "2026-07-20T16:06:00.456Z",
+  "installedAt": "2026-07-23T21:22:48.197Z",
   "skills": [
     {
       "name": "adonisjs-controller-flow",
@@ -36,7 +36,7 @@
     {
       "name": "adonisjs-persistence-services",
       "displayName": "adonisjs-persistence-services",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "type": "local",
       "sourcePath": "skills/local/backend/adonisjs-persistence-services",
       "installPath": "adonisjs-persistence-services"
@@ -100,7 +100,7 @@
     {
       "name": "inertia-react-conventions",
       "displayName": "inertia-react-conventions",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "type": "local",
       "sourcePath": "skills/local/frontend/inertia-react-conventions",
       "installPath": "inertia-react-conventions"
@@ -108,7 +108,7 @@
     {
       "name": "tuyau-adonisjs-client-conventions",
       "displayName": "tuyau-adonisjs-client-conventions",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "type": "local",
       "sourcePath": "skills/local/frontend/tuyau-adonisjs-client-conventions",
       "installPath": "tuyau-adonisjs-client-conventions"

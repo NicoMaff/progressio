@@ -1,6 +1,6 @@
 ---
 name: adonisjs-persistence-services
-version: 0.1.1
+version: 0.2.0
 description: AdonisJS persistence, actions, services, and Lucid conventions. Use in AdonisJS projects when changing or reviewing use cases, reusable services, queries, dependency injection, Lucid models, persistence, transactions, or action/service errors.
 ---
 
@@ -15,6 +15,8 @@ description: AdonisJS persistence, actions, services, and Lucid conventions. Use
 
 - Dependency injection: https://docs.adonisjs.com/guides/concepts/dependency-injection
 - Lucid: https://lucid.adonisjs.com/docs/introduction
+- AdonisJS v7 models and generated schemas: https://docs.adonisjs.com/tutorial/hypermedia/database-and-models#creating-the-post-model
+- Lucid model hooks: https://lucid.adonisjs.com/docs/model-hooks#hooks
 
 ## Actions, Queries, And Services
 
@@ -42,6 +44,11 @@ description: AdonisJS persistence, actions, services, and Lucid conventions. Use
 - Use Lucid model, query builder, relationship, and transaction patterns already present in the feature.
 - Keep Lucid models in `src/core/models` by default.
 - Move models into a capability only when the project has grown enough that the capability owns several strongly related models and the local architecture supports feature-local models.
+- Starting with AdonisJS v7, extend every Lucid model from its generated `*Schema` class imported from `#database/schema`.
+- Treat migrations and the resulting database schema as the source of truth for model columns. Running migrations regenerates `database/schema.ts` with the column properties, types, and decorators inherited by each model.
+- Do not redeclare generated column properties in model files and do not edit `database/schema.ts` manually.
+- Add only relationships, Lucid model hooks, and computed properties manually to model classes.
+- Define model hooks as decorated static methods using the matching decorator from `@adonisjs/lucid/orm`. Use them for model-owned behavior that must run before or after Lucid persistence or query lifecycle events.
 - Keep database writes atomic when multiple records must change together.
 - Put transaction boundaries in actions or service methods, not controllers.
 - Avoid hiding deployment-sensitive schema or migration behavior in unrelated refactors.

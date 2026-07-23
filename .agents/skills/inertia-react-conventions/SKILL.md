@@ -1,6 +1,6 @@
 ---
 name: inertia-react-conventions
-version: 0.1.1
+version: 0.2.0
 description: Inertia React conventions. Use in codebases when changing or reviewing Inertia.js React pages, layouts, forms, shared props, AdonisJS Inertia adapters, generated page or route types, routing, client-side state, UI behavior, or browser-facing code.
 ---
 
@@ -56,6 +56,14 @@ Use the Inertia v3 docs by default for migrated projects. Use the v2 docs when p
 - Prefer existing generated helpers and typed route helpers over hand-built URLs.
 - Treat server-provided props as an explicit contract; avoid assuming ORM shapes unless the backend intentionally exposes them.
 - When the backend provides generated payload types through Tuyau, declare page props before the component with the global `Data` object and the Inertia `PageProps` helper.
+
+### Backend URLs With Tuyau
+
+- When the AdonisJS backend uses Tuyau, initialize or reuse the project’s exported `urlFor` helper (`client.urlFor`) to build backend URLs from named routes.
+- Use `urlFor('route.name', params)` for links, form actions, redirects, and other URL-only values instead of hard-coded paths or an untyped route string.
+- Pass route parameters through the typed helper so renamed routes, missing parameters, and invalid parameter shapes are caught by TypeScript.
+- Use method-specific variants such as `urlFor.get(...)` or `urlFor.post(...)` only when the consuming API needs both the HTTP method and URL; they are not a replacement for the Inertia navigation/form convention.
+- Keep `urlFor` for URL generation distinct from Tuyau client methods used to perform API requests. Prefer Inertia `Link`, `router`, or the project’s form helper for Inertia visits, and the Tuyau client for non-Inertia API calls.
 
 ```tsx
 type Props = PageProps<{
