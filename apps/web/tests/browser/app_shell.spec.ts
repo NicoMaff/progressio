@@ -13,7 +13,7 @@ test.group("Progressio App Shell", (group) => {
     visit,
   }) => {
     const today = DateTime.local().startOf("day")
-    await SchoolYear.create({
+    const schoolYear = await SchoolYear.create({
       label: "2025-2026",
       subject: "Mathématiques",
       startDate: today.minus({ months: 8 }),
@@ -21,6 +21,7 @@ test.group("Progressio App Shell", (group) => {
       firstTeachingDay: today.minus({ months: 8 }),
       teachingHourDurationMinutes: 55,
     })
+    const level = await Level.create({ schoolYearId: schoolYear.id, name: "Première générale", shortCode: "1G" })
 
     const page = await visit("/")
     await page.setViewportSize({ width: 1280, height: 768 })
@@ -39,6 +40,12 @@ test.group("Progressio App Shell", (group) => {
     ]) {
       await page.getByRole("link", { name: destination, exact: true }).waitFor({ state: "visible" })
     }
+
+    await page.getByRole("link", { name: "Classes", exact: true }).click()
+    await page.getByRole("heading", { name: "Classes", exact: true }).waitFor({ state: "visible" })
+    await page.getByRole("link", { name: "1G · Première générale" }).click()
+    await page.getByRole("heading", { name: "Classes de Première générale" }).waitFor({ state: "visible" })
+    assert.isTrue(page.url().endsWith(`/organisation/classes?level=${level.id}`))
 
     const collapseButton = page.getByRole("button", { name: "Réduire le menu" })
     await collapseButton.press("Enter")

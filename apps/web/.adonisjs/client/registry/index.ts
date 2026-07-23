@@ -36,6 +36,12 @@ const routes = {
     tokens: [{"old":"/teaching-content/levels/:levelId","type":0,"val":"teaching-content","end":""},{"old":"/teaching-content/levels/:levelId","type":0,"val":"levels","end":""},{"old":"/teaching-content/levels/:levelId","type":1,"val":"levelId","end":""}],
     types: placeholder as Registry['teaching_content.render']['types'],
   },
+  'themes.select': {
+    methods: ["GET","HEAD"],
+    pattern: '/themes',
+    tokens: [{"old":"/themes","type":0,"val":"themes","end":""}],
+    types: placeholder as Registry['themes.select']['types'],
+  },
   'teaching_content.themes.destroy': {
     methods: ["DELETE"],
     pattern: '/teaching-content/levels/:levelId/themes/:themeId',
@@ -60,11 +66,29 @@ const routes = {
     tokens: [{"old":"/levels/:levelId/themes","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes","type":0,"val":"themes","end":""}],
     types: placeholder as Registry['themes.list']['types'],
   },
+  'themes.archived': {
+    methods: ["GET","HEAD"],
+    pattern: '/levels/:levelId/themes/archive',
+    tokens: [{"old":"/levels/:levelId/themes/archive","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/archive","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/archive","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/archive","type":0,"val":"archive","end":""}],
+    types: placeholder as Registry['themes.archived']['types'],
+  },
+  'themes.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/levels/:levelId/themes/:themeId/edit',
+    tokens: [{"old":"/levels/:levelId/themes/:themeId/edit","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/:themeId/edit","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/:themeId/edit","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/:themeId/edit","type":1,"val":"themeId","end":""},{"old":"/levels/:levelId/themes/:themeId/edit","type":0,"val":"edit","end":""}],
+    types: placeholder as Registry['themes.edit']['types'],
+  },
   'themes.store': {
     methods: ["POST"],
     pattern: '/levels/:levelId/themes',
     tokens: [{"old":"/levels/:levelId/themes","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes","type":0,"val":"themes","end":""}],
     types: placeholder as Registry['themes.store']['types'],
+  },
+  'themes.reorder': {
+    methods: ["PUT"],
+    pattern: '/levels/:levelId/themes/reorder',
+    tokens: [{"old":"/levels/:levelId/themes/reorder","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/reorder","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/reorder","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/reorder","type":0,"val":"reorder","end":""}],
+    types: placeholder as Registry['themes.reorder']['types'],
   },
   'themes.update': {
     methods: ["PUT"],

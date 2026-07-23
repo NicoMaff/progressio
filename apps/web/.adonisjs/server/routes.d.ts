@@ -9,11 +9,15 @@ export type ScannedRoutes = {
     'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'themes.select': { paramsTuple?: []; params?: {} }
     'teaching_content.themes.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'teaching_content.chapters.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
     'teaching_content.activities.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'themes.archived': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'themes.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'themes.store': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'themes.reorder': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'themes.archive': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'themes.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
@@ -35,7 +39,10 @@ export type ScannedRoutes = {
     'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'themes.select': { paramsTuple?: []; params?: {} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'themes.archived': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'themes.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -43,17 +50,14 @@ export type ScannedRoutes = {
     'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'themes.select': { paramsTuple?: []; params?: {} }
     'themes.list': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
-  }
-  DELETE: {
-    'teaching_content.themes.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
-    'teaching_content.chapters.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
-    'teaching_content.activities.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
-    'themes.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
-    'chapters.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
-    'activities.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
+    'themes.archived': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'themes.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
   }
   POST: {
+    'organisation.levels.create': { paramsTuple?: []; params?: {} }
+    'organisation.classes.create': { paramsTuple?: []; params?: {} }
     'themes.store': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.archive': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'themes.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
@@ -65,9 +69,20 @@ export type ScannedRoutes = {
     'activities.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
   }
   PUT: {
+    'themes.reorder': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'organisation.levels.update': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'organisation.classes.update': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'themes.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'chapters.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
     'activities.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
+  }
+  DELETE: {
+    'teaching_content.themes.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
+    'teaching_content.chapters.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
+    'teaching_content.activities.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
+    'themes.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
+    'chapters.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
+    'activities.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

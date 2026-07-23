@@ -1,6 +1,6 @@
 import Theme from "#models/theme"
 import { ThemeShortCodeAlreadyExistsError, normalizeThemeInput, type ThemeInput } from "./theme_input.js"
-import { randomUUID } from "node:crypto"
+import db from "@adonisjs/lucid/services/db"
 
 export default class CreateThemeAction {
   async execute(levelId: string, input: ThemeInput) {
@@ -16,10 +16,18 @@ export default class CreateThemeAction {
       throw new ThemeShortCodeAlreadyExistsError()
     }
 
-    return Theme.create({
-      id: randomUUID(),
-      levelId,
-      ...payload,
+    return db.transaction(async (transaction) => {
+      const result = await transaction.from("themes").where("level_id", levelId).max("display_order as maximum").first()
+      const displayOrder = Number(result?.maximum ?? 0) + 1
+
+      return Theme.create(
+        {
+          levelId,
+          displayOrder,
+          ...payload,
+        },
+        { client: transaction }
+      )
     })
   }
 }

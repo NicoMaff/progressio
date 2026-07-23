@@ -19,6 +19,7 @@ import type TeachingContentTeachingContentPageSchoolYearTransformer from '#src/t
 import type TeachingContentTeachingContentPageTransformer from '#src/teaching_content/transformers/teaching_content_page_transformer'
 import type ThemesTeachingContentPageThemeTransformer from '#src/themes/transformers/teaching_content_page_theme_transformer'
 import type ThemesThemeTransformer from '#src/themes/transformers/theme_transformer'
+import type ThemesThemeWorkspaceTransformer from '#src/themes/transformers/theme_workspace_transformer'
 import type InertiaMiddleware from '#middlewares/inertia_middleware'
 
 export namespace Data {
@@ -56,6 +57,16 @@ export namespace Data {
       export type Variants = InferVariants<DashboardProgressionsListTransformer>
     }
   }
+  export namespace Organisation {
+    export type Class = InferData<OrganisationClassTransformer>
+    export namespace Class {
+      export type Variants = InferVariants<OrganisationClassTransformer>
+    }
+    export type Level = InferData<OrganisationLevelTransformer>
+    export namespace Level {
+      export type Variants = InferVariants<OrganisationLevelTransformer>
+    }
+  }
   export namespace TeachingContent {
     export type TeachingContentPageActivityType = InferData<TeachingContentTeachingContentPageActivityTypeTransformer>
     export namespace TeachingContentPageActivityType {
@@ -82,6 +93,10 @@ export namespace Data {
     export type Theme = InferData<ThemesThemeTransformer>
     export namespace Theme {
       export type Variants = InferVariants<ThemesThemeTransformer>
+    }
+    export type ThemeWorkspace = InferData<ThemesThemeWorkspaceTransformer>
+    export namespace ThemeWorkspace {
+      export type Variants = InferVariants<ThemesThemeWorkspaceTransformer>
     }
   }
   export type SharedProps = InferSharedProps<InertiaMiddleware>

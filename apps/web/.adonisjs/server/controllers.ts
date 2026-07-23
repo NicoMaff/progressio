@@ -22,6 +22,16 @@ export const controllers = {
     ShowLevelProgressSummary: () => import('#src/dashboard/controllers/show_level_progress_summary_controller'),
     ShowProgressionView: () => import('#src/dashboard/controllers/show_progression_view_controller'),
   },
+  organisation: {
+    CreateClass: () => import('#src/organisation/controllers/create_class_controller'),
+    CreateLevel: () => import('#src/organisation/controllers/create_level_controller'),
+    ListClasses: () => import('#src/organisation/controllers/list_classes_controller'),
+    ListLevels: () => import('#src/organisation/controllers/list_levels_controller'),
+    ShowClassEditor: () => import('#src/organisation/controllers/show_class_editor_controller'),
+    ShowLevelEditor: () => import('#src/organisation/controllers/show_level_editor_controller'),
+    UpdateClass: () => import('#src/organisation/controllers/update_class_controller'),
+    UpdateLevel: () => import('#src/organisation/controllers/update_level_controller'),
+  },
   teachingContent: {
     DeleteActivity: () => import('#src/teaching_content/controllers/delete_activity_controller'),
     DeleteChapter: () => import('#src/teaching_content/controllers/delete_chapter_controller'),
@@ -31,8 +41,12 @@ export const controllers = {
   themes: {
     ArchiveTheme: () => import('#src/themes/controllers/archive_theme_controller'),
     CreateTheme: () => import('#src/themes/controllers/create_theme_controller'),
+    ListArchivedThemes: () => import('#src/themes/controllers/list_archived_themes_controller'),
     ListThemes: () => import('#src/themes/controllers/list_themes_controller'),
+    RenderThemeEditor: () => import('#src/themes/controllers/render_theme_editor_controller'),
+    ReorderThemes: () => import('#src/themes/controllers/reorder_themes_controller'),
     RestoreTheme: () => import('#src/themes/controllers/restore_theme_controller'),
+    SelectThemesLevel: () => import('#src/themes/controllers/select_themes_level_controller'),
     UpdateTheme: () => import('#src/themes/controllers/update_theme_controller'),
   },
 }
