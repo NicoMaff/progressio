@@ -90,6 +90,12 @@ const routes = {
     tokens: [{"old":"/themes","type":0,"val":"themes","end":""}],
     types: placeholder as Registry['themes.select']['types'],
   },
+  'chapters.select': {
+    methods: ["GET","HEAD"],
+    pattern: '/chapters',
+    tokens: [{"old":"/chapters","type":0,"val":"chapters","end":""}],
+    types: placeholder as Registry['chapters.select']['types'],
+  },
   'teaching_content.themes.destroy': {
     methods: ["DELETE"],
     pattern: '/teaching-content/levels/:levelId/themes/:themeId',
@@ -161,6 +167,30 @@ const routes = {
     pattern: '/levels/:levelId/themes/:themeId',
     tokens: [{"old":"/levels/:levelId/themes/:themeId","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/themes/:themeId","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/themes/:themeId","type":0,"val":"themes","end":""},{"old":"/levels/:levelId/themes/:themeId","type":1,"val":"themeId","end":""}],
     types: placeholder as Registry['themes.destroy']['types'],
+  },
+  'chapters.list': {
+    methods: ["GET","HEAD"],
+    pattern: '/levels/:levelId/chapters',
+    tokens: [{"old":"/levels/:levelId/chapters","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters","type":0,"val":"chapters","end":""}],
+    types: placeholder as Registry['chapters.list']['types'],
+  },
+  'chapters.archived': {
+    methods: ["GET","HEAD"],
+    pattern: '/levels/:levelId/chapters/archive',
+    tokens: [{"old":"/levels/:levelId/chapters/archive","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters/archive","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters/archive","type":0,"val":"chapters","end":""},{"old":"/levels/:levelId/chapters/archive","type":0,"val":"archive","end":""}],
+    types: placeholder as Registry['chapters.archived']['types'],
+  },
+  'chapters.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/levels/:levelId/chapters/:chapterId/edit',
+    tokens: [{"old":"/levels/:levelId/chapters/:chapterId/edit","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters/:chapterId/edit","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters/:chapterId/edit","type":0,"val":"chapters","end":""},{"old":"/levels/:levelId/chapters/:chapterId/edit","type":1,"val":"chapterId","end":""},{"old":"/levels/:levelId/chapters/:chapterId/edit","type":0,"val":"edit","end":""}],
+    types: placeholder as Registry['chapters.edit']['types'],
+  },
+  'chapters.reorder': {
+    methods: ["PUT"],
+    pattern: '/levels/:levelId/chapters/reorder',
+    tokens: [{"old":"/levels/:levelId/chapters/reorder","type":0,"val":"levels","end":""},{"old":"/levels/:levelId/chapters/reorder","type":1,"val":"levelId","end":""},{"old":"/levels/:levelId/chapters/reorder","type":0,"val":"chapters","end":""},{"old":"/levels/:levelId/chapters/reorder","type":0,"val":"reorder","end":""}],
+    types: placeholder as Registry['chapters.reorder']['types'],
   },
   'chapters.store': {
     methods: ["POST"],

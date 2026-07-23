@@ -1,5 +1,6 @@
 import { Form, Link } from "@adonisjs/inertia/react"
 import { useState } from "react"
+import { urlFor } from "~/client"
 import { ChapterFields } from "~/components/chapter_fields"
 import { type InertiaProps } from "~/types"
 
@@ -67,7 +68,10 @@ export default function ChaptersIndex({ schoolYear, level, themes, chapters }: P
           <h1 className="text-7 font-650 mt-1">Chapitres de {level.name}</h1>
         </div>
         <div className="flex gap-3">
-          <Link href={`/levels/${level.id}/chapters/archive`} className="text-sm font-semibold text-[var(--blue-8)]">
+          <Link
+            href={urlFor("chapters.archived", { levelId: level.id })}
+            className="text-sm font-semibold text-[var(--blue-8)]"
+          >
             Archives
           </Link>
           <button type="button" onClick={() => setPanelChapter(null)}>
@@ -89,7 +93,7 @@ export default function ChaptersIndex({ schoolYear, level, themes, chapters }: P
                   </h2>
                   <span className="text-sm text-[var(--gray-7)]">{items.length}</span>
                 </div>
-                <Form action={`/levels/${level.id}/chapters/reorder`} method="put">
+                <Form action={urlFor("chapters.reorder", { levelId: level.id })} method="put">
                   {({ processing }) => (
                     <>
                       <input type="hidden" name="themeId" value={group.id ?? ""} />
@@ -168,7 +172,7 @@ export default function ChaptersIndex({ schoolYear, level, themes, chapters }: P
                     </button>
                     {panelChapter && (
                       <Link
-                        href={`/levels/${level.id}/chapters/${panelChapter.id}/edit`}
+                        href={urlFor("chapters.edit", { levelId: level.id, chapterId: panelChapter.id })}
                         className="text-sm font-semibold text-[var(--blue-8)]"
                       >
                         Ouvrir la page complète

@@ -1,4 +1,5 @@
 import { Form, Link } from "@adonisjs/inertia/react"
+import { urlFor } from "~/client"
 import { type InertiaProps } from "~/types"
 import { ChapterFields } from "~/components/chapter_fields"
 
@@ -11,7 +12,10 @@ type PageProps = InertiaProps<{
 export default function EditChapter({ level, themes, chapter }: PageProps) {
   return (
     <section className="mx-auto max-w-3xl p-6 sm:p-9">
-      <Link href={`/levels/${level.id}/chapters`} className="text-sm font-semibold text-[var(--blue-8)]">
+      <Link
+        href={urlFor("chapters.list", { levelId: level.id })}
+        className="text-sm font-semibold text-[var(--blue-8)]"
+      >
         ← Retour aux chapitres
       </Link>
       <h1 className="text-7 font-650 mt-5">Modifier {chapter.name}</h1>

@@ -1,5 +1,6 @@
 import { Link } from "@adonisjs/inertia/react"
 import { type Data } from "@generated/data"
+import { urlFor } from "~/client"
 import { type InertiaProps } from "~/types"
 
 type PageProps = InertiaProps<{ levels: Data.TeachingContent.TeachingContentPageLevel[] }>
@@ -12,7 +13,7 @@ export default function SelectChaptersLevel({ levels }: PageProps) {
       <ul className="mt-7 grid gap-3 sm:grid-cols-2">
         {levels.map((level) => (
           <li key={level.id} className="rounded-xl border border-[var(--gray-3)] bg-white p-4">
-            <Link href={`/levels/${level.id}/chapters`} className="block font-semibold">
+            <Link href={urlFor("chapters.list", { levelId: level.id })} className="block font-semibold">
               {level.shortCode} · {level.name}
             </Link>
           </li>

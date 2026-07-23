@@ -51,6 +51,11 @@ export interface ApiDefinition {
     destroy: typeof routes['themes.destroy']
   }
   chapters: {
+    select: typeof routes['chapters.select']
+    list: typeof routes['chapters.list']
+    archived: typeof routes['chapters.archived']
+    edit: typeof routes['chapters.edit']
+    reorder: typeof routes['chapters.reorder']
     store: typeof routes['chapters.store']
     update: typeof routes['chapters.update']
     archive: typeof routes['chapters.archive']

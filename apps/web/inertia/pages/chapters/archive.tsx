@@ -1,4 +1,5 @@
 import { Form, Link } from "@adonisjs/inertia/react"
+import { urlFor } from "~/client"
 import { type InertiaProps } from "~/types"
 
 type PageProps = InertiaProps<{
@@ -9,7 +10,10 @@ type PageProps = InertiaProps<{
 export default function ChaptersArchive({ level, chapters }: PageProps) {
   return (
     <section className="w-full p-6 sm:p-9">
-      <Link href={`/levels/${level.id}/chapters`} className="text-sm font-semibold text-[var(--blue-8)]">
+      <Link
+        href={urlFor("chapters.list", { levelId: level.id })}
+        className="text-sm font-semibold text-[var(--blue-8)]"
+      >
         ← Chapitres actifs
       </Link>
       <h1 className="text-7 font-650 mt-5">Chapitres archivés</h1>
