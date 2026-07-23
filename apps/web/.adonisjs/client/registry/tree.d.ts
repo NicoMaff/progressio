@@ -6,6 +6,20 @@ export interface ApiDefinition {
   dashboard: {
     levelProgressSummary: typeof routes['dashboard.level_progress_summary']
   }
+  organisation: {
+    levels: {
+      show: typeof routes['organisation.levels.show']
+      edit: typeof routes['organisation.levels.edit']
+      create: typeof routes['organisation.levels.create']
+      update: typeof routes['organisation.levels.update']
+    }
+    classes: {
+      show: typeof routes['organisation.classes.show']
+      edit: typeof routes['organisation.classes.edit']
+      create: typeof routes['organisation.classes.create']
+      update: typeof routes['organisation.classes.update']
+    }
+  }
   planning: {
     progressionView: typeof routes['planning.progression_view']
   }

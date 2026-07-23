@@ -19,6 +19,29 @@ router
       .get("/dashboard/levels/:levelId", [controllers.dashboard.ShowLevelProgressSummary, "render"])
       .as("dashboard.level_progress_summary")
 
+    router.get("/organisation/levels", [controllers.organisation.ListLevels, "render"]).as("organisation.levels.show")
+    router
+      .get("/organisation/levels/:levelId/edit", [controllers.organisation.ShowLevelEditor, "render"])
+      .as("organisation.levels.edit")
+    router
+      .post("/organisation/levels", [controllers.organisation.CreateLevel, "execute"])
+      .as("organisation.levels.create")
+    router
+      .put("/organisation/levels/:levelId", [controllers.organisation.UpdateLevel, "execute"])
+      .as("organisation.levels.update")
+    router
+      .get("/organisation/classes", [controllers.organisation.ListClasses, "render"])
+      .as("organisation.classes.show")
+    router
+      .get("/organisation/classes/:classId/edit", [controllers.organisation.ShowClassEditor, "render"])
+      .as("organisation.classes.edit")
+    router
+      .post("/organisation/classes", [controllers.organisation.CreateClass, "execute"])
+      .as("organisation.classes.create")
+    router
+      .put("/organisation/classes/:classId", [controllers.organisation.UpdateClass, "execute"])
+      .as("organisation.classes.update")
+
     router
       .get("/planning/classes/:classId/progression", [controllers.dashboard.ShowProgressionView, "render"])
       .as("planning.progression_view")
