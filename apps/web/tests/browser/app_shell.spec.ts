@@ -71,7 +71,7 @@ test.group("Progressio App Shell", (group) => {
   test("navigates the annual roadmap horizontally and adapts the visible week columns", async ({ assert, visit }) => {
     const today = DateTime.local().startOf("day")
     const schoolYear = await SchoolYear.query().firstOrFail()
-    const level = await Level.create({ schoolYearId: schoolYear.id, name: "Première générale", shortCode: "1G" })
+    const level = await Level.query().where("school_year_id", schoolYear.id).where("short_code", "1G").firstOrFail()
     await TeachingClass.create({
       schoolYearId: schoolYear.id,
       levelId: level.id,

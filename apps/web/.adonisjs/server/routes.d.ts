@@ -6,6 +6,14 @@ export type ScannedRoutes = {
   ALL: {
     'home': { paramsTuple?: []; params?: {} }
     'dashboard.level_progress_summary': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'organisation.levels.show': { paramsTuple?: []; params?: {} }
+    'organisation.levels.edit': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'organisation.levels.create': { paramsTuple?: []; params?: {} }
+    'organisation.levels.update': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'organisation.classes.show': { paramsTuple?: []; params?: {} }
+    'organisation.classes.edit': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
+    'organisation.classes.create': { paramsTuple?: []; params?: {} }
+    'organisation.classes.update': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
@@ -36,6 +44,10 @@ export type ScannedRoutes = {
   GET: {
     'home': { paramsTuple?: []; params?: {} }
     'dashboard.level_progress_summary': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'organisation.levels.show': { paramsTuple?: []; params?: {} }
+    'organisation.levels.edit': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'organisation.classes.show': { paramsTuple?: []; params?: {} }
+    'organisation.classes.edit': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
@@ -47,6 +59,10 @@ export type ScannedRoutes = {
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
     'dashboard.level_progress_summary': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'organisation.levels.show': { paramsTuple?: []; params?: {} }
+    'organisation.levels.edit': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
+    'organisation.classes.show': { paramsTuple?: []; params?: {} }
+    'organisation.classes.edit': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'planning.progressions.list': { paramsTuple?: []; params?: {} }
     'planning.progression_view': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
     'teaching_content.render': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
@@ -69,9 +85,9 @@ export type ScannedRoutes = {
     'activities.restore': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }
   }
   PUT: {
-    'themes.reorder': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'organisation.levels.update': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'organisation.classes.update': { paramsTuple: [ParamValue]; params: {'classId': ParamValue} }
+    'themes.reorder': { paramsTuple: [ParamValue]; params: {'levelId': ParamValue} }
     'themes.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'themeId': ParamValue} }
     'chapters.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'chapterId': ParamValue} }
     'activities.update': { paramsTuple: [ParamValue,ParamValue]; params: {'levelId': ParamValue,'activityId': ParamValue} }

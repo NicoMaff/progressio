@@ -16,6 +16,10 @@ declare module '@adonisjs/inertia/types' {
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
     'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>
+    'organisation/classes/edit': ExtractProps<(typeof import('../../inertia/pages/organisation/classes/edit.tsx'))['default']>
+    'organisation/classes/show': ExtractProps<(typeof import('../../inertia/pages/organisation/classes/show.tsx'))['default']>
+    'organisation/levels/edit': ExtractProps<(typeof import('../../inertia/pages/organisation/levels/edit.tsx'))['default']>
+    'organisation/levels/show': ExtractProps<(typeof import('../../inertia/pages/organisation/levels/show.tsx'))['default']>
     'planning/list_progressions': ExtractProps<(typeof import('../../inertia/pages/planning/list_progressions.tsx'))['default']>
     'planning/progression_view': ExtractProps<(typeof import('../../inertia/pages/planning/progression_view.tsx'))['default']>
     'teaching_content/show': ExtractProps<(typeof import('../../inertia/pages/teaching_content/show.tsx'))['default']>
