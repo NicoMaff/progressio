@@ -66,6 +66,12 @@ const routes = {
     tokens: [{"old":"/organisation/classes/:classId","type":0,"val":"organisation","end":""},{"old":"/organisation/classes/:classId","type":0,"val":"classes","end":""},{"old":"/organisation/classes/:classId","type":1,"val":"classId","end":""}],
     types: placeholder as Registry['organisation.classes.update']['types'],
   },
+  'planning.progressions.list': {
+    methods: ["GET","HEAD"],
+    pattern: '/planning/progressions',
+    tokens: [{"old":"/planning/progressions","type":0,"val":"planning","end":""},{"old":"/planning/progressions","type":0,"val":"progressions","end":""}],
+    types: placeholder as Registry['planning.progressions.list']['types'],
+  },
   'planning.progression_view': {
     methods: ["GET","HEAD"],
     pattern: '/planning/classes/:classId/progression',

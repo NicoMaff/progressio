@@ -43,6 +43,10 @@ router
       .as("organisation.classes.update")
 
     router
+      .get("/planning/progressions", [controllers.dashboard.ListProgressions, "render"])
+      .as("planning.progressions.list")
+
+    router
       .get("/planning/classes/:classId/progression", [controllers.dashboard.ShowProgressionView, "render"])
       .as("planning.progression_view")
 

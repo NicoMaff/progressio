@@ -127,6 +127,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/organisation/controllers/update_class_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'planning.progressions.list': {
+    methods: ["GET","HEAD"]
+    pattern: '/planning/progressions'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/dashboard/controllers/list_progressions_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/dashboard/controllers/list_progressions_controller').default['render']>>>
+    }
+  }
   'planning.progression_view': {
     methods: ["GET","HEAD"]
     pattern: '/planning/classes/:classId/progression'

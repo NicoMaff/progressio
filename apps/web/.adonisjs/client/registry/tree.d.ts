@@ -21,6 +21,9 @@ export interface ApiDefinition {
     }
   }
   planning: {
+    progressions: {
+      list: typeof routes['planning.progressions.list']
+    }
     progressionView: typeof routes['planning.progression_view']
   }
   teachingContent: {

@@ -1,4 +1,5 @@
 import SchoolYear from "#models/school_year"
+import TeachingClass from "#models/class"
 import Level from "#models/level"
 import testUtils from "@adonisjs/core/services/test_utils"
 import { test } from "@japa/runner"
@@ -65,5 +66,45 @@ test.group("Progressio App Shell", (group) => {
     await page.getByRole("navigation", { name: "Navigation principale" }).waitFor({ state: "visible" })
     await page.getByRole("link", { name: "Vue d’ensemble", exact: true }).click()
     assert.isFalse(await page.getByRole("navigation", { name: "Navigation principale" }).isVisible())
+  })
+
+  test("navigates the annual roadmap horizontally and adapts the visible week columns", async ({ assert, visit }) => {
+    const today = DateTime.local().startOf("day")
+    const schoolYear = await SchoolYear.query().firstOrFail()
+    const level = await Level.query().where("school_year_id", schoolYear.id).where("short_code", "1G").firstOrFail()
+    await TeachingClass.create({
+      schoolYearId: schoolYear.id,
+      levelId: level.id,
+      name: "Première A",
+      shortCode: "1A",
+    })
+
+    const page = await visit("/planning/progressions")
+    await page.getByRole("link", { name: /Première A/ }).click()
+    const roadmap = page.getByRole("region", { name: "Feuille de route annuelle" })
+    const weekColumns = roadmap.locator("[data-week-start]")
+    await weekColumns.first().waitFor({ state: "visible" })
+
+    await page.setViewportSize({ width: 768, height: 768 })
+    const narrowWeekWidth = (await weekColumns.first().boundingBox())!.width
+    assert.isTrue(narrowWeekWidth > 300)
+    assert.isTrue(narrowWeekWidth < 400)
+
+    const currentWeek = roadmap.locator(`[data-week-start="${today.startOf("week").toISODate()}"]`)
+    const initialWeekPosition = (await currentWeek.boundingBox())!.x
+    await page.getByRole("button", { name: "Semaine suivante" }).click()
+    await page.waitForTimeout(350)
+    const nextWeekPosition = (await currentWeek.boundingBox())!.x
+    assert.isTrue(nextWeekPosition < initialWeekPosition)
+
+    await page.getByRole("button", { name: "Revenir à cette semaine" }).click()
+    await page.waitForTimeout(350)
+    const restoredWeekPosition = (await currentWeek.boundingBox())!.x
+    assert.isTrue(restoredWeekPosition > nextWeekPosition)
+
+    await page.setViewportSize({ width: 1280, height: 768 })
+    const wideWeekWidth = (await weekColumns.first().boundingBox())!.width
+    assert.isTrue(wideWeekWidth > 280)
+    assert.isTrue(wideWeekWidth < 330)
   })
 })
