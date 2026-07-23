@@ -21,6 +21,16 @@ export const controllers = {
     ShowLevelProgressSummary: () => import('#src/dashboard/controllers/show_level_progress_summary_controller'),
     ShowProgressionView: () => import('#src/dashboard/controllers/show_progression_view_controller'),
   },
+  organisation: {
+    CreateClass: () => import('#src/organisation/controllers/create_class_controller'),
+    CreateLevel: () => import('#src/organisation/controllers/create_level_controller'),
+    ListClasses: () => import('#src/organisation/controllers/list_classes_controller'),
+    ListLevels: () => import('#src/organisation/controllers/list_levels_controller'),
+    ShowClassEditor: () => import('#src/organisation/controllers/show_class_editor_controller'),
+    ShowLevelEditor: () => import('#src/organisation/controllers/show_level_editor_controller'),
+    UpdateClass: () => import('#src/organisation/controllers/update_class_controller'),
+    UpdateLevel: () => import('#src/organisation/controllers/update_level_controller'),
+  },
   teachingContent: {
     DeleteActivity: () => import('#src/teaching_content/controllers/delete_activity_controller'),
     DeleteChapter: () => import('#src/teaching_content/controllers/delete_chapter_controller'),

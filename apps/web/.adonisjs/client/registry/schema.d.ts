@@ -31,6 +31,102 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/dashboard/controllers/show_level_progress_summary_controller').default['render']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'organisation.levels.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/organisation/levels'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/organisation/controllers/list_levels_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/organisation/controllers/list_levels_controller').default['render']>>>
+    }
+  }
+  'organisation.levels.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/organisation/levels/:levelId/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/organisation/controllers/show_level_editor_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/organisation/controllers/show_level_editor_controller').default['render']>>>
+    }
+  }
+  'organisation.levels.create': {
+    methods: ["POST"]
+    pattern: '/organisation/levels'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#organisation/validators/organisation_validator').levelValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#organisation/validators/organisation_validator').levelValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/organisation/controllers/create_level_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/organisation/controllers/create_level_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'organisation.levels.update': {
+    methods: ["PUT"]
+    pattern: '/organisation/levels/:levelId'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#organisation/validators/organisation_validator').levelValidator)>>
+      paramsTuple: [ParamValue]
+      params: { levelId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#organisation/validators/organisation_validator').levelValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/organisation/controllers/update_level_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/organisation/controllers/update_level_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'organisation.classes.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/organisation/classes'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#organisation/validators/organisation_validator').classScopeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/organisation/controllers/list_classes_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/organisation/controllers/list_classes_controller').default['render']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'organisation.classes.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/organisation/classes/:classId/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { classId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#src/organisation/controllers/show_class_editor_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/organisation/controllers/show_class_editor_controller').default['render']>>>
+    }
+  }
+  'organisation.classes.create': {
+    methods: ["POST"]
+    pattern: '/organisation/classes'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#organisation/validators/organisation_validator').classValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#organisation/validators/organisation_validator').classValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/organisation/controllers/create_class_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/organisation/controllers/create_class_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'organisation.classes.update': {
+    methods: ["PUT"]
+    pattern: '/organisation/classes/:classId'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#organisation/validators/organisation_validator').classValidator)>>
+      paramsTuple: [ParamValue]
+      params: { classId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#organisation/validators/organisation_validator').classValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#src/organisation/controllers/update_class_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#src/organisation/controllers/update_class_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'planning.progression_view': {
     methods: ["GET","HEAD"]
     pattern: '/planning/classes/:classId/progression'
