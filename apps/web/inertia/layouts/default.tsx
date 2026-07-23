@@ -36,8 +36,8 @@ const navigationDestinations: NavigationDestination[] = [
     href: urlFor("home"),
     icon: "organization",
     children: [
-      { label: "Niveaux", href: urlFor("home") },
-      { label: "Classes", href: urlFor("home") },
+      { label: "Niveaux", href: urlFor("organisation.levels.show") },
+      { label: "Classes", href: urlFor("organisation.classes.show") },
     ],
   },
   {

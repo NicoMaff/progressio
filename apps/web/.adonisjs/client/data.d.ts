@@ -12,6 +12,8 @@ import type DashboardAnnualDashboardTransformer from '#src/dashboard/transformer
 import type DashboardClassProgressSummaryPayloadTransformer from '#src/dashboard/transformers/class_progress_summary_payload'
 import type DashboardLevelProgressSummaryTransformer from '#src/dashboard/transformers/level_progress_summary_transformer'
 import type DashboardProgressionViewTransformer from '#src/dashboard/transformers/progression_view_transformer'
+import type OrganisationClassTransformer from '#src/organisation/transformers/class_transformer'
+import type OrganisationLevelTransformer from '#src/organisation/transformers/level_transformer'
 import type TeachingContentTeachingContentPageActivityTypeTransformer from '#src/teaching_content/transformers/teaching_content_page_activity_type_transformer'
 import type TeachingContentTeachingContentPageLevelTransformer from '#src/teaching_content/transformers/teaching_content_page_level_transformer'
 import type TeachingContentTeachingContentPageSchoolYearTransformer from '#src/teaching_content/transformers/teaching_content_page_school_year_transformer'
@@ -49,6 +51,16 @@ export namespace Data {
     export type ProgressionView = InferData<DashboardProgressionViewTransformer>
     export namespace ProgressionView {
       export type Variants = InferVariants<DashboardProgressionViewTransformer>
+    }
+  }
+  export namespace Organisation {
+    export type Class = InferData<OrganisationClassTransformer>
+    export namespace Class {
+      export type Variants = InferVariants<OrganisationClassTransformer>
+    }
+    export type Level = InferData<OrganisationLevelTransformer>
+    export namespace Level {
+      export type Variants = InferVariants<OrganisationLevelTransformer>
     }
   }
   export namespace TeachingContent {

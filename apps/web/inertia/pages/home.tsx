@@ -10,6 +10,7 @@ import {
   ProgressionFollowUpIndicator,
 } from "@progressio/ui"
 import { type InertiaProps } from "~/types"
+import { urlFor } from "~/client"
 
 type PageProps = InertiaProps<{
   dashboard: Data.Dashboard.AnnualDashboard
@@ -54,6 +55,20 @@ export default function Home({ dashboard }: PageProps) {
             description="sans bilan ou à revoir"
             tone="amber"
           />
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Button render={<Link href={urlFor("organisation.levels.show")} />} variant="outline" size="sm">
+            Gérer les niveaux
+          </Button>
+          <Button render={<Link href={urlFor("organisation.classes.show")} />} variant="outline" size="sm">
+            Gérer les classes
+          </Button>
+          <Button render={<Link href={urlFor("organisation.levels.show")} />} variant="ghost" size="sm">
+            Préparer les contenus
+          </Button>
+          <Button render={<Link href={urlFor("organisation.classes.show")} />} variant="ghost" size="sm">
+            Suivre les progressions
+          </Button>
         </div>
       </section>
 
