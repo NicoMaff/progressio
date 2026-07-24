@@ -103,8 +103,9 @@ export default class extends ProgressioSchema {
       table.integer("estimated_duration_minutes").nullable()
       table.text("note_markdown").nullable()
       table.timestamp("archived_at").nullable()
+      table.integer("display_order").nullable()
 
-      table.index(["level_id", "chapter_id"])
+      table.index(["level_id", "chapter_id", "display_order"])
       table.check("estimated_duration_minutes IS NULL OR estimated_duration_minutes > 0")
     })
 

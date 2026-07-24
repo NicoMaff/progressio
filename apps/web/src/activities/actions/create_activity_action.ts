@@ -2,6 +2,7 @@ import Activity from "#models/activity"
 import ActivityType from "#models/activity_type"
 import Chapter from "#models/chapter"
 import Level from "#models/level"
+import db from "@adonisjs/lucid/services/db"
 import {
   ACTIVITY_ESTIMATED_DURATION_MAX_MINUTES,
   ActivityChapterLevelMismatchError,
@@ -21,9 +22,23 @@ export default class CreateActivityAction {
     await this.ensureActivityTypeBelongsToSchoolYear(level.schoolYearId, payload.activityTypeId)
     this.ensureEstimatedDurationIsInRange(payload)
 
-    return Activity.create({
-      levelId: level.id,
-      ...payload,
+    return db.transaction(async (transaction) => {
+      const result = payload.chapterId
+        ? await transaction
+            .from("activities")
+            .where("chapter_id", payload.chapterId)
+            .max("display_order as maximum")
+            .first()
+        : null
+
+      return Activity.create(
+        {
+          levelId: level.id,
+          displayOrder: payload.chapterId ? Number(result?.maximum ?? 0) + 1 : null,
+          ...payload,
+        },
+        { client: transaction }
+      )
     })
   }
 

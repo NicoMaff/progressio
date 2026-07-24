@@ -38,6 +38,7 @@ export default class TeachingContentPageActivityTransformer extends BaseTransfor
       estimatedDurationMinutes: this.resource.estimatedDurationMinutes,
       archivedAt: this.resource.archivedAt?.toISO() ?? null,
       noteMarkdown: this.resource.noteMarkdown,
+      displayOrder: this.resource.displayOrder,
     }
   }
 }

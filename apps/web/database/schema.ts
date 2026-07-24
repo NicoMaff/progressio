@@ -8,7 +8,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class ActivitySchema extends BaseModel {
-  static $columns = ['activityTypeId', 'archivedAt', 'chapterId', 'createdAt', 'estimatedDurationMinutes', 'id', 'levelId', 'noteMarkdown', 'title', 'updatedAt'] as const
+  static $columns = ['activityTypeId', 'archivedAt', 'chapterId', 'createdAt', 'displayOrder', 'estimatedDurationMinutes', 'id', 'levelId', 'noteMarkdown', 'title', 'updatedAt'] as const
   $columns = ActivitySchema.$columns
   @column()
   declare activityTypeId: string
@@ -18,6 +18,8 @@ export class ActivitySchema extends BaseModel {
   declare chapterId: string | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
+  @column()
+  declare displayOrder: number | null
   @column()
   declare estimatedDurationMinutes: number | null
   @column({ isPrimary: true })

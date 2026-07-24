@@ -29,6 +29,7 @@ test.group("activities actions", (group) => {
     assert.equal(activity.activityTypeId, activityType.id)
     assert.isNull(activity.estimatedDurationMinutes)
     assert.equal(activity.noteMarkdown, "Notes de préparation")
+    assert.isNull(activity.displayOrder)
   })
 
   test("assigns an activity to a chapter from the same level", async ({ assert }) => {
@@ -45,6 +46,7 @@ test.group("activities actions", (group) => {
 
     assert.equal(activity.chapterId, chapter.id)
     assert.equal(activity.estimatedDurationMinutes, 45)
+    assert.equal(activity.displayOrder, 1)
   })
 
   test("rejects a chapter from another level", async ({ assert }) => {
