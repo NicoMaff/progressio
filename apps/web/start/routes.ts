@@ -62,6 +62,7 @@ router
 
     router.get("/themes", [controllers.themes.SelectThemesLevel, "render"]).as("themes.select")
     router.get("/chapters", [controllers.chapters.SelectChaptersLevel, "render"]).as("chapters.select")
+    router.get("/activities", [controllers.activities.SelectActivitiesLevel, "render"]).as("activities.select")
 
     router
       .delete("/teaching-content/levels/:levelId/themes/:themeId", [controllers.teachingContent.DeleteTheme, "execute"])
@@ -111,6 +112,9 @@ router
 
     router
       .group(() => {
+        router.get("/", [controllers.activities.ListActivities, "render"]).as("list")
+        router.put("/reorder", [controllers.activities.ReorderActivities, "execute"]).as("reorder")
+        router.put("/bulk", [controllers.activities.BulkUpdateActivities, "execute"]).as("bulk")
         router.post("/", [controllers.activities.CreateActivity, "execute"]).as("store")
         router.put(":activityId", [controllers.activities.UpdateActivity, "execute"]).as("update")
         router.post(":activityId/archive", [controllers.activities.ArchiveActivity, "execute"]).as("archive")

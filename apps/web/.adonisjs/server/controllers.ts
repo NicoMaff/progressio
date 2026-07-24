@@ -6,8 +6,12 @@
 export const controllers = {
   activities: {
     ArchiveActivity: () => import('#src/activities/controllers/archive_activity_controller'),
+    BulkUpdateActivities: () => import('#src/activities/controllers/bulk_update_activities_controller'),
     CreateActivity: () => import('#src/activities/controllers/create_activity_controller'),
+    ListActivities: () => import('#src/activities/controllers/list_activities_controller'),
+    ReorderActivities: () => import('#src/activities/controllers/reorder_activities_controller'),
     RestoreActivity: () => import('#src/activities/controllers/restore_activity_controller'),
+    SelectActivitiesLevel: () => import('#src/activities/controllers/select_activities_level_controller'),
     UpdateActivity: () => import('#src/activities/controllers/update_activity_controller'),
   },
   chapters: {

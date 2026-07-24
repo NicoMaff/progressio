@@ -2,6 +2,7 @@ import Activity from "#models/activity"
 import ActivityType from "#models/activity_type"
 import Chapter from "#models/chapter"
 import Level from "#models/level"
+import db from "@adonisjs/lucid/services/db"
 import {
   ACTIVITY_ESTIMATED_DURATION_MAX_MINUTES,
   ActivityChapterLevelMismatchError,
@@ -26,10 +27,23 @@ export default class UpdateActivityAction {
     await this.ensureActivityTypeBelongsToSchoolYear(level.schoolYearId, payload.activityTypeId)
     this.ensureEstimatedDurationIsInRange(payload)
 
-    activity.merge(payload)
-    await activity.save()
-
-    return activity
+    return db.transaction(async (transaction) => {
+      activity.useTransaction(transaction)
+      const previousChapterId = activity.chapterId
+      activity.merge(payload)
+      if (previousChapterId !== payload.chapterId) {
+        const result = payload.chapterId
+          ? await transaction
+              .from("activities")
+              .where("chapter_id", payload.chapterId)
+              .max("display_order as maximum")
+              .first()
+          : null
+        activity.displayOrder = payload.chapterId ? Number(result?.maximum ?? 0) + 1 : null
+      }
+      await activity.save()
+      return activity
+    })
   }
 
   private async ensureChapterBelongsToLevel(levelId: string, chapterId: string | null) {
